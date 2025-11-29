@@ -1,0 +1,85 @@
+      <div class="slide bg-surface" id="slide-7">
+        <div class="title-zone">
+          <h1>The Challenge: Swin Transformer Architecture</h1>
+        </div>
+        
+        <div class="content-zone">
+          <div class="row gap-lg">
+            <!-- Standard Transformer -->
+            <div class="col fill" style="background: #fff5f5; padding: 16px; border-radius: 8px; border: 2px solid #feb2b2;">
+              <p style="font-size: 13px; font-weight: 600; color: var(--danger); margin-bottom: 12px;">Standard Transformer</p>
+              
+              <div style="display: flex; justify-content: center; margin-bottom: 12px;">
+                <div style="display: grid; grid-template-columns: repeat(6, 24px); gap: 2px;">
+                  <div style="width: 24px; height: 24px; background: #fc8181; border-radius: 2px;"></div>
+                  <div style="width: 24px; height: 24px; background: #fc8181; border-radius: 2px;"></div>
+                  <div style="width: 24px; height: 24px; background: #fc8181; border-radius: 2px;"></div>
+                  <div style="width: 24px; height: 24px; background: #fc8181; border-radius: 2px;"></div>
+                  <div style="width: 24px; height: 24px; background: #fc8181; border-radius: 2px;"></div>
+                  <div style="width: 24px; height: 24px; background: #fc8181; border-radius: 2px;"></div>
+                  <div style="width: 24px; height: 24px; background: #fc8181; border-radius: 2px;"></div>
+                  <div style="width: 24px; height: 24px; background: var(--danger); border-radius: 2px;"></div>
+                  <div style="width: 24px; height: 24px; background: #fc8181; border-radius: 2px;"></div>
+                  <div style="width: 24px; height: 24px; background: #fc8181; border-radius: 2px;"></div>
+                  <div style="width: 24px; height: 24px; background: #fc8181; border-radius: 2px;"></div>
+                  <div style="width: 24px; height: 24px; background: #fc8181; border-radius: 2px;"></div>
+                </div>
+              </div>
+              
+              <p style="font-size: 11px; color: var(--muted-fg); text-align: center;">
+                Every pixel attends to every pixel<br>
+                <strong style="color: var(--danger);">O(N²) — Intractable for global weather data</strong>
+              </p>
+            </div>
+            
+            <!-- Swin Transformer -->
+            <div class="col fill" style="background: #f0fff4; padding: 16px; border-radius: 8px; border: 2px solid #68d391;">
+              <p style="font-size: 13px; font-weight: 600; color: #276749; margin-bottom: 12px;">Swin Transformer (Pangu-Weather)</p>
+              
+              <div style="display: flex; justify-content: center; margin-bottom: 12px;">
+                <div style="display: grid; grid-template-columns: repeat(6, 24px); gap: 2px;">
+                  <div style="width: 24px; height: 24px; background: #68d391; border-radius: 2px; border: 2px solid #276749;"></div>
+                  <div style="width: 24px; height: 24px; background: #68d391; border-radius: 2px; border: 2px solid #276749;"></div>
+                  <div style="width: 24px; height: 24px; background: #68d391; border-radius: 2px; border: 2px solid #276749;"></div>
+                  <div style="width: 24px; height: 24px; background: #c6f6d5; border-radius: 2px;"></div>
+                  <div style="width: 24px; height: 24px; background: #c6f6d5; border-radius: 2px;"></div>
+                  <div style="width: 24px; height: 24px; background: #c6f6d5; border-radius: 2px;"></div>
+                  <div style="width: 24px; height: 24px; background: #68d391; border-radius: 2px; border: 2px solid #276749;"></div>
+                  <div style="width: 24px; height: 24px; background: #276749; border-radius: 2px;"></div>
+                  <div style="width: 24px; height: 24px; background: #68d391; border-radius: 2px; border: 2px solid #276749;"></div>
+                  <div style="width: 24px; height: 24px; background: #c6f6d5; border-radius: 2px;"></div>
+                  <div style="width: 24px; height: 24px; background: #c6f6d5; border-radius: 2px;"></div>
+                  <div style="width: 24px; height: 24px; background: #c6f6d5; border-radius: 2px;"></div>
+                </div>
+              </div>
+              
+              <p style="font-size: 11px; color: var(--muted-fg); text-align: center;">
+                Local windows + shifting patterns<br>
+                <strong style="color: #276749;">O(N) — Tractable for weather</strong>
+              </p>
+            </div>
+          </div>
+          
+          <!-- Research gap -->
+          <div class="card-dark" style="padding: 18px 24px; border-radius: 8px;">
+            <p style="font-size: 14px; font-weight: 600; color: white; margin-bottom: 10px;">Research Gap</p>
+            <p style="font-size: 12px; color: #e2e8f0;">
+              Most XAI methods are designed for <strong>classification</strong> tasks (generic ViT interpretability). 
+              We lack specific tools to trace information flow in <strong>3D, spherical, shifted-window architectures</strong> operating on atmospheric data.
+            </p>
+          </div>
+          
+          <!-- Key insight -->
+          <div class="row gap" style="align-items: center;">
+            <div style="width: 4px; height: 40px; background: var(--accent); border-radius: 2px;"></div>
+            <p style="font-size: 13px; color: var(--primary);">
+              <strong>Key insight:</strong> Information can only propagate to distant locations through <em>multiple hops</em> across successive layers.
+              Tracing these pathways requires architecture-specific algorithms.
+            </p>
+          </div>
+        </div>
+        
+        <div class="footnote-zone">
+          <p>Liu et al. (2021), Vaswani et al. (2017), Chefer et al. (2021)</p>
+        </div>
+      </div>

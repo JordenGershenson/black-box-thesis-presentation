@@ -1,0 +1,60 @@
+      <div class="slide bg-surface" id="slide-20">
+        <div class="title-zone">
+          <h1>Limitations</h1>
+        </div>
+        
+        <div class="content-zone" style="justify-content: center; gap: 14px;">
+          <!-- Limitation 1 -->
+          <div class="row gap" style="align-items: flex-start;">
+            <div class="num-badge" style="background: #fed7d7; color: var(--danger);">1</div>
+            <div style="flex: 1;">
+              <p style="font-size: 13px; font-weight: 600; color: var(--primary); margin-bottom: 4px;">Single 24-hour forecast case study</p>
+              <p style="font-size: 11px; color: var(--muted-fg);">Results may not generalize across seasons, synoptic regimes, or extreme events. Designed as proof-of-concept, not climatological characterization.</p>
+            </div>
+          </div>
+          
+          <!-- Limitation 2 -->
+          <div class="row gap" style="align-items: flex-start;">
+            <div class="num-badge" style="background: #fed7d7; color: var(--danger);">2</div>
+            <div style="flex: 1;">
+              <p style="font-size: 13px; font-weight: 600; color: var(--primary); margin-bottom: 4px;">Single attention head per layer</p>
+              <p style="font-size: 11px; color: var(--muted-fg);">Pangu has 6-12 heads per block. Different heads may specialize; first-head analysis may miss important patterns.</p>
+            </div>
+          </div>
+          
+          <!-- Limitation 3 -->
+          <div class="row gap" style="align-items: flex-start;">
+            <div class="num-badge" style="background: #fed7d7; color: var(--danger);">3</div>
+            <div style="flex: 1;">
+              <p style="font-size: 13px; font-weight: 600; color: var(--primary); margin-bottom: 4px;">Algorithm parameters not optimized</p>
+              <p style="font-size: 11px; color: var(--muted-fg);">Hyperparameters chosen as reasonable defaults. Sensitivity analysis would be valuable future work.</p>
+            </div>
+          </div>
+          
+          <!-- Limitation 4 -->
+          <div class="row gap" style="align-items: flex-start;">
+            <div class="num-badge" style="background: #fed7d7; color: var(--danger);">4</div>
+            <div style="flex: 1;">
+              <p style="font-size: 13px; font-weight: 600; color: var(--primary); margin-bottom: 4px;">N=1 expert evaluation</p>
+              <p style="font-size: 11px; color: var(--muted-fg);">Pilot study establishes protocol feasibility; larger evaluation needed for inter-rater reliability.</p>
+            </div>
+          </div>
+          
+          <!-- Limitation 5 -->
+          <div class="row gap" style="align-items: flex-start;">
+            <div class="num-badge" style="background: #fed7d7; color: var(--danger);">5</div>
+            <div style="flex: 1;">
+              <p style="font-size: 13px; font-weight: 600; color: var(--primary); margin-bottom: 4px;">No comparison to gradient-based attribution</p>
+              <p style="font-size: 11px; color: var(--muted-fg);">SHAP, integrated gradients, or saliency maps might provide complementary or contradictory explanations.</p>
+            </div>
+          </div>
+          
+          <!-- Framing -->
+          <div style="background: #e8f4f8; padding: 14px 20px; border-radius: 8px; margin-top: 8px;">
+            <p style="font-size: 12px; color: var(--primary); text-align: center;">
+              <strong>These are honest limitations of a thesis-scope project.</strong> 
+              The contribution is demonstrating <em>feasibility</em> — the algorithm now exists and can be applied at scale.
+            </p>
+          </div>
+        </div>
+      </div>

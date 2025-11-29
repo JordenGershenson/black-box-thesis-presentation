@@ -1,0 +1,114 @@
+      <div class="slide bg-surface" id="slide-6">
+        <div class="title-zone">
+          <h1>Background: The Transformer Architecture</h1>
+        </div>
+        
+        <div class="content-zone" style="gap: 16px;">
+          <!-- What is attention - Visual explanation -->
+          <div class="row gap-lg" style="flex: 1;">
+            <!-- Left: Core concept -->
+            <div class="col" style="flex: 1.2;">
+              <p style="font-size: 12px; font-weight: 600; color: var(--primary); margin-bottom: 12px;">The Core Idea: Self-Attention</p>
+              
+              <div style="background: var(--muted); padding: 16px; border-radius: 8px; height: calc(100% - 28px);">
+                <!-- Visual of attention -->
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 12px;">
+                  <p style="font-size: 10px; color: var(--muted-fg); text-align: center;">To predict the weather at location <strong style="color: var(--accent);">X</strong>, which other locations matter?</p>
+                  
+                  <!-- Grid visualization -->
+                  <div style="position: relative; width: 200px; height: 120px;">
+                    <!-- Grid of locations -->
+                    <svg viewBox="0 0 200 120" style="width: 100%; height: 100%;">
+                      <!-- Grid points -->
+                      <g fill="#cbd5e0">
+                        <circle cx="20" cy="20" r="6"/><circle cx="60" cy="20" r="6"/><circle cx="100" cy="20" r="6"/><circle cx="140" cy="20" r="6"/><circle cx="180" cy="20" r="6"/>
+                        <circle cx="20" cy="60" r="6"/><circle cx="60" cy="60" r="6"/><circle cx="140" cy="60" r="6"/><circle cx="180" cy="60" r="6"/>
+                        <circle cx="20" cy="100" r="6"/><circle cx="60" cy="100" r="6"/><circle cx="100" cy="100" r="6"/><circle cx="140" cy="100" r="6"/><circle cx="180" cy="100" r="6"/>
+                      </g>
+                      
+                      <!-- Attention lines from X -->
+                      <g stroke="var(--accent)" stroke-width="1.5" opacity="0.6">
+                        <line x1="100" y1="60" x2="60" y2="20"/>
+                        <line x1="100" y1="60" x2="100" y2="20"/>
+                        <line x1="100" y1="60" x2="140" y2="20"/>
+                        <line x1="100" y1="60" x2="60" y2="60"/>
+                        <line x1="100" y1="60" x2="140" y2="60"/>
+                        <line x1="100" y1="60" x2="60" y2="100"/>
+                        <line x1="100" y1="60" x2="100" y2="100"/>
+                        <line x1="100" y1="60" x2="140" y2="100"/>
+                      </g>
+                      
+                      <!-- Highlighted connections (stronger) -->
+                      <g stroke="var(--accent)" stroke-width="3" opacity="0.9">
+                        <line x1="100" y1="60" x2="60" y2="60"/>
+                        <line x1="100" y1="60" x2="140" y2="60"/>
+                      </g>
+                      
+                      <!-- Target X -->
+                      <circle cx="100" cy="60" r="10" fill="var(--accent)" stroke="var(--primary)" stroke-width="2"/>
+                      <text x="100" y="64" font-size="12" fill="white" text-anchor="middle" font-weight="bold">X</text>
+                    </svg>
+                  </div>
+                  
+                  <p style="font-size: 10px; color: var(--primary); text-align: center; max-width: 180px;">
+                    <strong>Self-attention</strong> learns which locations are relevant — assigning <strong style="color: var(--accent);">weights</strong> to each connection
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Right: Key properties -->
+            <div class="col gap" style="flex: 1;">
+              <p style="font-size: 12px; font-weight: 600; color: var(--primary); margin-bottom: 4px;">Key Properties</p>
+              
+              <div class="col gap-sm" style="flex: 1;">
+                <div style="background: var(--success-light); padding: 12px; border-radius: 6px; border-left: 4px solid var(--success);">
+                  <p style="font-size: 11px; font-weight: 600; color: #276749; margin-bottom: 4px;">✓ Global Context</p>
+                  <p style="font-size: 10px; color: var(--muted-fg);">Every position can attend to every other position — captures long-range dependencies</p>
+                </div>
+                
+                <div style="background: var(--success-light); padding: 12px; border-radius: 6px; border-left: 4px solid var(--success);">
+                  <p style="font-size: 11px; font-weight: 600; color: #276749; margin-bottom: 4px;">✓ Learned Relevance</p>
+                  <p style="font-size: 10px; color: var(--muted-fg);">Attention weights are learned from data — model discovers what matters</p>
+                </div>
+                
+                <div style="background: var(--danger-light); padding: 12px; border-radius: 6px; border-left: 4px solid var(--danger);">
+                  <p style="font-size: 11px; font-weight: 600; color: var(--danger); margin-bottom: 4px;">✗ Quadratic Complexity</p>
+                  <p style="font-size: 10px; color: var(--muted-fg);">O(N²) — comparing every pair of positions becomes intractable for large inputs</p>
+                </div>
+              </div>
+              
+              <div style="background: #e8f4f8; padding: 12px; border-radius: 6px;">
+                <p style="font-size: 10px; color: var(--primary); text-align: center;">
+                  <strong>Revolution:</strong> Transformers power GPT, BERT, Vision Transformers, and now weather models
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Bottom: The scale problem -->
+          <div class="card-dark" style="padding: 14px 24px; border-radius: 8px;">
+            <div class="row gap-lg" style="align-items: center;">
+              <div style="flex: 1;">
+                <p style="font-size: 12px; color: var(--accent); font-weight: 600; margin-bottom: 6px;">THE SCALE PROBLEM FOR WEATHER</p>
+                <p style="font-size: 11px; color: #e2e8f0;">
+                  A global weather grid has <strong>721 × 1440 = 1 million+</strong> locations. 
+                  Standard attention would require <strong>10<sup>12</sup> computations per layer</strong> — impossible.
+                </p>
+              </div>
+              <div style="text-align: center; padding: 0 20px;">
+                <p style="font-size: 28px; font-weight: bold; color: var(--accent);">→</p>
+              </div>
+              <div style="flex: 0.6; text-align: center;">
+                <p style="font-size: 11px; color: #e2e8f0;">Solution:</p>
+                <p style="font-size: 14px; color: white; font-weight: 600;">Swin Transformer</p>
+                <p style="font-size: 10px; color: rgba(255,255,255,0.7);">Windowed attention</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="footnote-zone">
+          <p>Vaswani et al. (2017), Dosovitskiy et al. (2020)</p>
+        </div>
+      </div>

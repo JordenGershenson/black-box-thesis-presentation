@@ -1,0 +1,81 @@
+      <div class="slide bg-surface" id="slide-14">
+        <div class="title-zone">
+          <h1>Result: Synoptic-Scale Focus</h1>
+        </div>
+        
+        <div class="content-zone">
+          <div class="row gap-lg fill">
+            <!-- Left: Metrics -->
+            <div class="col fill gap">
+              <p style="font-size: 14px; font-weight: 600; color: var(--primary);">Spatial Extent of Attention</p>
+              
+              <!-- Metric cards -->
+              <div style="background: #e8f4f8; padding: 16px; border-radius: 8px; border-left: 5px solid var(--accent);">
+                <div class="row gap-lg">
+                  <div class="metric">
+                    <p class="metric-label">R50</p>
+                    <p class="metric-value" style="color: var(--primary);">1,624 km</p>
+                  </div>
+                  <div class="metric">
+                    <p class="metric-label">R80</p>
+                    <p class="metric-value">2,598 km</p>
+                  </div>
+                  <div class="metric">
+                    <p class="metric-label">R95</p>
+                    <p class="metric-value" style="color: var(--primary);">3,747 km</p>
+                  </div>
+                </div>
+                <p style="font-size: 10px; color: var(--muted-fg); text-align: center; margin-top: 12px;">
+                  Radius containing 50% / 80% / 95% of total contribution
+                </p>
+              </div>
+              
+              <!-- Distribution -->
+              <div class="row gap-sm">
+                <div style="flex: 1; background: var(--success-light); padding: 12px; border-radius: 6px; text-align: center;">
+                  <p style="font-size: 20px; font-weight: bold; color: #276749;">24.3%</p>
+                  <p style="font-size: 10px; color: var(--muted-fg); margin-top: 4px;">Near-field (&lt;1000 km)</p>
+                </div>
+                <div style="flex: 1; background: var(--danger-light); padding: 12px; border-radius: 6px; text-align: center;">
+                  <p style="font-size: 20px; font-weight: bold; color: var(--danger);">0.83%</p>
+                  <p style="font-size: 10px; color: var(--muted-fg); margin-top: 4px;">Far-field (&gt;5000 km)</p>
+                </div>
+              </div>
+              
+              <div style="background: var(--purple-light); padding: 12px; border-radius: 6px;">
+                <p style="font-size: 11px; color: #553c9a;">
+                  <strong>Remarkably uniform:</strong> R80 coefficient of variation = 4.0% across all 12 focal points
+                </p>
+              </div>
+            </div>
+            
+            <!-- Right: Interpretation -->
+            <div class="col fill gap">
+              <p style="font-size: 14px; font-weight: 600; color: var(--primary);">Physical Interpretation</p>
+              
+              <div class="card">
+                <p style="font-size: 12px; color: var(--primary); margin-bottom: 10px; line-height: 1.5;">
+                  <strong>Context:</strong> Weather systems traveling at jet-stream speeds (~50 m/s) cover approximately <strong>4,300 km in 24 hours</strong>.
+                </p>
+                <p style="font-size: 12px; color: var(--muted-fg); line-height: 1.5;">
+                  The model's R80 ≈ 2,600 km aligns with this physical advection scale — it's "looking" at distances appropriate for a 24-hour forecast.
+                </p>
+              </div>
+              
+              <div class="card-dark" style="padding: 16px; border-radius: 8px;">
+                <p style="font-size: 13px; color: var(--accent); font-weight: 600; margin-bottom: 8px;">✓ LEARNED PATTERN</p>
+                <p style="font-size: 12px; color: #e2e8f0;">
+                  The model has tuned its receptive field to the physically relevant scale for the forecast horizon. 
+                  This suggests <strong>meaningful learning</strong>, not arbitrary pattern matching.
+                </p>
+              </div>
+              
+              <div class="card-warning" style="padding: 12px; border-radius: 6px;">
+                <p style="font-size: 11px; color: #744210;">
+                  <strong>Note:</strong> The uniformity across regimes (CV=4%) may also indicate architectural constraints — more on this later.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>

@@ -1,0 +1,120 @@
+      <div class="slide bg-surface" id="slide-4">
+        <div class="title-zone">
+          <h1>The Paradigm Shift — And Its Cost</h1>
+        </div>
+        
+        <div class="content-zone" style="gap: 16px;">
+          <!-- NWP vs MLWP Comparison -->
+          <div class="row gap-lg" style="flex: 1;">
+            
+            <!-- NWP Column -->
+            <div class="col" style="flex: 1; background: linear-gradient(180deg, var(--muted) 0%, #e8e8e8 100%); border-radius: 8px; padding: 16px; position: relative;">
+              <div style="position: absolute; top: -8px; left: 16px; background: #718096; color: white; padding: 4px 12px; border-radius: 4px; font-size: 10px; font-weight: 600;">TRADITIONAL</div>
+              
+              <p style="font-size: 16px; font-weight: 600; color: var(--primary); margin: 12px 0 16px 0; text-align: center;">Numerical Weather Prediction</p>
+              
+              <div class="row gap" style="margin-bottom: 16px;">
+                <div class="col center fill" style="background: white; padding: 12px; border-radius: 6px;">
+                  <p style="font-size: 24px; font-weight: bold; color: #718096;">~1 hr</p>
+                  <p style="font-size: 9px; color: var(--muted-fg);">compute time</p>
+                </div>
+                <div class="col center fill" style="background: white; padding: 12px; border-radius: 6px;">
+                  <p style="font-size: 24px; font-weight: bold; color: #718096;">10K+</p>
+                  <p style="font-size: 9px; color: var(--muted-fg);">CPU cores</p>
+                </div>
+              </div>
+              
+              <div style="background: white; padding: 12px; border-radius: 6px;">
+                <div class="row gap-sm" style="align-items: center; margin-bottom: 8px;">
+                  <span style="font-size: 16px;">✓</span>
+                  <p style="font-size: 11px; color: var(--primary);"><strong>Explicit physics</strong> — equations we understand</p>
+                </div>
+                <div class="row gap-sm" style="align-items: center; margin-bottom: 8px;">
+                  <span style="font-size: 16px;">✓</span>
+                  <p style="font-size: 11px; color: var(--primary);"><strong>Traceable reasoning</strong> — can diagnose failures</p>
+                </div>
+                <div class="row gap-sm" style="align-items: center;">
+                  <span style="font-size: 16px;">✓</span>
+                  <p style="font-size: 11px; color: var(--primary);"><strong>60+ years</strong> of operational trust</p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- VS divider -->
+            <div class="col center" style="padding: 0 8px;">
+              <div style="width: 50px; height: 50px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                <span style="color: white; font-weight: bold; font-size: 14px;">VS</span>
+              </div>
+            </div>
+            
+            <!-- MLWP Column -->
+            <div class="col" style="flex: 1; background: linear-gradient(180deg, #e8f4f8 0%, #d0e8f0 100%); border-radius: 8px; padding: 16px; position: relative; border: 2px solid var(--accent);">
+              <div style="position: absolute; top: -8px; left: 16px; background: var(--accent); color: white; padding: 4px 12px; border-radius: 4px; font-size: 10px; font-weight: 600;">EMERGING</div>
+              
+              <p style="font-size: 16px; font-weight: 600; color: var(--primary); margin: 12px 0 16px 0; text-align: center;">ML Weather Prediction</p>
+              
+              <div class="row gap" style="margin-bottom: 16px;">
+                <div class="col center fill" style="background: white; padding: 12px; border-radius: 6px;">
+                  <p style="font-size: 24px; font-weight: bold; color: var(--success);">~1 min</p>
+                  <p style="font-size: 9px; color: var(--muted-fg);">compute time</p>
+                </div>
+                <div class="col center fill" style="background: white; padding: 12px; border-radius: 6px;">
+                  <p style="font-size: 24px; font-weight: bold; color: var(--success);">1</p>
+                  <p style="font-size: 9px; color: var(--muted-fg);">GPU</p>
+                </div>
+              </div>
+              
+              <div style="background: white; padding: 12px; border-radius: 6px;">
+                <div class="row gap-sm" style="align-items: center; margin-bottom: 8px;">
+                  <span style="font-size: 16px;">✓</span>
+                  <p style="font-size: 11px; color: var(--success);"><strong>Matches or exceeds</strong> NWP accuracy</p>
+                </div>
+                <div class="row gap-sm" style="align-items: center; margin-bottom: 8px;">
+                  <span style="font-size: 16px; color: var(--danger);">✗</span>
+                  <p style="font-size: 11px; color: var(--danger);"><strong>Black box</strong> — learned representations</p>
+                </div>
+                <div class="row gap-sm" style="align-items: center;">
+                  <span style="font-size: 16px; color: var(--danger);">✗</span>
+                  <p style="font-size: 11px; color: var(--danger);"><strong>No reasoning chain</strong> to interrogate</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- The Trust Problem -->
+          <div style="background: var(--danger-light); padding: 16px 20px; border-radius: 8px; border-left: 5px solid var(--danger);">
+            <div class="row gap-lg" style="align-items: center;">
+              <div style="flex-shrink: 0;">
+                <p style="font-size: 13px; font-weight: 600; color: var(--danger); margin-bottom: 4px;">THE TRUST PROBLEM</p>
+                <p style="font-size: 11px; color: #744210; line-height: 1.5; max-width: 400px;">
+                  When an ML model predicts hurricane rapid intensification but NWP disagrees, 
+                  how does a forecaster decide whom to trust with 6 hours to issue a warning?
+                </p>
+              </div>
+              <div style="flex: 1; display: flex; justify-content: center; gap: 12px;">
+                <div class="col center" style="background: white; padding: 12px 16px; border-radius: 6px;">
+                  <span style="font-size: 24px;">🌀</span>
+                  <p style="font-size: 9px; color: var(--muted-fg); margin-top: 4px;">ML: Intensify</p>
+                </div>
+                <div class="col center" style="font-size: 20px; color: var(--danger);">≠</div>
+                <div class="col center" style="background: white; padding: 12px 16px; border-radius: 6px;">
+                  <span style="font-size: 24px;">🌀</span>
+                  <p style="font-size: 9px; color: var(--muted-fg); margin-top: 4px;">NWP: Weaken</p>
+                </div>
+                <div class="col center" style="font-size: 20px; color: var(--danger);">→</div>
+                <div class="col center" style="background: white; padding: 12px 16px; border-radius: 6px;">
+                  <span style="font-size: 24px;">❓</span>
+                  <p style="font-size: 9px; color: var(--muted-fg); margin-top: 4px;">Decision?</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Bottom: Key models -->
+          <div class="row gap" style="justify-content: center;">
+            <div style="background: var(--muted); padding: 8px 16px; border-radius: 20px;">
+              <p style="font-size: 10px; color: var(--muted-fg);"><strong style="color: var(--primary);">Pangu-Weather</strong> (Huawei) • <strong style="color: var(--primary);">GraphCast</strong> (DeepMind) • <strong style="color: var(--primary);">FourCastNet</strong> (NVIDIA) • <strong style="color: var(--primary);">GenCast</strong> (DeepMind)</p>
+            </div>
+          </div>
+        </div>
+      </div>

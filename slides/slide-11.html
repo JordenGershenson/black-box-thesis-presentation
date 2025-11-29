@@ -1,0 +1,142 @@
+      <div class="slide bg-surface" id="slide-11">
+        <div class="title-zone">
+          <h1>Algorithm: Reverse Attention Rollout</h1>
+        </div>
+        
+        <div class="content-zone" style="gap: 14px;">
+          <!-- Visual explanation -->
+          <div class="row gap-lg" style="flex: 1;">
+            <!-- Left: Visual diagram -->
+            <div class="col" style="flex: 1.3;">
+              <div style="background: #1a1a2e; border-radius: 8px; padding: 16px; height: 100%;">
+                <p style="font-size: 10px; color: rgba(255,255,255,0.6); margin-bottom: 12px;">Tracing Influence Backward Through the Network</p>
+                
+                <svg viewBox="0 0 340 180" style="width: 100%; height: calc(100% - 24px);">
+                  <!-- Layer labels -->
+                  <text x="50" y="15" font-size="9" fill="#718096" text-anchor="middle">Input</text>
+                  <text x="130" y="15" font-size="9" fill="#718096" text-anchor="middle">Layer 1</text>
+                  <text x="210" y="15" font-size="9" fill="#718096" text-anchor="middle">Layer 2</text>
+                  <text x="290" y="15" font-size="9" fill="#718096" text-anchor="middle">Output</text>
+                  
+                  <!-- Input grid (4x4) -->
+                  <g transform="translate(20, 25)">
+                    <rect x="0" y="0" width="60" height="60" fill="none" stroke="#4a5568" stroke-width="1"/>
+                    <line x1="15" y1="0" x2="15" y2="60" stroke="#4a5568"/>
+                    <line x1="30" y1="0" x2="30" y2="60" stroke="#4a5568"/>
+                    <line x1="45" y1="0" x2="45" y2="60" stroke="#4a5568"/>
+                    <line x1="0" y1="15" x2="60" y2="15" stroke="#4a5568"/>
+                    <line x1="0" y1="30" x2="60" y2="30" stroke="#4a5568"/>
+                    <line x1="0" y1="45" x2="60" y2="45" stroke="#4a5568"/>
+                    <!-- Contributing cells highlighted -->
+                    <rect x="15" y="15" width="15" height="15" fill="#fde725" opacity="0.8"/>
+                    <rect x="30" y="15" width="15" height="15" fill="#7ad151" opacity="0.6"/>
+                    <rect x="15" y="30" width="15" height="15" fill="#22a884" opacity="0.5"/>
+                    <rect x="30" y="30" width="15" height="15" fill="#2a788e" opacity="0.4"/>
+                    <rect x="0" y="15" width="15" height="15" fill="#414487" opacity="0.3"/>
+                    <rect x="45" y="30" width="15" height="15" fill="#414487" opacity="0.2"/>
+                  </g>
+                  
+                  <!-- Middle layers (simplified) -->
+                  <g transform="translate(100, 35)">
+                    <rect x="0" y="0" width="60" height="40" fill="none" stroke="#4a5568" rx="4"/>
+                    <rect x="10" y="10" width="20" height="20" fill="#22a884" opacity="0.6"/>
+                    <rect x="30" y="10" width="20" height="20" fill="#2a788e" opacity="0.4"/>
+                  </g>
+                  
+                  <g transform="translate(180, 40)">
+                    <rect x="0" y="0" width="60" height="30" fill="none" stroke="#4a5568" rx="4"/>
+                    <rect x="15" y="8" width="30" height="14" fill="#2a788e" opacity="0.5"/>
+                  </g>
+                  
+                  <!-- Output pixel -->
+                  <g transform="translate(265, 40)">
+                    <rect x="0" y="0" width="50" height="30" fill="none" stroke="#4a5568" rx="4"/>
+                    <circle cx="25" cy="15" r="8" fill="var(--accent)" stroke="white" stroke-width="2"/>
+                    <text x="25" y="18" font-size="8" fill="white" text-anchor="middle" font-weight="bold">X</text>
+                  </g>
+                  
+                  <!-- Reverse arrows (dashed) showing backward flow -->
+                  <defs>
+                    <marker id="arrowhead" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                      <polygon points="0 0, 6 3, 0 6" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+                  
+                  <!-- Forward direction label -->
+                  <text x="170" y="95" font-size="8" fill="#718096" text-anchor="middle">← Trace attention backward</text>
+                  
+                  <!-- Backward trace arrows -->
+                  <path d="M 265,55 L 245,55" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arrowhead)"/>
+                  <path d="M 180,55 L 165,55" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arrowhead)"/>
+                  <path d="M 100,55 L 85,45" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arrowhead)"/>
+                  
+                  <!-- Mass flow annotation -->
+                  <g transform="translate(0, 105)">
+                    <rect x="10" y="0" width="320" height="65" fill="rgba(45, 156, 219, 0.1)" rx="6"/>
+                    
+                    <!-- Step 1 -->
+                    <g transform="translate(20, 10)">
+                      <circle cx="12" cy="12" r="10" fill="var(--accent)"/>
+                      <text x="12" y="16" font-size="10" fill="white" text-anchor="middle" font-weight="bold">1</text>
+                      <text x="30" y="10" font-size="9" fill="#e2e8f0">Initialize</text>
+                      <text x="30" y="22" font-size="8" fill="#a0aec0">mass=1.0 at target</text>
+                    </g>
+                    
+                    <!-- Step 2 -->
+                    <g transform="translate(120, 10)">
+                      <circle cx="12" cy="12" r="10" fill="var(--accent)"/>
+                      <text x="12" y="16" font-size="10" fill="white" text-anchor="middle" font-weight="bold">2</text>
+                      <text x="30" y="10" font-size="9" fill="#e2e8f0">Propagate</text>
+                      <text x="30" y="22" font-size="8" fill="#a0aec0">via attention weights</text>
+                    </g>
+                    
+                    <!-- Step 3 -->
+                    <g transform="translate(220, 10)">
+                      <circle cx="12" cy="12" r="10" fill="var(--accent)"/>
+                      <text x="12" y="16" font-size="10" fill="white" text-anchor="middle" font-weight="bold">3</text>
+                      <text x="30" y="10" font-size="9" fill="#e2e8f0">Result</text>
+                      <text x="30" y="22" font-size="8" fill="#a0aec0">contribution map</text>
+                    </g>
+                    
+                    <!-- Mass conservation note -->
+                    <text x="170" y="52" font-size="8" fill="#718096" text-anchor="middle">Mass sums to 1.0 → probabilistic interpretation</text>
+                  </g>
+                </svg>
+              </div>
+            </div>
+            
+            <!-- Right: Key points -->
+            <div class="col gap" style="flex: 0.8;">
+              <div class="card-accent" style="padding: 14px; border-radius: 6px;">
+                <p style="font-size: 11px; font-weight: 600; color: var(--primary); margin-bottom: 6px;">Core Intuition</p>
+                <p style="font-size: 10px; color: var(--muted-fg); line-height: 1.5;">
+                  Starting from a forecast pixel <strong style="color: var(--accent);">X</strong>, trace backward through attention layers to find which input regions contributed most.
+                </p>
+              </div>
+              
+              <div class="card" style="padding: 12px;">
+                <p style="font-size: 11px; font-weight: 600; color: var(--primary); margin-bottom: 8px;">Key Adaptations for Swin</p>
+                <div style="margin-bottom: 8px;">
+                  <p style="font-size: 10px; font-weight: 600; color: var(--accent);">Window-Aware</p>
+                  <p style="font-size: 9px; color: var(--muted-fg);">Tracks which pixels can communicate at each layer through shifted windows</p>
+                </div>
+                <div>
+                  <p style="font-size: 10px; font-weight: 600; color: var(--accent);">Hierarchical</p>
+                  <p style="font-size: 9px; color: var(--muted-fg);">Handles resolution changes as network deepens/contracts</p>
+                </div>
+              </div>
+              
+              <div style="background: var(--success-light); padding: 12px; border-radius: 6px;">
+                <p style="font-size: 10px; font-weight: 600; color: #276749; margin-bottom: 4px;">Why "Mass-Preserving"?</p>
+                <p style="font-size: 9px; color: var(--muted-fg);">Total attribution always sums to 1.0 — we can interpret results as "what fraction of influence came from region R?"</p>
+              </div>
+              
+              <div style="background: var(--muted); padding: 10px; border-radius: 6px; margin-top: auto;">
+                <p style="font-size: 9px; color: var(--muted-fg); text-align: center;">
+                  Based on Abnar & Zuidema (2020) • Full details in Chapter 3
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>

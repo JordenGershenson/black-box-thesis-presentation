@@ -1,0 +1,138 @@
+      <div class="slide bg-surface" id="slide-3">
+        <div class="title-zone">
+          <h1>Background: Numerical Weather Prediction</h1>
+        </div>
+        
+        <div class="content-zone" style="gap: 20px;">
+          <!-- Visual Pipeline -->
+          <div class="row" style="align-items: stretch; gap: 0;">
+            <!-- Observations -->
+            <div class="col center" style="flex: 1; background: linear-gradient(135deg, #e8f4f8 0%, #d1e8f0 100%); padding: 16px 12px; border-radius: 8px 0 0 8px;">
+              <div style="font-size: 28px; margin-bottom: 8px;">🛰️ 🎈 🌡️</div>
+              <p style="font-size: 12px; font-weight: 600; color: var(--primary); margin-bottom: 4px;">Observations</p>
+              <p style="font-size: 9px; color: var(--muted-fg); text-align: center;">Satellites, radiosondes,<br>surface stations, buoys</p>
+            </div>
+            
+            <!-- Arrow -->
+            <div style="display: flex; align-items: center; background: linear-gradient(90deg, #d1e8f0 0%, #c3e0d8 100%); padding: 0 4px;">
+              <span style="font-size: 20px; color: var(--primary);">→</span>
+            </div>
+            
+            <!-- Data Assimilation -->
+            <div class="col center" style="flex: 1.2; background: linear-gradient(135deg, #c3e0d8 0%, #a8d4c4 100%); padding: 16px 12px;">
+              <div style="font-size: 28px; margin-bottom: 8px;">🔄</div>
+              <p style="font-size: 12px; font-weight: 600; color: var(--primary); margin-bottom: 4px;">Data Assimilation</p>
+              <p style="font-size: 9px; color: var(--muted-fg); text-align: center;">Combine observations<br>with prior forecasts</p>
+            </div>
+            
+            <!-- Arrow -->
+            <div style="display: flex; align-items: center; background: linear-gradient(90deg, #a8d4c4 0%, #b8c9e8 100%); padding: 0 4px;">
+              <span style="font-size: 20px; color: var(--primary);">→</span>
+            </div>
+            
+            <!-- Initial Conditions -->
+            <div class="col center" style="flex: 1.2; background: linear-gradient(135deg, #b8c9e8 0%, #9fb8e0 100%); padding: 16px 12px;">
+              <div style="font-size: 28px; margin-bottom: 8px;">🌍</div>
+              <p style="font-size: 12px; font-weight: 600; color: var(--primary); margin-bottom: 4px;">Initial Conditions</p>
+              <p style="font-size: 9px; color: var(--muted-fg); text-align: center;">3D atmospheric<br>snapshot</p>
+            </div>
+            
+            <!-- Arrow -->
+            <div style="display: flex; align-items: center; background: linear-gradient(90deg, #9fb8e0 0%, #8fa8d0 100%); padding: 0 4px;">
+              <span style="font-size: 20px; color: var(--primary);">→</span>
+            </div>
+            
+            <!-- NWP Model -->
+            <div class="col center" style="flex: 1.3; background: linear-gradient(135deg, #8fa8d0 0%, #7090c0 100%); padding: 16px 12px;">
+              <div style="font-size: 28px; margin-bottom: 8px;">⚙️</div>
+              <p style="font-size: 12px; font-weight: 600; color: white; margin-bottom: 4px;">NWP Model</p>
+              <p style="font-size: 9px; color: rgba(255,255,255,0.8); text-align: center;">Solve physics<br>equations forward</p>
+            </div>
+            
+            <!-- Arrow -->
+            <div style="display: flex; align-items: center; background: linear-gradient(90deg, #7090c0 0%, var(--primary) 100%); padding: 0 4px;">
+              <span style="font-size: 20px; color: white;">→</span>
+            </div>
+            
+            <!-- Forecast -->
+            <div class="col center" style="flex: 1; background: var(--primary); padding: 16px 12px; border-radius: 0 8px 8px 0;">
+              <div style="font-size: 28px; margin-bottom: 8px;">📊</div>
+              <p style="font-size: 12px; font-weight: 600; color: white; margin-bottom: 4px;">Forecast</p>
+              <p style="font-size: 9px; color: rgba(255,255,255,0.8); text-align: center;">1-15 day<br>predictions</p>
+            </div>
+          </div>
+          
+          <!-- Bottom section: Data scale + Compute + Users -->
+          <div class="row gap-lg" style="flex: 1;">
+            
+            <!-- Data Scale Visual -->
+            <div class="col center" style="flex: 1; background: var(--muted); border-radius: 8px; padding: 16px;">
+              <p style="font-size: 11px; font-weight: 600; color: var(--primary); margin-bottom: 12px;">ERA5 REANALYSIS GRID</p>
+              <!-- Simple grid visualization -->
+              <div style="position: relative; width: 140px; height: 70px; background: linear-gradient(180deg, #a8d4f0 0%, #7eb8e0 30%, #90c890 60%, #f0e8a0 100%); border-radius: 4px; overflow: hidden; margin-bottom: 8px;">
+                <!-- Grid lines -->
+                <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px); background-size: 10px 10px;"></div>
+              </div>
+              <p style="font-size: 18px; font-weight: bold; color: var(--accent); margin-bottom: 2px;">721 × 1440</p>
+              <p style="font-size: 9px; color: var(--muted-fg);">0.25° resolution × 37 pressure levels</p>
+            </div>
+            
+            <!-- Compute Requirements -->
+            <div class="col center" style="flex: 1; background: var(--danger-light); border-radius: 8px; padding: 16px;">
+              <p style="font-size: 11px; font-weight: 600; color: var(--danger); margin-bottom: 12px;">COMPUTATIONAL COST</p>
+              <div class="row gap" style="margin-bottom: 8px;">
+                <div class="col center">
+                  <p style="font-size: 28px; font-weight: bold; color: var(--danger);">~1hr</p>
+                  <p style="font-size: 9px; color: var(--muted-fg);">runtime</p>
+                </div>
+                <div style="width: 1px; background: #e0b0b0;"></div>
+                <div class="col center">
+                  <p style="font-size: 28px; font-weight: bold; color: var(--danger);">10K+</p>
+                  <p style="font-size: 9px; color: var(--muted-fg);">CPU cores</p>
+                </div>
+              </div>
+              <p style="font-size: 9px; color: var(--muted-fg); text-align: center;">Dedicated supercomputers</p>
+            </div>
+            
+            <!-- Operational Users -->
+            <div class="col center" style="flex: 1; background: var(--muted); border-radius: 8px; padding: 16px;">
+              <p style="font-size: 11px; font-weight: 600; color: var(--primary); margin-bottom: 12px;">WHO RELIES ON THIS</p>
+              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 8px;">
+                <div class="col center">
+                  <span style="font-size: 20px;">✈️</span>
+                  <p style="font-size: 8px; color: var(--muted-fg);">Aviation</p>
+                </div>
+                <div class="col center">
+                  <span style="font-size: 20px;">🚨</span>
+                  <p style="font-size: 8px; color: var(--muted-fg);">Emergency</p>
+                </div>
+                <div class="col center">
+                  <span style="font-size: 20px;">⚡</span>
+                  <p style="font-size: 8px; color: var(--muted-fg);">Energy</p>
+                </div>
+                <div class="col center">
+                  <span style="font-size: 20px;">🌾</span>
+                  <p style="font-size: 8px; color: var(--muted-fg);">Agriculture</p>
+                </div>
+                <div class="col center">
+                  <span style="font-size: 20px;">🎖️</span>
+                  <p style="font-size: 8px; color: var(--muted-fg);">Defense</p>
+                </div>
+                <div class="col center">
+                  <span style="font-size: 20px;">🚢</span>
+                  <p style="font-size: 8px; color: var(--muted-fg);">Shipping</p>
+                </div>
+              </div>
+              <p style="font-size: 8px; color: var(--muted-fg);">ECMWF • NOAA • Met Office • JMA</p>
+            </div>
+          </div>
+          
+          <!-- Key insight -->
+          <div style="background: var(--primary); padding: 12px 24px; border-radius: 6px;">
+            <p style="font-size: 12px; color: #e2e8f0; text-align: center;">
+              <strong style="color: var(--accent);">Key Point:</strong> 
+              NWP provides <strong>explicit physical reasoning</strong> forecasters can interrogate — but requires <strong>massive computational resources</strong>.
+            </p>
+          </div>
+        </div>
+      </div>

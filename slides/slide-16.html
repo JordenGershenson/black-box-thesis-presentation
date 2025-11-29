@@ -1,0 +1,62 @@
+      <div class="slide bg-surface" id="slide-16">
+        <div class="title-zone">
+          <h1>Observation: Symmetric Bidirectional Attention</h1>
+        </div>
+        
+        <div class="content-zone">
+          <div class="row gap-lg fill">
+            <!-- Left: Finding -->
+            <div class="col fill gap">
+              <div class="card-warning" style="padding: 16px; border-radius: 8px;">
+                <p style="font-size: 14px; color: #744210; font-weight: 600; margin-bottom: 10px;">⚠ ARCHITECTURAL SIGNATURE</p>
+                <p style="font-size: 12px; color: #744210; line-height: 1.5;">
+                  Despite strong E-W preference, the model shows <strong>no directional asymmetry</strong> — 
+                  it attends equally to upstream (west) and downstream (east).
+                </p>
+              </div>
+              
+              <!-- Westward bias -->
+              <div class="card" style="text-align: center;">
+                <p style="font-size: 11px; color: #718096;">Westward Bias Index</p>
+                <p style="font-size: 36px; font-weight: bold; color: var(--primary); margin: 8px 0;">0.510</p>
+                <p style="font-size: 11px; color: var(--muted-fg);">(0.5 = perfectly symmetric • p = 0.55, not significant)</p>
+              </div>
+              
+              <div class="card-danger" style="padding: 14px; border-radius: 6px;">
+                <p style="font-size: 12px; color: var(--danger); font-weight: 600; margin-bottom: 8px;">The Anomaly</p>
+                <p style="font-size: 11px; color: var(--muted-fg); line-height: 1.5;">
+                  Physical advection is <strong>directional</strong>: weather moves from upstream → downstream. 
+                  We might expect preferential attention to upstream (westward) features as precursors.
+                </p>
+              </div>
+            </div>
+            
+            <!-- Right: Interpretation -->
+            <div class="col fill gap">
+              <p style="font-size: 14px; font-weight: 600; color: var(--primary);">Interpretation</p>
+              
+              <div class="card-dark" style="padding: 16px; border-radius: 8px;">
+                <p style="font-size: 12px; color: var(--accent); font-weight: 600; margin-bottom: 10px;">Bidirectional Transformer Architecture</p>
+                <p style="font-size: 11px; color: #e2e8f0; line-height: 1.5;">
+                  Unlike RNNs or causal masking, Transformer self-attention is <strong>inherently symmetric</strong>. 
+                  Each position attends to all others without directional constraints.
+                </p>
+              </div>
+              
+              <div class="card">
+                <p style="font-size: 12px; color: var(--primary); margin-bottom: 8px; line-height: 1.5;"><strong>Why symmetric?</strong></p>
+                <p style="font-size: 11px; color: var(--muted-fg); margin-bottom: 6px;">• Training sees complete spatial sequences</p>
+                <p style="font-size: 11px; color: var(--muted-fg); margin-bottom: 6px;">• Model learns <em>spatial correlations</em>, not causal propagation</p>
+                <p style="font-size: 11px; color: var(--muted-fg);">• Integrates both upstream drivers AND downstream signatures equally</p>
+              </div>
+              
+              <div style="background: #e8f4f8; padding: 14px; border-radius: 6px;">
+                <p style="font-size: 11px; color: var(--primary);">
+                  <strong>Implication:</strong> The model learned <em>zonal organization</em> but not <em>directional causality</em>. 
+                  This is a signature of the architecture, not a failure of learning.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>

@@ -1,0 +1,50 @@
+      <div class="slide bg-surface" id="slide-19">
+        <div class="title-zone">
+          <h1>Synthesis: Learned Physics vs. Architectural Artifacts</h1>
+        </div>
+        
+        <div class="content-zone" style="gap: 20px;">
+          <!-- Table -->
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="width: 30%;">Pattern</th>
+                <th style="width: 20%; text-align: center;">Source</th>
+                <th style="width: 50%;">Implication</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Synoptic-scale focus<br><span style="color: #718096; font-size: 10px;">(R80 ≈ 2600 km)</span></td>
+                <td style="text-align: center; background: var(--success-light);"><span style="font-weight: 600; color: #276749;">✓ Learned</span></td>
+                <td style="font-size: 10px;">Appropriate scale for 24h forecasts</td>
+              </tr>
+              <tr>
+                <td>Zonal anisotropy<br><span style="color: #718096; font-size: 10px;">(E-W elongation)</span></td>
+                <td style="text-align: center; background: var(--success-light);"><span style="font-weight: 600; color: #276749;">✓ Learned</span></td>
+                <td style="font-size: 10px;">Consistent with atmospheric dynamics</td>
+              </tr>
+              <tr>
+                <td>Symmetric attention<br><span style="color: #718096; font-size: 10px;">(no upstream bias)</span></td>
+                <td style="text-align: center; background: var(--warning-light);"><span style="font-weight: 600; color: #c05621;">⚠ Artifact</span></td>
+                <td style="font-size: 10px;">May miss directional propagation</td>
+              </tr>
+              <tr>
+                <td>Scale uniformity<br><span style="color: #718096; font-size: 10px;">(CV = 4%)</span></td>
+                <td style="text-align: center; background: var(--warning-light);"><span style="font-weight: 600; color: #c05621;">⚠ Artifact</span></td>
+                <td style="font-size: 10px;">Limited regime-specific adaptation</td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <!-- Key takeaway -->
+          <div class="card-dark" style="padding: 18px 24px; border-radius: 8px;">
+            <p style="font-size: 13px; color: #e2e8f0; line-height: 1.6;">
+              <strong style="color: var(--accent);">Key Takeaway:</strong> 
+              Attention analysis serves <strong>dual purposes</strong> — validating that models learn physically meaningful patterns 
+              <em>while also</em> revealing architectural limitations that constrain their expressiveness. 
+              Both insights are essential for building trust.
+            </p>
+          </div>
+        </div>
+      </div>

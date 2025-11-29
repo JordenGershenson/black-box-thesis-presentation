@@ -1,0 +1,139 @@
+      <div class="slide bg-surface" id="slide-5">
+        <div class="title-zone">
+          <h1>Background: Explainable AI (XAI)</h1>
+        </div>
+        
+        <div class="content-zone" style="gap: 16px;">
+          <!-- What is XAI - Visual -->
+          <div class="row gap-lg" style="align-items: stretch;">
+            <!-- Without XAI -->
+            <div class="col center" style="flex: 1; background: var(--danger-light); padding: 16px; border-radius: 8px;">
+              <p style="font-size: 10px; font-weight: 600; color: var(--danger); margin-bottom: 12px;">WITHOUT EXPLAINABILITY</p>
+              <div class="row gap-sm" style="align-items: center;">
+                <div style="background: white; padding: 10px 14px; border-radius: 6px; text-align: center;">
+                  <span style="font-size: 20px;">🌡️</span>
+                  <p style="font-size: 8px; color: var(--muted-fg); margin-top: 4px;">Input</p>
+                </div>
+                <span style="font-size: 16px; color: var(--danger);">→</span>
+                <div style="background: #1a1a2e; padding: 14px 18px; border-radius: 6px; text-align: center;">
+                  <span style="font-size: 18px;">❓</span>
+                  <p style="font-size: 8px; color: #a0aec0; margin-top: 4px;">Black Box</p>
+                </div>
+                <span style="font-size: 16px; color: var(--danger);">→</span>
+                <div style="background: white; padding: 10px 14px; border-radius: 6px; text-align: center;">
+                  <span style="font-size: 20px;">🌀</span>
+                  <p style="font-size: 8px; color: var(--muted-fg); margin-top: 4px;">Prediction</p>
+                </div>
+              </div>
+              <p style="font-size: 10px; color: var(--danger); margin-top: 12px; font-style: italic;">"Why did it predict this?"</p>
+            </div>
+            
+            <!-- With XAI -->
+            <div class="col center" style="flex: 1; background: var(--success-light); padding: 16px; border-radius: 8px; border: 2px solid var(--success);">
+              <p style="font-size: 10px; font-weight: 600; color: #276749; margin-bottom: 12px;">WITH EXPLAINABILITY</p>
+              <div class="row gap-sm" style="align-items: center;">
+                <div style="background: white; padding: 10px 14px; border-radius: 6px; text-align: center;">
+                  <span style="font-size: 20px;">🌡️</span>
+                  <p style="font-size: 8px; color: var(--muted-fg); margin-top: 4px;">Input</p>
+                </div>
+                <span style="font-size: 16px; color: var(--success);">→</span>
+                <div style="background: white; padding: 14px 18px; border-radius: 6px; text-align: center; border: 2px solid var(--success);">
+                  <span style="font-size: 18px;">🔍</span>
+                  <p style="font-size: 8px; color: #276749; margin-top: 4px;">XAI</p>
+                </div>
+                <span style="font-size: 16px; color: var(--success);">→</span>
+                <div style="background: white; padding: 10px 14px; border-radius: 6px; text-align: center;">
+                  <span style="font-size: 20px;">🌀</span>
+                  <p style="font-size: 8px; color: var(--muted-fg); margin-top: 4px;">Prediction</p>
+                </div>
+              </div>
+              <p style="font-size: 10px; color: #276749; margin-top: 12px; font-style: italic;">"It focused on the warm SSTs here"</p>
+            </div>
+          </div>
+          
+          <div class="row gap-lg" style="flex: 1;">
+            <!-- Left: Established XAI Methods -->
+            <div class="col gap" style="flex: 1;">
+              <p style="font-size: 12px; font-weight: 600; color: var(--primary);">Established XAI Methods</p>
+              
+              <div class="row gap-sm" style="flex: 1;">
+                <div class="col center fill" style="background: var(--muted); padding: 12px; border-radius: 6px;">
+                  <div style="width: 36px; height: 36px; background: var(--accent); border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-bottom: 6px;">
+                    <span style="font-size: 16px;">📊</span>
+                  </div>
+                  <p style="font-size: 10px; font-weight: 600; color: var(--primary);">SHAP/LIME</p>
+                  <p style="font-size: 8px; color: var(--muted-fg); text-align: center;">Feature importance scores</p>
+                </div>
+                
+                <div class="col center fill" style="background: var(--muted); padding: 12px; border-radius: 6px;">
+                  <div style="width: 36px; height: 36px; background: var(--accent); border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-bottom: 6px;">
+                    <span style="font-size: 16px;">🎯</span>
+                  </div>
+                  <p style="font-size: 10px; font-weight: 600; color: var(--primary);">Grad-CAM</p>
+                  <p style="font-size: 8px; color: var(--muted-fg); text-align: center;">Gradient-based heatmaps</p>
+                </div>
+                
+                <div class="col center fill" style="background: var(--muted); padding: 12px; border-radius: 6px;">
+                  <div style="width: 36px; height: 36px; background: var(--accent); border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-bottom: 6px;">
+                    <span style="font-size: 16px;">👁️</span>
+                  </div>
+                  <p style="font-size: 10px; font-weight: 600; color: var(--primary);">Attention</p>
+                  <p style="font-size: 8px; color: var(--muted-fg); text-align: center;">Visualize where model "looks"</p>
+                </div>
+              </div>
+              
+              <div style="background: #e8f4f8; padding: 10px; border-radius: 6px;">
+                <p style="font-size: 10px; color: var(--primary);">
+                  ✓ Well-developed for <strong>image classification</strong>, <strong>NLP</strong>, and <strong>tabular data</strong>
+                </p>
+              </div>
+            </div>
+            
+            <!-- Right: Why Weather is Hard -->
+            <div class="col gap" style="flex: 1;">
+              <p style="font-size: 12px; font-weight: 600; color: var(--primary);">Why Weather Prediction is Different</p>
+              
+              <div class="col gap-sm" style="flex: 1;">
+                <div class="row gap-sm" style="align-items: center; background: var(--warning-light); padding: 10px; border-radius: 6px;">
+                  <div style="width: 32px; height: 32px; background: var(--warning); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <span style="font-size: 14px;">📐</span>
+                  </div>
+                  <div>
+                    <p style="font-size: 10px; font-weight: 600; color: #744210;">Massive Scale</p>
+                    <p style="font-size: 9px; color: var(--muted-fg);">Global 3D grids with millions of variables</p>
+                  </div>
+                </div>
+                
+                <div class="row gap-sm" style="align-items: center; background: var(--warning-light); padding: 10px; border-radius: 6px;">
+                  <div style="width: 32px; height: 32px; background: var(--warning); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <span style="font-size: 14px;">🔧</span>
+                  </div>
+                  <div>
+                    <p style="font-size: 10px; font-weight: 600; color: #744210;">Custom Architectures</p>
+                    <p style="font-size: 9px; color: var(--muted-fg);">Swin, GNNs, FNOs — not standard models</p>
+                  </div>
+                </div>
+                
+                <div class="row gap-sm" style="align-items: center; background: var(--warning-light); padding: 10px; border-radius: 6px;">
+                  <div style="width: 32px; height: 32px; background: var(--warning); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <span style="font-size: 14px;">🎓</span>
+                  </div>
+                  <div>
+                    <p style="font-size: 10px; font-weight: 600; color: #744210;">Domain Expertise Required</p>
+                    <p style="font-size: 9px; color: var(--muted-fg);">Explanations must make physical sense</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Bottom insight -->
+          <div class="card-dark" style="padding: 12px 20px; border-radius: 8px;">
+            <p style="font-size: 11px; color: #e2e8f0; text-align: center;">
+              <strong style="color: var(--accent);">The Gap:</strong> 
+              XAI for meteorology is an <strong>emerging field</strong> — standard tools don't scale to global weather grids, 
+              and custom architectures require custom explainability methods.
+            </p>
+          </div>
+        </div>
+      </div>
