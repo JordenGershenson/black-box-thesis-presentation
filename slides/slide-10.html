@@ -40,105 +40,105 @@
             </div>
           </div>
           
+          <!-- Experimental parameters grid -->
           <div class="row gap-lg" style="flex: 1;">
-            <!-- Left: World Map with focal points -->
-            <div class="col" style="flex: 1.2;">
-              <div style="background: linear-gradient(180deg, #1a365d 0%, #2c5282 100%); border-radius: 8px; padding: 10px; height: 100%; position: relative; overflow: hidden;">
-                <svg viewBox="0 0 360 180" style="width: 100%; height: 100%;" preserveAspectRatio="xMidYMid meet">
-                  <defs>
-                    <linearGradient id="land2" x1="0%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" style="stop-color:#48bb78;stop-opacity:0.5" />
-                      <stop offset="100%" style="stop-color:#276749;stop-opacity:0.5" />
-                    </linearGradient>
-                  </defs>
-                  
-                  <!-- Grid lines -->
-                  <g stroke="rgba(255,255,255,0.1)" stroke-width="0.5" fill="none">
-                    <line x1="0" y1="90" x2="360" y2="90" stroke="rgba(255,255,255,0.25)"/>
-                    <line x1="0" y1="60" x2="360" y2="60"/>
-                    <line x1="0" y1="120" x2="360" y2="120"/>
-                  </g>
-                  
-                  <!-- Simplified continents -->
-                  <path d="M 20,30 Q 60,25 80,40 L 85,60 Q 70,70 60,65 L 40,70 Q 25,55 20,30" fill="url(#land2)"/>
-                  <path d="M 55,95 Q 70,90 75,100 L 70,130 Q 55,145 50,130 L 55,95" fill="url(#land2)"/>
-                  <path d="M 160,35 Q 175,30 185,35 L 180,50 Q 165,50 160,35" fill="url(#land2)"/>
-                  <path d="M 160,70 Q 185,65 195,80 L 190,115 Q 170,125 160,110 L 160,70" fill="url(#land2)"/>
-                  <path d="M 185,25 Q 250,20 280,35 L 285,70 Q 250,80 220,70 L 185,50 L 185,25" fill="url(#land2)"/>
-                  <path d="M 260,110 Q 285,105 295,115 L 290,130 Q 270,135 260,125 L 260,110" fill="url(#land2)"/>
-                  
-                  <!-- Focal points (simplified markers) -->
-                  <g fill="#fc8181" stroke="#c53030" stroke-width="1">
-                    <circle cx="200" cy="90" r="5"/><circle cx="250" cy="85" r="5"/>
-                    <circle cx="150" cy="100" r="5"/><circle cx="175" cy="95" r="5"/>
-                  </g>
-                  <g fill="#fbd38d" stroke="#c05621" stroke-width="1">
-                    <circle cx="135" cy="75" r="5"/><circle cx="160" cy="70" r="5"/><circle cx="60" cy="75" r="5"/>
-                  </g>
-                  <g fill="#9ae6b4" stroke="#276749" stroke-width="1">
-                    <circle cx="210" cy="75" r="5"/><circle cx="115" cy="70" r="5"/><circle cx="95" cy="110" r="5"/>
-                  </g>
-                  <g fill="#90cdf4" stroke="#2b6cb0" stroke-width="1">
-                    <circle cx="185" cy="115" r="5"/><circle cx="170" cy="80" r="5"/>
-                  </g>
-                  
-                  <text x="5" y="62" font-size="5" fill="rgba(255,255,255,0.4)">30°N</text>
-                  <text x="5" y="92" font-size="5" fill="rgba(255,255,255,0.4)">EQ</text>
-                  <text x="5" y="122" font-size="5" fill="rgba(255,255,255,0.4)">30°S</text>
-                </svg>
-                <div style="position: absolute; top: 6px; left: 10px;">
-                  <p style="font-size: 9px; font-weight: 600; color: white;">12 Focal Points</p>
+            <!-- Left column -->
+            <div class="col gap" style="flex: 1;">
+              <!-- Model & Implementation -->
+              <div class="card" style="padding: 14px;">
+                <p style="font-size: 12px; font-weight: 600; color: var(--primary); margin-bottom: 8px;">Model & Implementation</p>
+                <div style="margin-bottom: 8px;">
+                  <p style="font-size: 10px; font-weight: 600; color: var(--accent);">Pangu-Weather</p>
+                  <p style="font-size: 9px; color: var(--muted-fg);">Swin Transformer-based weather model</p>
                 </div>
+                <div>
+                  <p style="font-size: 10px; font-weight: 600; color: var(--accent);">pangu-pytorch</p>
+                  <p style="font-size: 9px; color: var(--muted-fg);">Open-source implementation with attention hooks</p>
+                </div>
+              </div>
+
+              <!-- Spatial Coverage -->
+              <div class="card" style="padding: 14px;">
+                <p style="font-size: 12px; font-weight: 600; color: var(--primary); margin-bottom: 10px;">Spatial Coverage</p>
+                <div class="row gap-sm" style="margin-bottom: 10px;">
+                  <div style="flex: 1; text-align: center; background: var(--muted); padding: 8px; border-radius: 4px;">
+                    <p style="font-size: 16px; font-weight: bold; color: var(--accent);">721×1440</p>
+                    <p style="font-size: 8px; color: var(--muted-fg);">Global Grid (0.25°)</p>
+                  </div>
+                  <div style="flex: 1; text-align: center; background: var(--muted); padding: 8px; border-radius: 4px;">
+                    <p style="font-size: 16px; font-weight: bold; color: var(--accent);">12</p>
+                    <p style="font-size: 8px; color: var(--muted-fg);">Focal Points</p>
+                  </div>
+                </div>
+                <div class="row gap-sm" style="flex-wrap: wrap;">
+                  <div style="background: #fed7d7; padding: 4px 8px; border-radius: 4px; font-size: 9px; color: var(--danger);">
+                    <span style="font-weight: 600;">4</span> Tropical
+                  </div>
+                  <div style="background: #feebc8; padding: 4px 8px; border-radius: 4px; font-size: 9px; color: #c05621;">
+                    <span style="font-weight: 600;">3</span> Trade Wind
+                  </div>
+                  <div style="background: #c6f6d5; padding: 4px 8px; border-radius: 4px; font-size: 9px; color: #276749;">
+                    <span style="font-weight: 600;">3</span> Subtropical
+                  </div>
+                  <div style="background: #bee3f8; padding: 4px 8px; border-radius: 4px; font-size: 9px; color: #2b6cb0;">
+                    <span style="font-weight: 600;">2</span> Mid-Latitude
+                  </div>
+                </div>
+              </div>
+
+              <!-- Key insight -->
+              <div style="background: #e8f4f8; padding: 12px; border-radius: 6px; border-left: 3px solid var(--accent);">
+                <p style="font-size: 10px; color: var(--primary); line-height: 1.5;">
+                  <strong>Approach:</strong> Hook attention layers during inference to capture self-attention matrices, enabling backward tracing of influence.
+                </p>
               </div>
             </div>
-            
-            <!-- Right: Details -->
+
+            <!-- Right column -->
             <div class="col gap" style="flex: 1;">
-              <!-- Scope -->
-              <div class="card-warning" style="padding: 10px; border-radius: 6px;">
-                <p style="font-size: 10px; font-weight: 600; color: #744210; margin-bottom: 4px;">Proof-of-Concept Scope</p>
-                <p style="font-size: 9px; color: var(--muted-fg);">Single 24-hour forecast (July 2–3, 2019) demonstrating framework feasibility</p>
-              </div>
-              
-              <!-- Data -->
-              <div class="row gap-sm">
-                <div class="card" style="flex: 1; padding: 10px; text-align: center;">
-                  <p style="font-size: 16px; font-weight: bold; color: var(--accent);">721×1440</p>
-                  <p style="font-size: 8px; color: var(--muted-fg);">grid (0.25°)</p>
+              <!-- Temporal & Vertical -->
+              <div class="card" style="padding: 14px;">
+                <p style="font-size: 12px; font-weight: 600; color: var(--primary); margin-bottom: 10px;">Temporal & Vertical Coverage</p>
+                <div style="margin-bottom: 12px;">
+                  <p style="font-size: 10px; font-weight: 600; color: var(--accent); margin-bottom: 4px;">Forecast Period</p>
+                  <p style="font-size: 10px; color: var(--muted-fg);">24-hour forecast (July 2–3, 2019)</p>
                 </div>
-                <div class="card" style="flex: 1; padding: 10px; text-align: center;">
-                  <p style="font-size: 16px; font-weight: bold; color: var(--accent);">14</p>
-                  <p style="font-size: 8px; color: var(--muted-fg);">pressure levels</p>
-                </div>
-              </div>
-              
-              <!-- Climate regimes legend -->
-              <div class="row gap-sm" style="flex-wrap: wrap;">
-                <div style="background: #fed7d7; padding: 4px 8px; border-radius: 4px;">
-                  <span style="font-size: 8px; color: var(--danger);">● Tropical (4)</span>
-                </div>
-                <div style="background: #feebc8; padding: 4px 8px; border-radius: 4px;">
-                  <span style="font-size: 8px; color: #c05621;">● Trade (3)</span>
-                </div>
-                <div style="background: #c6f6d5; padding: 4px 8px; border-radius: 4px;">
-                  <span style="font-size: 8px; color: #276749;">● Subtropical (3)</span>
-                </div>
-                <div style="background: #bee3f8; padding: 4px 8px; border-radius: 4px;">
-                  <span style="font-size: 8px; color: #2b6cb0;">● Mid-Lat (2)</span>
+                <div>
+                  <p style="font-size: 10px; font-weight: 600; color: var(--accent); margin-bottom: 4px;">Pressure Levels</p>
+                  <div style="background: var(--muted); padding: 8px; border-radius: 4px;">
+                    <p style="font-size: 9px; color: var(--muted-fg); line-height: 1.4;">
+                      1000, 925, 850, 700, 600, 500, 400, 300, 250, 200, 150, 100, 70, 50 hPa
+                    </p>
+                    <p style="font-size: 10px; font-weight: bold; color: var(--accent); margin-top: 4px; text-align: center;">14 levels total</p>
+                  </div>
                 </div>
               </div>
-              
-              <!-- Model -->
-              <div class="card" style="padding: 10px;">
-                <p style="font-size: 10px; font-weight: 600; color: var(--primary); margin-bottom: 4px;">Model: Pangu-Weather</p>
-                <p style="font-size: 9px; color: var(--muted-fg);">Swin Transformer • pangu-pytorch implementation</p>
-              </div>
-              
-              <!-- Why this matters -->
-              <div style="background: #e8f4f8; padding: 10px; border-radius: 6px; margin-top: auto;">
-                <p style="font-size: 9px; color: var(--primary); line-height: 1.4;">
-                  <strong>Key:</strong> By capturing self-attention during inference, we can trace which input regions the model "looked at" to make each prediction.
+
+              <!-- Scope note -->
+              <div class="card-warning" style="padding: 12px; border-radius: 6px;">
+                <p style="font-size: 11px; font-weight: 600; color: #744210; margin-bottom: 6px;">Proof-of-Concept Scope</p>
+                <p style="font-size: 10px; color: var(--muted-fg); line-height: 1.4;">
+                  Single forecast snapshot demonstrating framework feasibility across diverse climate regimes
                 </p>
+              </div>
+
+              <!-- Variables tracked -->
+              <div class="card" style="padding: 12px;">
+                <p style="font-size: 11px; font-weight: 600; color: var(--primary); margin-bottom: 8px;">Variables Analyzed</p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+                  <div style="background: var(--muted); padding: 6px; border-radius: 4px; text-align: center;">
+                    <p style="font-size: 9px; font-weight: 600; color: var(--primary);">Temperature</p>
+                  </div>
+                  <div style="background: var(--muted); padding: 6px; border-radius: 4px; text-align: center;">
+                    <p style="font-size: 9px; font-weight: 600; color: var(--primary);">Geopotential</p>
+                  </div>
+                  <div style="background: var(--muted); padding: 6px; border-radius: 4px; text-align: center;">
+                    <p style="font-size: 9px; font-weight: 600; color: var(--primary);">U-wind</p>
+                  </div>
+                  <div style="background: var(--muted); padding: 6px; border-radius: 4px; text-align: center;">
+                    <p style="font-size: 9px; font-weight: 600; color: var(--primary);">V-wind</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
