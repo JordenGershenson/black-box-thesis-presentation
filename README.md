@@ -19,12 +19,24 @@ Master's thesis defense presentation for "Opening the Black Box: Attention Analy
 
 ## How to Use
 
-1. **View the presentation**: Open `index.html` in a web browser
-2. **Edit a slide**: Modify the corresponding file in the `slides/` directory (e.g., `slides/slide-05.html`)
-3. **Edit styles**: Modify `styles.css`
-4. **Add/remove slides**:
+**IMPORTANT**: This presentation must be served via a local web server due to dynamic slide loading and image paths. Opening `index.html` directly in a browser will not work properly.
+
+### Quick Start
+```bash
+# Start a local server (Python 3)
+python -m http.server 8000
+
+# Then open in browser
+http://localhost:8000
+```
+
+### Editing
+1. **Edit a slide**: Modify the corresponding file in the `slides/` directory (e.g., `slides/slide-05.html`)
+2. **Edit styles**: Modify `styles.css`
+3. **Add/remove slides**:
    - Add new slide HTML files to `slides/`
    - Update `TOTAL_SLIDES` constant in `app.js`
+4. **Replace images**: Images are in the root directory (`.png` files). Slides 12-13 use embedded images.
 
 ## Keyboard Shortcuts
 
@@ -57,6 +69,18 @@ Each slide is a self-contained HTML fragment with the structure:
 ```
 
 Available utility classes are defined in `styles.css`.
+
+### Embedding Images
+
+Images are referenced from slides using relative paths. Since slides are in the `slides/` subdirectory, use `../` to reference images in the root:
+
+```html
+<img src="../image-name.png" alt="Description" style="width: 100%;">
+```
+
+Currently embedded images:
+- **Slide 12**: `global_contribution_Map.png` - Global contribution maps visualization
+- **Slide 13**: `rosegrid_ringnormalized.png` and `rosegrid_global.png` - Wind-rose diagrams
 
 ## Git History
 
