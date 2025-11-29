@@ -1,0 +1,2728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Opening the Black Box - Thesis Defense</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    :root {
+      --primary: #1e3a5f;
+      --primary-light: #2d4a6f;
+      --primary-fg: #ffffff;
+      --accent: #2d9cdb;
+      --surface: #ffffff;
+      --surface-fg: #1a1a2e;
+      --muted: #f0f4f8;
+      --muted-fg: #4a5568;
+      --border: #d1d9e6;
+      --success: #48bb78;
+      --success-light: #f0fff4;
+      --warning: #f6ad55;
+      --warning-light: #fff8e7;
+      --danger: #c53030;
+      --danger-light: #fff5f5;
+      --purple: #9f7aea;
+      --purple-light: #faf5ff;
+    }
+    
+    body {
+      font-family: Arial, sans-serif;
+      background: #000;
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+    }
+    
+    .slideshow-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #1a1a2e;
+    }
+    
+    .slide-wrapper {
+      width: 960px;
+      height: 540px;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+    
+    /* Fullscreen mode */
+    body.fullscreen .slideshow-container {
+      background: #000;
+    }
+    
+    body.fullscreen .slide-wrapper {
+      width: 100vw;
+      height: 100vh;
+      max-width: 100vw;
+      max-height: 100vh;
+      box-shadow: none;
+    }
+    
+    body.fullscreen .slide {
+      width: 100%;
+      height: 100%;
+    }
+    
+    .slide {
+      width: 960px;
+      height: 540px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    
+    body.fullscreen .slide {
+      width: 100%;
+      height: 100%;
+    }
+    
+    .slide.active {
+      display: flex;
+    }
+    
+    /* Slide counter */
+    .slide-counter {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(0,0,0,0.7);
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      z-index: 1000;
+    }
+    
+    body.fullscreen .slide-counter {
+      bottom: 10px;
+      right: 10px;
+    }
+    
+    /* Help overlay */
+    .help-overlay {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: rgba(0,0,0,0.8);
+      color: #fff;
+      padding: 16px 20px;
+      border-radius: 8px;
+      font-size: 12px;
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .help-overlay.visible {
+      opacity: 1;
+    }
+    
+    .help-overlay kbd {
+      background: #444;
+      padding: 2px 6px;
+      border-radius: 3px;
+      margin-right: 8px;
+    }
+    
+    /* Common slide styles */
+    .bg-primary { background: var(--primary); }
+    .bg-surface { background: var(--surface); }
+    .bg-muted { background: var(--muted); }
+    
+    .title-zone {
+      padding: 20px 40px 0;
+      flex-shrink: 0;
+    }
+    
+    .title-zone h1 {
+      font-size: 28px;
+      color: var(--primary);
+      font-family: Georgia, serif;
+      font-weight: 600;
+      margin: 0;
+    }
+    
+    .content-zone {
+      flex: 1;
+      padding: 16px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      overflow: hidden;
+    }
+    
+    .footnote-zone {
+      padding: 8px 40px;
+      flex-shrink: 0;
+    }
+    
+    .footnote-zone p {
+      font-size: 10px;
+      color: #718096;
+      margin: 0;
+    }
+    
+    /* Layout utilities */
+    .row { display: flex; flex-direction: row; }
+    .col { display: flex; flex-direction: column; }
+    .center { align-items: center; justify-content: center; }
+    .fill { flex: 1; }
+    .gap-sm { gap: 8px; }
+    .gap { gap: 16px; }
+    .gap-lg { gap: 24px; }
+    
+    /* Card styles */
+    .card {
+      background: var(--muted);
+      padding: 14px;
+      border-radius: 6px;
+    }
+    
+    .card-accent {
+      background: #e8f4f8;
+      border-left: 4px solid var(--accent);
+    }
+    
+    .card-success {
+      background: var(--success-light);
+      border-left: 4px solid var(--success);
+    }
+    
+    .card-warning {
+      background: var(--warning-light);
+      border-left: 4px solid var(--warning);
+    }
+    
+    .card-danger {
+      background: var(--danger-light);
+      border-left: 4px solid var(--danger);
+    }
+    
+    .card-dark {
+      background: var(--primary);
+      color: #e2e8f0;
+    }
+    
+    /* Typography */
+    h1, h2, h3 { font-family: Georgia, serif; }
+    
+    .text-primary { color: var(--primary); }
+    .text-accent { color: var(--accent); }
+    .text-muted { color: var(--muted-fg); }
+    .text-success { color: var(--success); }
+    .text-warning { color: #744210; }
+    .text-danger { color: var(--danger); }
+    .text-white { color: #ffffff; }
+    
+    .text-sm { font-size: 11px; }
+    .text-base { font-size: 12px; }
+    .text-lg { font-size: 13px; }
+    .text-xl { font-size: 14px; }
+    
+    .font-bold { font-weight: 600; }
+    .text-center { text-align: center; }
+    
+    /* Number badges */
+    .num-badge {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    
+    /* Metric display */
+    .metric {
+      text-align: center;
+      padding: 12px;
+    }
+    
+    .metric-value {
+      font-size: 28px;
+      font-weight: bold;
+      color: var(--accent);
+    }
+    
+    .metric-label {
+      font-size: 10px;
+      color: #718096;
+      margin-top: 4px;
+    }
+    
+    /* Table styles */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+    }
+    
+    .data-table th {
+      background: var(--primary);
+      color: white;
+      padding: 10px 12px;
+      text-align: left;
+      font-weight: 600;
+    }
+    
+    .data-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .data-table tr:nth-child(even) {
+      background: #fafafa;
+    }
+
+    /* Divider */
+    .divider {
+      width: 80px;
+      height: 3px;
+      background: var(--accent);
+    }
+  </style>
+</head>
+<body>
+  <div class="slideshow-container">
+    <div class="slide-wrapper">
+      
+      <!-- SLIDE 1: Title -->
+      <div class="slide bg-primary" id="slide-1">
+        <div class="col center fill" style="padding: 40px 60px;">
+          <h1 style="font-size: 30px; color: white; text-align: center; line-height: 1.3; margin-bottom: 12px;">
+            Opening the Black Box
+          </h1>
+          <p style="font-size: 18px; color: rgba(255,255,255,0.95); text-align: center; line-height: 1.4; max-width: 700px; margin-bottom: 28px;">
+            Attention Analysis Reveals Learned Physics and<br>
+            Architectural Constraints in Transformer Weather Models
+          </p>
+          
+          <div class="divider" style="margin-bottom: 28px;"></div>
+          
+          <p style="font-size: 16px; color: white; text-align: center; margin-bottom: 8px;">
+            Jorden Gershenson
+          </p>
+          <p style="font-size: 14px; color: rgba(255,255,255,0.7); text-align: center; margin-bottom: 24px;">
+            Master's Thesis Defense • December 1, 2025
+          </p>
+          
+          <p style="font-size: 12px; color: rgba(255,255,255,0.6); text-align: center;">
+            University of Nebraska Omaha • College of Information Science & Technology
+          </p>
+        </div>
+        
+        <div style="padding: 16px 40px; background: rgba(255,255,255,0.1);">
+          <p style="font-size: 11px; color: rgba(255,255,255,0.7); text-align: center;">
+            Committee: Dr. Xin Zhong (Chair) • Dr. Hesham Ali • Dr. Adam Houston • Dr. Pei-Chi Huang
+          </p>
+        </div>
+      </div>
+      
+      <!-- SLIDE 2: Overview -->
+      <div class="slide bg-surface" id="slide-2">
+        <div class="title-zone">
+          <h1>Overview</h1>
+        </div>
+        
+        <div class="content-zone" style="justify-content: center; gap: 20px;">
+          <div class="row gap-lg" style="max-width: 850px;">
+            <!-- Background -->
+            <div class="col" style="flex: 1;">
+              <div style="background: var(--muted); padding: 16px; border-radius: 8px; height: 100%;">
+                <div class="row gap-sm" style="align-items: center; margin-bottom: 10px;">
+                  <div style="width: 28px; height: 28px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                    <span style="color: white; font-size: 14px; font-weight: bold;">1</span>
+                  </div>
+                  <p style="font-size: 13px; font-weight: 600; color: var(--primary);">Background</p>
+                </div>
+                <p style="font-size: 11px; color: var(--muted-fg); line-height: 1.5;">
+                  Weather prediction, the ML revolution, and the trust gap
+                </p>
+              </div>
+            </div>
+            
+            <!-- Problem -->
+            <div class="col" style="flex: 1;">
+              <div style="background: var(--muted); padding: 16px; border-radius: 8px; height: 100%;">
+                <div class="row gap-sm" style="align-items: center; margin-bottom: 10px;">
+                  <div style="width: 28px; height: 28px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                    <span style="color: white; font-size: 14px; font-weight: bold;">2</span>
+                  </div>
+                  <p style="font-size: 13px; font-weight: 600; color: var(--primary);">Problem</p>
+                </div>
+                <p style="font-size: 11px; color: var(--muted-fg); line-height: 1.5;">
+                  XAI challenges for global-scale weather Transformers
+                </p>
+              </div>
+            </div>
+            
+            <!-- Method -->
+            <div class="col" style="flex: 1;">
+              <div style="background: #e8f4f8; padding: 16px; border-radius: 8px; height: 100%; border: 2px solid var(--accent);">
+                <div class="row gap-sm" style="align-items: center; margin-bottom: 10px;">
+                  <div style="width: 28px; height: 28px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                    <span style="color: white; font-size: 14px; font-weight: bold;">3</span>
+                  </div>
+                  <p style="font-size: 13px; font-weight: 600; color: var(--primary);">Method</p>
+                </div>
+                <p style="font-size: 11px; color: var(--muted-fg); line-height: 1.5;">
+                  Reverse attention rollout for Swin architecture
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row gap-lg" style="max-width: 850px;">
+            <!-- Results -->
+            <div class="col" style="flex: 1;">
+              <div style="background: var(--muted); padding: 16px; border-radius: 8px; height: 100%;">
+                <div class="row gap-sm" style="align-items: center; margin-bottom: 10px;">
+                  <div style="width: 28px; height: 28px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                    <span style="color: white; font-size: 14px; font-weight: bold;">4</span>
+                  </div>
+                  <p style="font-size: 13px; font-weight: 600; color: var(--primary);">Results</p>
+                </div>
+                <p style="font-size: 11px; color: var(--muted-fg); line-height: 1.5;">
+                  Visualizations, learned patterns, and architectural artifacts
+                </p>
+              </div>
+            </div>
+            
+            <!-- Validation -->
+            <div class="col" style="flex: 1;">
+              <div style="background: var(--muted); padding: 16px; border-radius: 8px; height: 100%;">
+                <div class="row gap-sm" style="align-items: center; margin-bottom: 10px;">
+                  <div style="width: 28px; height: 28px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                    <span style="color: white; font-size: 14px; font-weight: bold;">5</span>
+                  </div>
+                  <p style="font-size: 13px; font-weight: 600; color: var(--primary);">Validation</p>
+                </div>
+                <p style="font-size: 11px; color: var(--muted-fg); line-height: 1.5;">
+                  Expert meteorological evaluation
+                </p>
+              </div>
+            </div>
+            
+            <!-- Conclusions -->
+            <div class="col" style="flex: 1;">
+              <div style="background: var(--muted); padding: 16px; border-radius: 8px; height: 100%;">
+                <div class="row gap-sm" style="align-items: center; margin-bottom: 10px;">
+                  <div style="width: 28px; height: 28px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                    <span style="color: white; font-size: 14px; font-weight: bold;">6</span>
+                  </div>
+                  <p style="font-size: 13px; font-weight: 600; color: var(--primary);">Conclusions</p>
+                </div>
+                <p style="font-size: 11px; color: var(--muted-fg); line-height: 1.5;">
+                  Contributions, limitations, and future directions
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Time estimate -->
+          <div style="background: var(--primary); padding: 12px 24px; border-radius: 6px; margin-top: 8px;">
+            <p style="font-size: 11px; color: rgba(255,255,255,0.9); text-align: center;">
+              <strong style="color: var(--accent);">~25 minutes</strong> presentation + questions
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- SLIDE 3: Weather Forecasting Primer -->
+      <div class="slide bg-surface" id="slide-3">
+        <div class="title-zone">
+          <h1>Background: Numerical Weather Prediction</h1>
+        </div>
+        
+        <div class="content-zone" style="gap: 20px;">
+          <!-- Visual Pipeline -->
+          <div class="row" style="align-items: stretch; gap: 0;">
+            <!-- Observations -->
+            <div class="col center" style="flex: 1; background: linear-gradient(135deg, #e8f4f8 0%, #d1e8f0 100%); padding: 16px 12px; border-radius: 8px 0 0 8px;">
+              <div style="font-size: 28px; margin-bottom: 8px;">🛰️ 🎈 🌡️</div>
+              <p style="font-size: 12px; font-weight: 600; color: var(--primary); margin-bottom: 4px;">Observations</p>
+              <p style="font-size: 9px; color: var(--muted-fg); text-align: center;">Satellites, radiosondes,<br>surface stations, buoys</p>
+            </div>
+            
+            <!-- Arrow -->
+            <div style="display: flex; align-items: center; background: linear-gradient(90deg, #d1e8f0 0%, #c3e0d8 100%); padding: 0 4px;">
+              <span style="font-size: 20px; color: var(--primary);">→</span>
+            </div>
+            
+            <!-- Data Assimilation -->
+            <div class="col center" style="flex: 1.2; background: linear-gradient(135deg, #c3e0d8 0%, #a8d4c4 100%); padding: 16px 12px;">
+              <div style="font-size: 28px; margin-bottom: 8px;">🔄</div>
+              <p style="font-size: 12px; font-weight: 600; color: var(--primary); margin-bottom: 4px;">Data Assimilation</p>
+              <p style="font-size: 9px; color: var(--muted-fg); text-align: center;">Combine observations<br>with prior forecasts</p>
+            </div>
+            
+            <!-- Arrow -->
+            <div style="display: flex; align-items: center; background: linear-gradient(90deg, #a8d4c4 0%, #b8c9e8 100%); padding: 0 4px;">
+              <span style="font-size: 20px; color: var(--primary);">→</span>
+            </div>
+            
+            <!-- Initial Conditions -->
+            <div class="col center" style="flex: 1.2; background: linear-gradient(135deg, #b8c9e8 0%, #9fb8e0 100%); padding: 16px 12px;">
+              <div style="font-size: 28px; margin-bottom: 8px;">🌍</div>
+              <p style="font-size: 12px; font-weight: 600; color: var(--primary); margin-bottom: 4px;">Initial Conditions</p>
+              <p style="font-size: 9px; color: var(--muted-fg); text-align: center;">3D atmospheric<br>snapshot</p>
+            </div>
+            
+            <!-- Arrow -->
+            <div style="display: flex; align-items: center; background: linear-gradient(90deg, #9fb8e0 0%, #8fa8d0 100%); padding: 0 4px;">
+              <span style="font-size: 20px; color: var(--primary);">→</span>
+            </div>
+            
+            <!-- NWP Model -->
+            <div class="col center" style="flex: 1.3; background: linear-gradient(135deg, #8fa8d0 0%, #7090c0 100%); padding: 16px 12px;">
+              <div style="font-size: 28px; margin-bottom: 8px;">⚙️</div>
+              <p style="font-size: 12px; font-weight: 600; color: white; margin-bottom: 4px;">NWP Model</p>
+              <p style="font-size: 9px; color: rgba(255,255,255,0.8); text-align: center;">Solve physics<br>equations forward</p>
+            </div>
+            
+            <!-- Arrow -->
+            <div style="display: flex; align-items: center; background: linear-gradient(90deg, #7090c0 0%, var(--primary) 100%); padding: 0 4px;">
+              <span style="font-size: 20px; color: white;">→</span>
+            </div>
+            
+            <!-- Forecast -->
+            <div class="col center" style="flex: 1; background: var(--primary); padding: 16px 12px; border-radius: 0 8px 8px 0;">
+              <div style="font-size: 28px; margin-bottom: 8px;">📊</div>
+              <p style="font-size: 12px; font-weight: 600; color: white; margin-bottom: 4px;">Forecast</p>
+              <p style="font-size: 9px; color: rgba(255,255,255,0.8); text-align: center;">1-15 day<br>predictions</p>
+            </div>
+          </div>
+          
+          <!-- Bottom section: Data scale + Compute + Users -->
+          <div class="row gap-lg" style="flex: 1;">
+            
+            <!-- Data Scale Visual -->
+            <div class="col center" style="flex: 1; background: var(--muted); border-radius: 8px; padding: 16px;">
+              <p style="font-size: 11px; font-weight: 600; color: var(--primary); margin-bottom: 12px;">ERA5 REANALYSIS GRID</p>
+              <!-- Simple grid visualization -->
+              <div style="position: relative; width: 140px; height: 70px; background: linear-gradient(180deg, #a8d4f0 0%, #7eb8e0 30%, #90c890 60%, #f0e8a0 100%); border-radius: 4px; overflow: hidden; margin-bottom: 8px;">
+                <!-- Grid lines -->
+                <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px); background-size: 10px 10px;"></div>
+              </div>
+              <p style="font-size: 18px; font-weight: bold; color: var(--accent); margin-bottom: 2px;">721 × 1440</p>
+              <p style="font-size: 9px; color: var(--muted-fg);">0.25° resolution × 37 pressure levels</p>
+            </div>
+            
+            <!-- Compute Requirements -->
+            <div class="col center" style="flex: 1; background: var(--danger-light); border-radius: 8px; padding: 16px;">
+              <p style="font-size: 11px; font-weight: 600; color: var(--danger); margin-bottom: 12px;">COMPUTATIONAL COST</p>
+              <div class="row gap" style="margin-bottom: 8px;">
+                <div class="col center">
+                  <p style="font-size: 28px; font-weight: bold; color: var(--danger);">~1hr</p>
+                  <p style="font-size: 9px; color: var(--muted-fg);">runtime</p>
+                </div>
+                <div style="width: 1px; background: #e0b0b0;"></div>
+                <div class="col center">
+                  <p style="font-size: 28px; font-weight: bold; color: var(--danger);">10K+</p>
+                  <p style="font-size: 9px; color: var(--muted-fg);">CPU cores</p>
+                </div>
+              </div>
+              <p style="font-size: 9px; color: var(--muted-fg); text-align: center;">Dedicated supercomputers</p>
+            </div>
+            
+            <!-- Operational Users -->
+            <div class="col center" style="flex: 1; background: var(--muted); border-radius: 8px; padding: 16px;">
+              <p style="font-size: 11px; font-weight: 600; color: var(--primary); margin-bottom: 12px;">WHO RELIES ON THIS</p>
+              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 8px;">
+                <div class="col center">
+                  <span style="font-size: 20px;">✈️</span>
+                  <p style="font-size: 8px; color: var(--muted-fg);">Aviation</p>
+                </div>
+                <div class="col center">
+                  <span style="font-size: 20px;">🚨</span>
+                  <p style="font-size: 8px; color: var(--muted-fg);">Emergency</p>
+                </div>
+                <div class="col center">
+                  <span style="font-size: 20px;">⚡</span>
+                  <p style="font-size: 8px; color: var(--muted-fg);">Energy</p>
+                </div>
+                <div class="col center">
+                  <span style="font-size: 20px;">🌾</span>
+                  <p style="font-size: 8px; color: var(--muted-fg);">Agriculture</p>
+                </div>
+                <div class="col center">
+                  <span style="font-size: 20px;">🎖️</span>
+                  <p style="font-size: 8px; color: var(--muted-fg);">Defense</p>
+                </div>
+                <div class="col center">
+                  <span style="font-size: 20px;">🚢</span>
+                  <p style="font-size: 8px; color: var(--muted-fg);">Shipping</p>
+                </div>
+              </div>
+              <p style="font-size: 8px; color: var(--muted-fg);">ECMWF • NOAA • Met Office • JMA</p>
+            </div>
+          </div>
+          
+          <!-- Key insight -->
+          <div style="background: var(--primary); padding: 12px 24px; border-radius: 6px;">
+            <p style="font-size: 12px; color: #e2e8f0; text-align: center;">
+              <strong style="color: var(--accent);">Key Point:</strong> 
+              NWP provides <strong>explicit physical reasoning</strong> forecasters can interrogate — but requires <strong>massive computational resources</strong>.
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- SLIDE 3: Trust Gap -->
+      <div class="slide bg-surface" id="slide-4">
+        <div class="title-zone">
+          <h1>The Paradigm Shift — And Its Cost</h1>
+        </div>
+        
+        <div class="content-zone" style="gap: 16px;">
+          <!-- NWP vs MLWP Comparison -->
+          <div class="row gap-lg" style="flex: 1;">
+            
+            <!-- NWP Column -->
+            <div class="col" style="flex: 1; background: linear-gradient(180deg, var(--muted) 0%, #e8e8e8 100%); border-radius: 8px; padding: 16px; position: relative;">
+              <div style="position: absolute; top: -8px; left: 16px; background: #718096; color: white; padding: 4px 12px; border-radius: 4px; font-size: 10px; font-weight: 600;">TRADITIONAL</div>
+              
+              <p style="font-size: 16px; font-weight: 600; color: var(--primary); margin: 12px 0 16px 0; text-align: center;">Numerical Weather Prediction</p>
+              
+              <div class="row gap" style="margin-bottom: 16px;">
+                <div class="col center fill" style="background: white; padding: 12px; border-radius: 6px;">
+                  <p style="font-size: 24px; font-weight: bold; color: #718096;">~1 hr</p>
+                  <p style="font-size: 9px; color: var(--muted-fg);">compute time</p>
+                </div>
+                <div class="col center fill" style="background: white; padding: 12px; border-radius: 6px;">
+                  <p style="font-size: 24px; font-weight: bold; color: #718096;">10K+</p>
+                  <p style="font-size: 9px; color: var(--muted-fg);">CPU cores</p>
+                </div>
+              </div>
+              
+              <div style="background: white; padding: 12px; border-radius: 6px;">
+                <div class="row gap-sm" style="align-items: center; margin-bottom: 8px;">
+                  <span style="font-size: 16px;">✓</span>
+                  <p style="font-size: 11px; color: var(--primary);"><strong>Explicit physics</strong> — equations we understand</p>
+                </div>
+                <div class="row gap-sm" style="align-items: center; margin-bottom: 8px;">
+                  <span style="font-size: 16px;">✓</span>
+                  <p style="font-size: 11px; color: var(--primary);"><strong>Traceable reasoning</strong> — can diagnose failures</p>
+                </div>
+                <div class="row gap-sm" style="align-items: center;">
+                  <span style="font-size: 16px;">✓</span>
+                  <p style="font-size: 11px; color: var(--primary);"><strong>60+ years</strong> of operational trust</p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- VS divider -->
+            <div class="col center" style="padding: 0 8px;">
+              <div style="width: 50px; height: 50px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                <span style="color: white; font-weight: bold; font-size: 14px;">VS</span>
+              </div>
+            </div>
+            
+            <!-- MLWP Column -->
+            <div class="col" style="flex: 1; background: linear-gradient(180deg, #e8f4f8 0%, #d0e8f0 100%); border-radius: 8px; padding: 16px; position: relative; border: 2px solid var(--accent);">
+              <div style="position: absolute; top: -8px; left: 16px; background: var(--accent); color: white; padding: 4px 12px; border-radius: 4px; font-size: 10px; font-weight: 600;">EMERGING</div>
+              
+              <p style="font-size: 16px; font-weight: 600; color: var(--primary); margin: 12px 0 16px 0; text-align: center;">ML Weather Prediction</p>
+              
+              <div class="row gap" style="margin-bottom: 16px;">
+                <div class="col center fill" style="background: white; padding: 12px; border-radius: 6px;">
+                  <p style="font-size: 24px; font-weight: bold; color: var(--success);">~1 min</p>
+                  <p style="font-size: 9px; color: var(--muted-fg);">compute time</p>
+                </div>
+                <div class="col center fill" style="background: white; padding: 12px; border-radius: 6px;">
+                  <p style="font-size: 24px; font-weight: bold; color: var(--success);">1</p>
+                  <p style="font-size: 9px; color: var(--muted-fg);">GPU</p>
+                </div>
+              </div>
+              
+              <div style="background: white; padding: 12px; border-radius: 6px;">
+                <div class="row gap-sm" style="align-items: center; margin-bottom: 8px;">
+                  <span style="font-size: 16px;">✓</span>
+                  <p style="font-size: 11px; color: var(--success);"><strong>Matches or exceeds</strong> NWP accuracy</p>
+                </div>
+                <div class="row gap-sm" style="align-items: center; margin-bottom: 8px;">
+                  <span style="font-size: 16px; color: var(--danger);">✗</span>
+                  <p style="font-size: 11px; color: var(--danger);"><strong>Black box</strong> — learned representations</p>
+                </div>
+                <div class="row gap-sm" style="align-items: center;">
+                  <span style="font-size: 16px; color: var(--danger);">✗</span>
+                  <p style="font-size: 11px; color: var(--danger);"><strong>No reasoning chain</strong> to interrogate</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- The Trust Problem -->
+          <div style="background: var(--danger-light); padding: 16px 20px; border-radius: 8px; border-left: 5px solid var(--danger);">
+            <div class="row gap-lg" style="align-items: center;">
+              <div style="flex-shrink: 0;">
+                <p style="font-size: 13px; font-weight: 600; color: var(--danger); margin-bottom: 4px;">THE TRUST PROBLEM</p>
+                <p style="font-size: 11px; color: #744210; line-height: 1.5; max-width: 400px;">
+                  When an ML model predicts hurricane rapid intensification but NWP disagrees, 
+                  how does a forecaster decide whom to trust with 6 hours to issue a warning?
+                </p>
+              </div>
+              <div style="flex: 1; display: flex; justify-content: center; gap: 12px;">
+                <div class="col center" style="background: white; padding: 12px 16px; border-radius: 6px;">
+                  <span style="font-size: 24px;">🌀</span>
+                  <p style="font-size: 9px; color: var(--muted-fg); margin-top: 4px;">ML: Intensify</p>
+                </div>
+                <div class="col center" style="font-size: 20px; color: var(--danger);">≠</div>
+                <div class="col center" style="background: white; padding: 12px 16px; border-radius: 6px;">
+                  <span style="font-size: 24px;">🌀</span>
+                  <p style="font-size: 9px; color: var(--muted-fg); margin-top: 4px;">NWP: Weaken</p>
+                </div>
+                <div class="col center" style="font-size: 20px; color: var(--danger);">→</div>
+                <div class="col center" style="background: white; padding: 12px 16px; border-radius: 6px;">
+                  <span style="font-size: 24px;">❓</span>
+                  <p style="font-size: 9px; color: var(--muted-fg); margin-top: 4px;">Decision?</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Bottom: Key models -->
+          <div class="row gap" style="justify-content: center;">
+            <div style="background: var(--muted); padding: 8px 16px; border-radius: 20px;">
+              <p style="font-size: 10px; color: var(--muted-fg);"><strong style="color: var(--primary);">Pangu-Weather</strong> (Huawei) • <strong style="color: var(--primary);">GraphCast</strong> (DeepMind) • <strong style="color: var(--primary);">FourCastNet</strong> (NVIDIA) • <strong style="color: var(--primary);">GenCast</strong> (DeepMind)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- SLIDE 3: Background on XAI -->
+      <div class="slide bg-surface" id="slide-5">
+        <div class="title-zone">
+          <h1>Background: Explainable AI (XAI)</h1>
+        </div>
+        
+        <div class="content-zone" style="gap: 16px;">
+          <!-- What is XAI - Visual -->
+          <div class="row gap-lg" style="align-items: stretch;">
+            <!-- Without XAI -->
+            <div class="col center" style="flex: 1; background: var(--danger-light); padding: 16px; border-radius: 8px;">
+              <p style="font-size: 10px; font-weight: 600; color: var(--danger); margin-bottom: 12px;">WITHOUT EXPLAINABILITY</p>
+              <div class="row gap-sm" style="align-items: center;">
+                <div style="background: white; padding: 10px 14px; border-radius: 6px; text-align: center;">
+                  <span style="font-size: 20px;">🌡️</span>
+                  <p style="font-size: 8px; color: var(--muted-fg); margin-top: 4px;">Input</p>
+                </div>
+                <span style="font-size: 16px; color: var(--danger);">→</span>
+                <div style="background: #1a1a2e; padding: 14px 18px; border-radius: 6px; text-align: center;">
+                  <span style="font-size: 18px;">❓</span>
+                  <p style="font-size: 8px; color: #a0aec0; margin-top: 4px;">Black Box</p>
+                </div>
+                <span style="font-size: 16px; color: var(--danger);">→</span>
+                <div style="background: white; padding: 10px 14px; border-radius: 6px; text-align: center;">
+                  <span style="font-size: 20px;">🌀</span>
+                  <p style="font-size: 8px; color: var(--muted-fg); margin-top: 4px;">Prediction</p>
+                </div>
+              </div>
+              <p style="font-size: 10px; color: var(--danger); margin-top: 12px; font-style: italic;">"Why did it predict this?"</p>
+            </div>
+            
+            <!-- With XAI -->
+            <div class="col center" style="flex: 1; background: var(--success-light); padding: 16px; border-radius: 8px; border: 2px solid var(--success);">
+              <p style="font-size: 10px; font-weight: 600; color: #276749; margin-bottom: 12px;">WITH EXPLAINABILITY</p>
+              <div class="row gap-sm" style="align-items: center;">
+                <div style="background: white; padding: 10px 14px; border-radius: 6px; text-align: center;">
+                  <span style="font-size: 20px;">🌡️</span>
+                  <p style="font-size: 8px; color: var(--muted-fg); margin-top: 4px;">Input</p>
+                </div>
+                <span style="font-size: 16px; color: var(--success);">→</span>
+                <div style="background: white; padding: 14px 18px; border-radius: 6px; text-align: center; border: 2px solid var(--success);">
+                  <span style="font-size: 18px;">🔍</span>
+                  <p style="font-size: 8px; color: #276749; margin-top: 4px;">XAI</p>
+                </div>
+                <span style="font-size: 16px; color: var(--success);">→</span>
+                <div style="background: white; padding: 10px 14px; border-radius: 6px; text-align: center;">
+                  <span style="font-size: 20px;">🌀</span>
+                  <p style="font-size: 8px; color: var(--muted-fg); margin-top: 4px;">Prediction</p>
+                </div>
+              </div>
+              <p style="font-size: 10px; color: #276749; margin-top: 12px; font-style: italic;">"It focused on the warm SSTs here"</p>
+            </div>
+          </div>
+          
+          <div class="row gap-lg" style="flex: 1;">
+            <!-- Left: Established XAI Methods -->
+            <div class="col gap" style="flex: 1;">
+              <p style="font-size: 12px; font-weight: 600; color: var(--primary);">Established XAI Methods</p>
+              
+              <div class="row gap-sm" style="flex: 1;">
+                <div class="col center fill" style="background: var(--muted); padding: 12px; border-radius: 6px;">
+                  <div style="width: 36px; height: 36px; background: var(--accent); border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-bottom: 6px;">
+                    <span style="font-size: 16px;">📊</span>
+                  </div>
+                  <p style="font-size: 10px; font-weight: 600; color: var(--primary);">SHAP/LIME</p>
+                  <p style="font-size: 8px; color: var(--muted-fg); text-align: center;">Feature importance scores</p>
+                </div>
+                
+                <div class="col center fill" style="background: var(--muted); padding: 12px; border-radius: 6px;">
+                  <div style="width: 36px; height: 36px; background: var(--accent); border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-bottom: 6px;">
+                    <span style="font-size: 16px;">🎯</span>
+                  </div>
+                  <p style="font-size: 10px; font-weight: 600; color: var(--primary);">Grad-CAM</p>
+                  <p style="font-size: 8px; color: var(--muted-fg); text-align: center;">Gradient-based heatmaps</p>
+                </div>
+                
+                <div class="col center fill" style="background: var(--muted); padding: 12px; border-radius: 6px;">
+                  <div style="width: 36px; height: 36px; background: var(--accent); border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-bottom: 6px;">
+                    <span style="font-size: 16px;">👁️</span>
+                  </div>
+                  <p style="font-size: 10px; font-weight: 600; color: var(--primary);">Attention</p>
+                  <p style="font-size: 8px; color: var(--muted-fg); text-align: center;">Visualize where model "looks"</p>
+                </div>
+              </div>
+              
+              <div style="background: #e8f4f8; padding: 10px; border-radius: 6px;">
+                <p style="font-size: 10px; color: var(--primary);">
+                  ✓ Well-developed for <strong>image classification</strong>, <strong>NLP</strong>, and <strong>tabular data</strong>
+                </p>
+              </div>
+            </div>
+            
+            <!-- Right: Why Weather is Hard -->
+            <div class="col gap" style="flex: 1;">
+              <p style="font-size: 12px; font-weight: 600; color: var(--primary);">Why Weather Prediction is Different</p>
+              
+              <div class="col gap-sm" style="flex: 1;">
+                <div class="row gap-sm" style="align-items: center; background: var(--warning-light); padding: 10px; border-radius: 6px;">
+                  <div style="width: 32px; height: 32px; background: var(--warning); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <span style="font-size: 14px;">📐</span>
+                  </div>
+                  <div>
+                    <p style="font-size: 10px; font-weight: 600; color: #744210;">Massive Scale</p>
+                    <p style="font-size: 9px; color: var(--muted-fg);">Global 3D grids with millions of variables</p>
+                  </div>
+                </div>
+                
+                <div class="row gap-sm" style="align-items: center; background: var(--warning-light); padding: 10px; border-radius: 6px;">
+                  <div style="width: 32px; height: 32px; background: var(--warning); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <span style="font-size: 14px;">🔧</span>
+                  </div>
+                  <div>
+                    <p style="font-size: 10px; font-weight: 600; color: #744210;">Custom Architectures</p>
+                    <p style="font-size: 9px; color: var(--muted-fg);">Swin, GNNs, FNOs — not standard models</p>
+                  </div>
+                </div>
+                
+                <div class="row gap-sm" style="align-items: center; background: var(--warning-light); padding: 10px; border-radius: 6px;">
+                  <div style="width: 32px; height: 32px; background: var(--warning); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <span style="font-size: 14px;">🎓</span>
+                  </div>
+                  <div>
+                    <p style="font-size: 10px; font-weight: 600; color: #744210;">Domain Expertise Required</p>
+                    <p style="font-size: 9px; color: var(--muted-fg);">Explanations must make physical sense</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Bottom insight -->
+          <div class="card-dark" style="padding: 12px 20px; border-radius: 8px;">
+            <p style="font-size: 11px; color: #e2e8f0; text-align: center;">
+              <strong style="color: var(--accent);">The Gap:</strong> 
+              XAI for meteorology is an <strong>emerging field</strong> — standard tools don't scale to global weather grids, 
+              and custom architectures require custom explainability methods.
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- SLIDE 4: Swin Architecture Challenge -->
+      <div class="slide bg-surface" id="slide-6">
+        <div class="title-zone">
+          <h1>Background: The Transformer Architecture</h1>
+        </div>
+        
+        <div class="content-zone" style="gap: 16px;">
+          <!-- What is attention - Visual explanation -->
+          <div class="row gap-lg" style="flex: 1;">
+            <!-- Left: Core concept -->
+            <div class="col" style="flex: 1.2;">
+              <p style="font-size: 12px; font-weight: 600; color: var(--primary); margin-bottom: 12px;">The Core Idea: Self-Attention</p>
+              
+              <div style="background: var(--muted); padding: 16px; border-radius: 8px; height: calc(100% - 28px);">
+                <!-- Visual of attention -->
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 12px;">
+                  <p style="font-size: 10px; color: var(--muted-fg); text-align: center;">To predict the weather at location <strong style="color: var(--accent);">X</strong>, which other locations matter?</p>
+                  
+                  <!-- Grid visualization -->
+                  <div style="position: relative; width: 200px; height: 120px;">
+                    <!-- Grid of locations -->
+                    <svg viewBox="0 0 200 120" style="width: 100%; height: 100%;">
+                      <!-- Grid points -->
+                      <g fill="#cbd5e0">
+                        <circle cx="20" cy="20" r="6"/><circle cx="60" cy="20" r="6"/><circle cx="100" cy="20" r="6"/><circle cx="140" cy="20" r="6"/><circle cx="180" cy="20" r="6"/>
+                        <circle cx="20" cy="60" r="6"/><circle cx="60" cy="60" r="6"/><circle cx="140" cy="60" r="6"/><circle cx="180" cy="60" r="6"/>
+                        <circle cx="20" cy="100" r="6"/><circle cx="60" cy="100" r="6"/><circle cx="100" cy="100" r="6"/><circle cx="140" cy="100" r="6"/><circle cx="180" cy="100" r="6"/>
+                      </g>
+                      
+                      <!-- Attention lines from X -->
+                      <g stroke="var(--accent)" stroke-width="1.5" opacity="0.6">
+                        <line x1="100" y1="60" x2="60" y2="20"/>
+                        <line x1="100" y1="60" x2="100" y2="20"/>
+                        <line x1="100" y1="60" x2="140" y2="20"/>
+                        <line x1="100" y1="60" x2="60" y2="60"/>
+                        <line x1="100" y1="60" x2="140" y2="60"/>
+                        <line x1="100" y1="60" x2="60" y2="100"/>
+                        <line x1="100" y1="60" x2="100" y2="100"/>
+                        <line x1="100" y1="60" x2="140" y2="100"/>
+                      </g>
+                      
+                      <!-- Highlighted connections (stronger) -->
+                      <g stroke="var(--accent)" stroke-width="3" opacity="0.9">
+                        <line x1="100" y1="60" x2="60" y2="60"/>
+                        <line x1="100" y1="60" x2="140" y2="60"/>
+                      </g>
+                      
+                      <!-- Target X -->
+                      <circle cx="100" cy="60" r="10" fill="var(--accent)" stroke="var(--primary)" stroke-width="2"/>
+                      <text x="100" y="64" font-size="12" fill="white" text-anchor="middle" font-weight="bold">X</text>
+                    </svg>
+                  </div>
+                  
+                  <p style="font-size: 10px; color: var(--primary); text-align: center; max-width: 180px;">
+                    <strong>Self-attention</strong> learns which locations are relevant — assigning <strong style="color: var(--accent);">weights</strong> to each connection
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Right: Key properties -->
+            <div class="col gap" style="flex: 1;">
+              <p style="font-size: 12px; font-weight: 600; color: var(--primary); margin-bottom: 4px;">Key Properties</p>
+              
+              <div class="col gap-sm" style="flex: 1;">
+                <div style="background: var(--success-light); padding: 12px; border-radius: 6px; border-left: 4px solid var(--success);">
+                  <p style="font-size: 11px; font-weight: 600; color: #276749; margin-bottom: 4px;">✓ Global Context</p>
+                  <p style="font-size: 10px; color: var(--muted-fg);">Every position can attend to every other position — captures long-range dependencies</p>
+                </div>
+                
+                <div style="background: var(--success-light); padding: 12px; border-radius: 6px; border-left: 4px solid var(--success);">
+                  <p style="font-size: 11px; font-weight: 600; color: #276749; margin-bottom: 4px;">✓ Learned Relevance</p>
+                  <p style="font-size: 10px; color: var(--muted-fg);">Attention weights are learned from data — model discovers what matters</p>
+                </div>
+                
+                <div style="background: var(--danger-light); padding: 12px; border-radius: 6px; border-left: 4px solid var(--danger);">
+                  <p style="font-size: 11px; font-weight: 600; color: var(--danger); margin-bottom: 4px;">✗ Quadratic Complexity</p>
+                  <p style="font-size: 10px; color: var(--muted-fg);">O(N²) — comparing every pair of positions becomes intractable for large inputs</p>
+                </div>
+              </div>
+              
+              <div style="background: #e8f4f8; padding: 12px; border-radius: 6px;">
+                <p style="font-size: 10px; color: var(--primary); text-align: center;">
+                  <strong>Revolution:</strong> Transformers power GPT, BERT, Vision Transformers, and now weather models
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Bottom: The scale problem -->
+          <div class="card-dark" style="padding: 14px 24px; border-radius: 8px;">
+            <div class="row gap-lg" style="align-items: center;">
+              <div style="flex: 1;">
+                <p style="font-size: 12px; color: var(--accent); font-weight: 600; margin-bottom: 6px;">THE SCALE PROBLEM FOR WEATHER</p>
+                <p style="font-size: 11px; color: #e2e8f0;">
+                  A global weather grid has <strong>721 × 1440 = 1 million+</strong> locations. 
+                  Standard attention would require <strong>10<sup>12</sup> computations per layer</strong> — impossible.
+                </p>
+              </div>
+              <div style="text-align: center; padding: 0 20px;">
+                <p style="font-size: 28px; font-weight: bold; color: var(--accent);">→</p>
+              </div>
+              <div style="flex: 0.6; text-align: center;">
+                <p style="font-size: 11px; color: #e2e8f0;">Solution:</p>
+                <p style="font-size: 14px; color: white; font-weight: 600;">Swin Transformer</p>
+                <p style="font-size: 10px; color: rgba(255,255,255,0.7);">Windowed attention</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="footnote-zone">
+          <p>Vaswani et al. (2017), Dosovitskiy et al. (2020)</p>
+        </div>
+      </div>
+      
+      <!-- SLIDE 5: Swin Architecture Challenge -->
+      <div class="slide bg-surface" id="slide-7">
+        <div class="title-zone">
+          <h1>The Challenge: Swin Transformer Architecture</h1>
+        </div>
+        
+        <div class="content-zone">
+          <div class="row gap-lg">
+            <!-- Standard Transformer -->
+            <div class="col fill" style="background: #fff5f5; padding: 16px; border-radius: 8px; border: 2px solid #feb2b2;">
+              <p style="font-size: 13px; font-weight: 600; color: var(--danger); margin-bottom: 12px;">Standard Transformer</p>
+              
+              <div style="display: flex; justify-content: center; margin-bottom: 12px;">
+                <div style="display: grid; grid-template-columns: repeat(6, 24px); gap: 2px;">
+                  <div style="width: 24px; height: 24px; background: #fc8181; border-radius: 2px;"></div>
+                  <div style="width: 24px; height: 24px; background: #fc8181; border-radius: 2px;"></div>
+                  <div style="width: 24px; height: 24px; background: #fc8181; border-radius: 2px;"></div>
+                  <div style="width: 24px; height: 24px; background: #fc8181; border-radius: 2px;"></div>
+                  <div style="width: 24px; height: 24px; background: #fc8181; border-radius: 2px;"></div>
+                  <div style="width: 24px; height: 24px; background: #fc8181; border-radius: 2px;"></div>
+                  <div style="width: 24px; height: 24px; background: #fc8181; border-radius: 2px;"></div>
+                  <div style="width: 24px; height: 24px; background: var(--danger); border-radius: 2px;"></div>
+                  <div style="width: 24px; height: 24px; background: #fc8181; border-radius: 2px;"></div>
+                  <div style="width: 24px; height: 24px; background: #fc8181; border-radius: 2px;"></div>
+                  <div style="width: 24px; height: 24px; background: #fc8181; border-radius: 2px;"></div>
+                  <div style="width: 24px; height: 24px; background: #fc8181; border-radius: 2px;"></div>
+                </div>
+              </div>
+              
+              <p style="font-size: 11px; color: var(--muted-fg); text-align: center;">
+                Every pixel attends to every pixel<br>
+                <strong style="color: var(--danger);">O(N²) — Intractable for global weather data</strong>
+              </p>
+            </div>
+            
+            <!-- Swin Transformer -->
+            <div class="col fill" style="background: #f0fff4; padding: 16px; border-radius: 8px; border: 2px solid #68d391;">
+              <p style="font-size: 13px; font-weight: 600; color: #276749; margin-bottom: 12px;">Swin Transformer (Pangu-Weather)</p>
+              
+              <div style="display: flex; justify-content: center; margin-bottom: 12px;">
+                <div style="display: grid; grid-template-columns: repeat(6, 24px); gap: 2px;">
+                  <div style="width: 24px; height: 24px; background: #68d391; border-radius: 2px; border: 2px solid #276749;"></div>
+                  <div style="width: 24px; height: 24px; background: #68d391; border-radius: 2px; border: 2px solid #276749;"></div>
+                  <div style="width: 24px; height: 24px; background: #68d391; border-radius: 2px; border: 2px solid #276749;"></div>
+                  <div style="width: 24px; height: 24px; background: #c6f6d5; border-radius: 2px;"></div>
+                  <div style="width: 24px; height: 24px; background: #c6f6d5; border-radius: 2px;"></div>
+                  <div style="width: 24px; height: 24px; background: #c6f6d5; border-radius: 2px;"></div>
+                  <div style="width: 24px; height: 24px; background: #68d391; border-radius: 2px; border: 2px solid #276749;"></div>
+                  <div style="width: 24px; height: 24px; background: #276749; border-radius: 2px;"></div>
+                  <div style="width: 24px; height: 24px; background: #68d391; border-radius: 2px; border: 2px solid #276749;"></div>
+                  <div style="width: 24px; height: 24px; background: #c6f6d5; border-radius: 2px;"></div>
+                  <div style="width: 24px; height: 24px; background: #c6f6d5; border-radius: 2px;"></div>
+                  <div style="width: 24px; height: 24px; background: #c6f6d5; border-radius: 2px;"></div>
+                </div>
+              </div>
+              
+              <p style="font-size: 11px; color: var(--muted-fg); text-align: center;">
+                Local windows + shifting patterns<br>
+                <strong style="color: #276749;">O(N) — Tractable for weather</strong>
+              </p>
+            </div>
+          </div>
+          
+          <!-- Research gap -->
+          <div class="card-dark" style="padding: 18px 24px; border-radius: 8px;">
+            <p style="font-size: 14px; font-weight: 600; color: white; margin-bottom: 10px;">Research Gap</p>
+            <p style="font-size: 12px; color: #e2e8f0;">
+              Most XAI methods are designed for <strong>classification</strong> tasks (generic ViT interpretability). 
+              We lack specific tools to trace information flow in <strong>3D, spherical, shifted-window architectures</strong> operating on atmospheric data.
+            </p>
+          </div>
+          
+          <!-- Key insight -->
+          <div class="row gap" style="align-items: center;">
+            <div style="width: 4px; height: 40px; background: var(--accent); border-radius: 2px;"></div>
+            <p style="font-size: 13px; color: var(--primary);">
+              <strong>Key insight:</strong> Information can only propagate to distant locations through <em>multiple hops</em> across successive layers.
+              Tracing these pathways requires architecture-specific algorithms.
+            </p>
+          </div>
+        </div>
+        
+        <div class="footnote-zone">
+          <p>Liu et al. (2021), Vaswani et al. (2017), Chefer et al. (2021)</p>
+        </div>
+      </div>
+      
+      <!-- SLIDE 4: Research Objectives -->
+      <div class="slide bg-surface" id="slide-8">
+        <div class="title-zone">
+          <h1>Research Objectives</h1>
+        </div>
+        
+        <div class="content-zone" style="justify-content: center; gap: 20px;">
+          <div class="row gap-lg">
+            <!-- Objective 1 -->
+            <div class="col fill" style="background: #e8f4f8; padding: 20px; border-radius: 8px; border-top: 4px solid var(--accent);">
+              <div class="row gap" style="align-items: center; margin-bottom: 12px;">
+                <div class="num-badge" style="background: var(--accent);">1</div>
+                <p style="font-size: 14px; font-weight: 600; color: var(--primary);">Visualization</p>
+              </div>
+              <p style="font-size: 12px; color: var(--muted-fg); line-height: 1.5;">
+                Create <strong>intuitive visualization tools</strong> that make attention patterns interpretable to meteorologists and domain experts.
+              </p>
+            </div>
+            
+            <!-- Objective 2 -->
+            <div class="col fill" style="background: var(--success-light); padding: 20px; border-radius: 8px; border-top: 4px solid var(--success);">
+              <div class="row gap" style="align-items: center; margin-bottom: 12px;">
+                <div class="num-badge" style="background: var(--success);">2</div>
+                <p style="font-size: 14px; font-weight: 600; color: var(--primary);">Validation</p>
+              </div>
+              <p style="font-size: 12px; color: var(--muted-fg); line-height: 1.5;">
+                Assess whether attention-based explanations <strong>align with meteorological intuition</strong> through expert evaluation.
+              </p>
+            </div>
+            
+            <!-- Objective 3 -->
+            <div class="col fill" style="background: var(--purple-light); padding: 20px; border-radius: 8px; border-top: 4px solid var(--purple);">
+              <div class="row gap" style="align-items: center; margin-bottom: 12px;">
+                <div class="num-badge" style="background: var(--purple);">3</div>
+                <p style="font-size: 14px; font-weight: 600; color: var(--primary);">Methodology</p>
+              </div>
+              <p style="font-size: 12px; color: var(--muted-fg); line-height: 1.5;">
+                Adapt attention rollout techniques to handle <strong>hierarchical, 3D windowed architectures</strong> for weather data.
+              </p>
+            </div>
+          </div>
+          
+          <!-- Framework positioning -->
+          <div class="card-dark" style="padding: 20px 28px; border-radius: 8px;">
+            <p style="font-size: 14px; color: #e2e8f0; text-align: center;">
+              <strong style="color: var(--accent);">Thesis Framing:</strong> 
+              This is a <strong style="color: white;">framework contribution</strong> — demonstrating how to make ML weather models 
+              trustworthy to the people who need to use them.
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- SLIDE 5: The Approach -->
+      <div class="slide bg-surface" id="slide-9">
+        <div class="title-zone">
+          <h1>The Approach: Attention as Information Routing</h1>
+        </div>
+        
+        <div class="content-zone">
+          <div class="row gap-lg fill">
+            <!-- The Debate -->
+            <div class="col fill gap">
+              <p style="font-size: 14px; font-weight: 600; color: var(--primary);">The Academic Debate</p>
+              
+              <!-- Skeptics -->
+              <div class="card-danger" style="padding: 14px; border-radius: 6px;">
+                <p style="font-size: 12px; font-weight: 600; color: var(--danger); margin-bottom: 6px;">Skeptics</p>
+                <p style="font-size: 11px; color: var(--muted-fg); font-style: italic;">
+                  "Attention is not Explanation" — weights don't always correlate with gradient importance.
+                </p>
+                <p style="font-size: 10px; color: #718096; margin-top: 4px;">Jain & Wallace, 2019</p>
+              </div>
+              
+              <!-- Proponents -->
+              <div class="card-success" style="padding: 14px; border-radius: 6px;">
+                <p style="font-size: 12px; font-weight: 600; color: #276749; margin-bottom: 6px;">Proponents</p>
+                <p style="font-size: 11px; color: var(--muted-fg); font-style: italic;">
+                  "Attention is not <u>not</u> Explanation" — it offers a plausible view of internal routing.
+                </p>
+                <p style="font-size: 10px; color: #718096; margin-top: 4px;">Wiegreffe & Pinter, 2019</p>
+              </div>
+            </div>
+            
+            <!-- Our Stance -->
+            <div class="col fill gap">
+              <p style="font-size: 14px; font-weight: 600; color: var(--primary);">Our Position</p>
+              
+              <div style="background: #e8f4f8; padding: 18px; border-radius: 8px; border: 2px solid var(--accent);">
+                <p style="font-size: 13px; color: var(--primary); margin-bottom: 12px; line-height: 1.5;">
+                  We use attention to map the <strong>information pathway</strong> — the model's "field of view" — while acknowledging it represents 
+                  <em>where the model looks</em>, not strict causality.
+                </p>
+                
+                <div style="background: white; padding: 12px; border-radius: 4px;">
+                  <p style="font-size: 11px; color: var(--muted-fg);">
+                    <strong style="color: var(--accent);">Key distinction:</strong><br>
+                    • <strong>Faithful explanations</strong> — perfectly reflect causal mechanisms<br>
+                    • <strong>Plausible explanations</strong> — provide useful, interpretable insights
+                  </p>
+                </div>
+              </div>
+              
+              <div style="background: var(--purple-light); padding: 14px; border-radius: 6px;">
+                <p style="font-size: 12px; color: #553c9a;">
+                  <strong>Goal:</strong> Generate <em>plausible</em> explanations that domain experts can evaluate against meteorological knowledge.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="footnote-zone">
+          <p>Based on Abnar & Zuidema (2020) "Attention Rollout" concept</p>
+        </div>
+      </div>
+      
+      <!-- SLIDE 7: Experimental Setup -->
+      <div class="slide bg-surface" id="slide-10">
+        <div class="title-zone">
+          <h1>Experimental Design</h1>
+        </div>
+        
+        <div class="content-zone" style="gap: 12px;">
+          <!-- Process pipeline -->
+          <div style="background: var(--muted); padding: 14px 20px; border-radius: 8px;">
+            <p style="font-size: 10px; font-weight: 600; color: var(--primary); margin-bottom: 10px;">Methodology Pipeline</p>
+            <div class="row" style="align-items: center; gap: 0;">
+              <div class="col center" style="flex: 1; background: white; padding: 10px 8px; border-radius: 6px 0 0 6px;">
+                <span style="font-size: 18px;">📥</span>
+                <p style="font-size: 9px; font-weight: 600; color: var(--primary); margin-top: 4px;">Load Model</p>
+                <p style="font-size: 8px; color: var(--muted-fg);">Pangu-Weather</p>
+              </div>
+              <div style="color: var(--accent);">→</div>
+              <div class="col center" style="flex: 1; background: white; padding: 10px 8px;">
+                <span style="font-size: 18px;">🔧</span>
+                <p style="font-size: 9px; font-weight: 600; color: var(--primary); margin-top: 4px;">Instrument</p>
+                <p style="font-size: 8px; color: var(--muted-fg);">Hook attention layers</p>
+              </div>
+              <div style="color: var(--accent);">→</div>
+              <div class="col center" style="flex: 1; background: white; padding: 10px 8px;">
+                <span style="font-size: 18px;">🌡️</span>
+                <p style="font-size: 9px; font-weight: 600; color: var(--primary); margin-top: 4px;">Run Forecast</p>
+                <p style="font-size: 8px; color: var(--muted-fg);">24h prediction</p>
+              </div>
+              <div style="color: var(--accent);">→</div>
+              <div class="col center" style="flex: 1; background: white; padding: 10px 8px;">
+                <span style="font-size: 18px;">💾</span>
+                <p style="font-size: 9px; font-weight: 600; color: var(--primary); margin-top: 4px;">Capture</p>
+                <p style="font-size: 8px; color: var(--muted-fg);">Self-attention matrices</p>
+              </div>
+              <div style="color: var(--accent);">→</div>
+              <div class="col center" style="flex: 1; background: #e8f4f8; padding: 10px 8px; border-radius: 0 6px 6px 0; border: 2px solid var(--accent);">
+                <span style="font-size: 18px;">🔍</span>
+                <p style="font-size: 9px; font-weight: 600; color: var(--accent); margin-top: 4px;">Analyze</p>
+                <p style="font-size: 8px; color: var(--muted-fg);">Reverse rollout</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row gap-lg" style="flex: 1;">
+            <!-- Left: World Map with focal points -->
+            <div class="col" style="flex: 1.2;">
+              <div style="background: linear-gradient(180deg, #1a365d 0%, #2c5282 100%); border-radius: 8px; padding: 10px; height: 100%; position: relative; overflow: hidden;">
+                <svg viewBox="0 0 360 180" style="width: 100%; height: 100%;" preserveAspectRatio="xMidYMid meet">
+                  <defs>
+                    <linearGradient id="land2" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" style="stop-color:#48bb78;stop-opacity:0.5" />
+                      <stop offset="100%" style="stop-color:#276749;stop-opacity:0.5" />
+                    </linearGradient>
+                  </defs>
+                  
+                  <!-- Grid lines -->
+                  <g stroke="rgba(255,255,255,0.1)" stroke-width="0.5" fill="none">
+                    <line x1="0" y1="90" x2="360" y2="90" stroke="rgba(255,255,255,0.25)"/>
+                    <line x1="0" y1="60" x2="360" y2="60"/>
+                    <line x1="0" y1="120" x2="360" y2="120"/>
+                  </g>
+                  
+                  <!-- Simplified continents -->
+                  <path d="M 20,30 Q 60,25 80,40 L 85,60 Q 70,70 60,65 L 40,70 Q 25,55 20,30" fill="url(#land2)"/>
+                  <path d="M 55,95 Q 70,90 75,100 L 70,130 Q 55,145 50,130 L 55,95" fill="url(#land2)"/>
+                  <path d="M 160,35 Q 175,30 185,35 L 180,50 Q 165,50 160,35" fill="url(#land2)"/>
+                  <path d="M 160,70 Q 185,65 195,80 L 190,115 Q 170,125 160,110 L 160,70" fill="url(#land2)"/>
+                  <path d="M 185,25 Q 250,20 280,35 L 285,70 Q 250,80 220,70 L 185,50 L 185,25" fill="url(#land2)"/>
+                  <path d="M 260,110 Q 285,105 295,115 L 290,130 Q 270,135 260,125 L 260,110" fill="url(#land2)"/>
+                  
+                  <!-- Focal points (simplified markers) -->
+                  <g fill="#fc8181" stroke="#c53030" stroke-width="1">
+                    <circle cx="200" cy="90" r="5"/><circle cx="250" cy="85" r="5"/>
+                    <circle cx="150" cy="100" r="5"/><circle cx="175" cy="95" r="5"/>
+                  </g>
+                  <g fill="#fbd38d" stroke="#c05621" stroke-width="1">
+                    <circle cx="135" cy="75" r="5"/><circle cx="160" cy="70" r="5"/><circle cx="60" cy="75" r="5"/>
+                  </g>
+                  <g fill="#9ae6b4" stroke="#276749" stroke-width="1">
+                    <circle cx="210" cy="75" r="5"/><circle cx="115" cy="70" r="5"/><circle cx="95" cy="110" r="5"/>
+                  </g>
+                  <g fill="#90cdf4" stroke="#2b6cb0" stroke-width="1">
+                    <circle cx="185" cy="115" r="5"/><circle cx="170" cy="80" r="5"/>
+                  </g>
+                  
+                  <text x="5" y="62" font-size="5" fill="rgba(255,255,255,0.4)">30°N</text>
+                  <text x="5" y="92" font-size="5" fill="rgba(255,255,255,0.4)">EQ</text>
+                  <text x="5" y="122" font-size="5" fill="rgba(255,255,255,0.4)">30°S</text>
+                </svg>
+                <div style="position: absolute; top: 6px; left: 10px;">
+                  <p style="font-size: 9px; font-weight: 600; color: white;">12 Focal Points</p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Right: Details -->
+            <div class="col gap" style="flex: 1;">
+              <!-- Scope -->
+              <div class="card-warning" style="padding: 10px; border-radius: 6px;">
+                <p style="font-size: 10px; font-weight: 600; color: #744210; margin-bottom: 4px;">Proof-of-Concept Scope</p>
+                <p style="font-size: 9px; color: var(--muted-fg);">Single 24-hour forecast (July 2–3, 2019) demonstrating framework feasibility</p>
+              </div>
+              
+              <!-- Data -->
+              <div class="row gap-sm">
+                <div class="card" style="flex: 1; padding: 10px; text-align: center;">
+                  <p style="font-size: 16px; font-weight: bold; color: var(--accent);">721×1440</p>
+                  <p style="font-size: 8px; color: var(--muted-fg);">grid (0.25°)</p>
+                </div>
+                <div class="card" style="flex: 1; padding: 10px; text-align: center;">
+                  <p style="font-size: 16px; font-weight: bold; color: var(--accent);">14</p>
+                  <p style="font-size: 8px; color: var(--muted-fg);">pressure levels</p>
+                </div>
+              </div>
+              
+              <!-- Climate regimes legend -->
+              <div class="row gap-sm" style="flex-wrap: wrap;">
+                <div style="background: #fed7d7; padding: 4px 8px; border-radius: 4px;">
+                  <span style="font-size: 8px; color: var(--danger);">● Tropical (4)</span>
+                </div>
+                <div style="background: #feebc8; padding: 4px 8px; border-radius: 4px;">
+                  <span style="font-size: 8px; color: #c05621;">● Trade (3)</span>
+                </div>
+                <div style="background: #c6f6d5; padding: 4px 8px; border-radius: 4px;">
+                  <span style="font-size: 8px; color: #276749;">● Subtropical (3)</span>
+                </div>
+                <div style="background: #bee3f8; padding: 4px 8px; border-radius: 4px;">
+                  <span style="font-size: 8px; color: #2b6cb0;">● Mid-Lat (2)</span>
+                </div>
+              </div>
+              
+              <!-- Model -->
+              <div class="card" style="padding: 10px;">
+                <p style="font-size: 10px; font-weight: 600; color: var(--primary); margin-bottom: 4px;">Model: Pangu-Weather</p>
+                <p style="font-size: 9px; color: var(--muted-fg);">Swin Transformer • pangu-pytorch implementation</p>
+              </div>
+              
+              <!-- Why this matters -->
+              <div style="background: #e8f4f8; padding: 10px; border-radius: 6px; margin-top: auto;">
+                <p style="font-size: 9px; color: var(--primary); line-height: 1.4;">
+                  <strong>Key:</strong> By capturing self-attention during inference, we can trace which input regions the model "looked at" to make each prediction.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- SLIDE 6: Algorithm Overview -->
+      <div class="slide bg-surface" id="slide-11">
+        <div class="title-zone">
+          <h1>Algorithm: Reverse Attention Rollout</h1>
+        </div>
+        
+        <div class="content-zone" style="gap: 14px;">
+          <!-- Visual explanation -->
+          <div class="row gap-lg" style="flex: 1;">
+            <!-- Left: Visual diagram -->
+            <div class="col" style="flex: 1.3;">
+              <div style="background: #1a1a2e; border-radius: 8px; padding: 16px; height: 100%;">
+                <p style="font-size: 10px; color: rgba(255,255,255,0.6); margin-bottom: 12px;">Tracing Influence Backward Through the Network</p>
+                
+                <svg viewBox="0 0 340 180" style="width: 100%; height: calc(100% - 24px);">
+                  <!-- Layer labels -->
+                  <text x="50" y="15" font-size="9" fill="#718096" text-anchor="middle">Input</text>
+                  <text x="130" y="15" font-size="9" fill="#718096" text-anchor="middle">Layer 1</text>
+                  <text x="210" y="15" font-size="9" fill="#718096" text-anchor="middle">Layer 2</text>
+                  <text x="290" y="15" font-size="9" fill="#718096" text-anchor="middle">Output</text>
+                  
+                  <!-- Input grid (4x4) -->
+                  <g transform="translate(20, 25)">
+                    <rect x="0" y="0" width="60" height="60" fill="none" stroke="#4a5568" stroke-width="1"/>
+                    <line x1="15" y1="0" x2="15" y2="60" stroke="#4a5568"/>
+                    <line x1="30" y1="0" x2="30" y2="60" stroke="#4a5568"/>
+                    <line x1="45" y1="0" x2="45" y2="60" stroke="#4a5568"/>
+                    <line x1="0" y1="15" x2="60" y2="15" stroke="#4a5568"/>
+                    <line x1="0" y1="30" x2="60" y2="30" stroke="#4a5568"/>
+                    <line x1="0" y1="45" x2="60" y2="45" stroke="#4a5568"/>
+                    <!-- Contributing cells highlighted -->
+                    <rect x="15" y="15" width="15" height="15" fill="#fde725" opacity="0.8"/>
+                    <rect x="30" y="15" width="15" height="15" fill="#7ad151" opacity="0.6"/>
+                    <rect x="15" y="30" width="15" height="15" fill="#22a884" opacity="0.5"/>
+                    <rect x="30" y="30" width="15" height="15" fill="#2a788e" opacity="0.4"/>
+                    <rect x="0" y="15" width="15" height="15" fill="#414487" opacity="0.3"/>
+                    <rect x="45" y="30" width="15" height="15" fill="#414487" opacity="0.2"/>
+                  </g>
+                  
+                  <!-- Middle layers (simplified) -->
+                  <g transform="translate(100, 35)">
+                    <rect x="0" y="0" width="60" height="40" fill="none" stroke="#4a5568" rx="4"/>
+                    <rect x="10" y="10" width="20" height="20" fill="#22a884" opacity="0.6"/>
+                    <rect x="30" y="10" width="20" height="20" fill="#2a788e" opacity="0.4"/>
+                  </g>
+                  
+                  <g transform="translate(180, 40)">
+                    <rect x="0" y="0" width="60" height="30" fill="none" stroke="#4a5568" rx="4"/>
+                    <rect x="15" y="8" width="30" height="14" fill="#2a788e" opacity="0.5"/>
+                  </g>
+                  
+                  <!-- Output pixel -->
+                  <g transform="translate(265, 40)">
+                    <rect x="0" y="0" width="50" height="30" fill="none" stroke="#4a5568" rx="4"/>
+                    <circle cx="25" cy="15" r="8" fill="var(--accent)" stroke="white" stroke-width="2"/>
+                    <text x="25" y="18" font-size="8" fill="white" text-anchor="middle" font-weight="bold">X</text>
+                  </g>
+                  
+                  <!-- Reverse arrows (dashed) showing backward flow -->
+                  <defs>
+                    <marker id="arrowhead" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                      <polygon points="0 0, 6 3, 0 6" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+                  
+                  <!-- Forward direction label -->
+                  <text x="170" y="95" font-size="8" fill="#718096" text-anchor="middle">← Trace attention backward</text>
+                  
+                  <!-- Backward trace arrows -->
+                  <path d="M 265,55 L 245,55" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arrowhead)"/>
+                  <path d="M 180,55 L 165,55" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arrowhead)"/>
+                  <path d="M 100,55 L 85,45" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arrowhead)"/>
+                  
+                  <!-- Mass flow annotation -->
+                  <g transform="translate(0, 105)">
+                    <rect x="10" y="0" width="320" height="65" fill="rgba(45, 156, 219, 0.1)" rx="6"/>
+                    
+                    <!-- Step 1 -->
+                    <g transform="translate(20, 10)">
+                      <circle cx="12" cy="12" r="10" fill="var(--accent)"/>
+                      <text x="12" y="16" font-size="10" fill="white" text-anchor="middle" font-weight="bold">1</text>
+                      <text x="30" y="10" font-size="9" fill="#e2e8f0">Initialize</text>
+                      <text x="30" y="22" font-size="8" fill="#a0aec0">mass=1.0 at target</text>
+                    </g>
+                    
+                    <!-- Step 2 -->
+                    <g transform="translate(120, 10)">
+                      <circle cx="12" cy="12" r="10" fill="var(--accent)"/>
+                      <text x="12" y="16" font-size="10" fill="white" text-anchor="middle" font-weight="bold">2</text>
+                      <text x="30" y="10" font-size="9" fill="#e2e8f0">Propagate</text>
+                      <text x="30" y="22" font-size="8" fill="#a0aec0">via attention weights</text>
+                    </g>
+                    
+                    <!-- Step 3 -->
+                    <g transform="translate(220, 10)">
+                      <circle cx="12" cy="12" r="10" fill="var(--accent)"/>
+                      <text x="12" y="16" font-size="10" fill="white" text-anchor="middle" font-weight="bold">3</text>
+                      <text x="30" y="10" font-size="9" fill="#e2e8f0">Result</text>
+                      <text x="30" y="22" font-size="8" fill="#a0aec0">contribution map</text>
+                    </g>
+                    
+                    <!-- Mass conservation note -->
+                    <text x="170" y="52" font-size="8" fill="#718096" text-anchor="middle">Mass sums to 1.0 → probabilistic interpretation</text>
+                  </g>
+                </svg>
+              </div>
+            </div>
+            
+            <!-- Right: Key points -->
+            <div class="col gap" style="flex: 0.8;">
+              <div class="card-accent" style="padding: 14px; border-radius: 6px;">
+                <p style="font-size: 11px; font-weight: 600; color: var(--primary); margin-bottom: 6px;">Core Intuition</p>
+                <p style="font-size: 10px; color: var(--muted-fg); line-height: 1.5;">
+                  Starting from a forecast pixel <strong style="color: var(--accent);">X</strong>, trace backward through attention layers to find which input regions contributed most.
+                </p>
+              </div>
+              
+              <div class="card" style="padding: 12px;">
+                <p style="font-size: 11px; font-weight: 600; color: var(--primary); margin-bottom: 8px;">Key Adaptations for Swin</p>
+                <div style="margin-bottom: 8px;">
+                  <p style="font-size: 10px; font-weight: 600; color: var(--accent);">Window-Aware</p>
+                  <p style="font-size: 9px; color: var(--muted-fg);">Tracks which pixels can communicate at each layer through shifted windows</p>
+                </div>
+                <div>
+                  <p style="font-size: 10px; font-weight: 600; color: var(--accent);">Hierarchical</p>
+                  <p style="font-size: 9px; color: var(--muted-fg);">Handles resolution changes as network deepens/contracts</p>
+                </div>
+              </div>
+              
+              <div style="background: var(--success-light); padding: 12px; border-radius: 6px;">
+                <p style="font-size: 10px; font-weight: 600; color: #276749; margin-bottom: 4px;">Why "Mass-Preserving"?</p>
+                <p style="font-size: 9px; color: var(--muted-fg);">Total attribution always sums to 1.0 — we can interpret results as "what fraction of influence came from region R?"</p>
+              </div>
+              
+              <div style="background: var(--muted); padding: 10px; border-radius: 6px; margin-top: auto;">
+                <p style="font-size: 9px; color: var(--muted-fg); text-align: center;">
+                  Based on Abnar & Zuidema (2020) • Full details in Chapter 3
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- SLIDE 8: Visualization - Global Maps -->
+      <div class="slide bg-surface" id="slide-12">
+        <div class="title-zone">
+          <h1>Visualization: Global Contribution Maps</h1>
+        </div>
+        
+        <div class="content-zone" style="gap: 12px;">
+          <div class="row gap-lg" style="flex: 1;">
+            <!-- Left: Visualization mockup -->
+            <div class="col" style="flex: 1.4;">
+              <div style="background: #1a1a2e; border-radius: 8px; padding: 12px; height: 100%;">
+                <img src="./view.png" 
+                    style="width: 100%; height: 100%; object-fit: contain;">
+              </div>
+                  
+                  <!-- Repeat similar panels with slight variations -->
+                  <div style="background: #0d1b2a; border-radius: 4px; position: relative; overflow: hidden;">
+                    <svg viewBox="0 0 100 50" style="width: 100%; height: 100%;">
+                      <rect width="100" height="50" fill="#0d1b2a"/>
+                      <path d="M 5,10 L 15,8 L 18,15 L 12,20 L 5,18 Z" fill="#1b4332" opacity="0.4"/>
+                      <path d="M 10,25 L 15,22 L 14,35 L 10,38 Z" fill="#1b4332" opacity="0.4"/>
+                      <path d="M 45,12 L 55,10 L 52,18 L 45,16 Z" fill="#1b4332" opacity="0.4"/>
+                      <path d="M 42,20 L 55,18 L 52,35 L 45,32 Z" fill="#1b4332" opacity="0.4"/>
+                      <path d="M 55,8 L 85,6 L 88,22 L 60,20 Z" fill="#1b4332" opacity="0.4"/>
+                      <ellipse cx="30" cy="25" rx="16" ry="9" fill="url(#hotspot1)" opacity="0.85"/>
+                      <circle cx="30" cy="25" r="2" fill="#fde725"/>
+                    </svg>
+                    <p style="position: absolute; bottom: 2px; left: 4px; font-size: 7px; color: rgba(255,255,255,0.5);">850 hPa</p>
+                  </div>
+                  
+                  <div style="background: #0d1b2a; border-radius: 4px; position: relative; overflow: hidden;">
+                    <svg viewBox="0 0 100 50" style="width: 100%; height: 100%;">
+                      <rect width="100" height="50" fill="#0d1b2a"/>
+                      <path d="M 5,10 L 15,8 L 18,15 L 12,20 L 5,18 Z" fill="#1b4332" opacity="0.4"/>
+                      <path d="M 10,25 L 15,22 L 14,35 L 10,38 Z" fill="#1b4332" opacity="0.4"/>
+                      <path d="M 45,12 L 55,10 L 52,18 L 45,16 Z" fill="#1b4332" opacity="0.4"/>
+                      <path d="M 42,20 L 55,18 L 52,35 L 45,32 Z" fill="#1b4332" opacity="0.4"/>
+                      <path d="M 55,8 L 85,6 L 88,22 L 60,20 Z" fill="#1b4332" opacity="0.4"/>
+                      <ellipse cx="30" cy="25" rx="20" ry="11" fill="url(#hotspot1)" opacity="0.8"/>
+                      <circle cx="30" cy="25" r="2" fill="#fde725"/>
+                    </svg>
+                    <p style="position: absolute; bottom: 2px; left: 4px; font-size: 7px; color: rgba(255,255,255,0.5);">500 hPa</p>
+                  </div>
+                  
+                  <div style="background: #0d1b2a; border-radius: 4px; position: relative; overflow: hidden;">
+                    <svg viewBox="0 0 100 50" style="width: 100%; height: 100%;">
+                      <rect width="100" height="50" fill="#0d1b2a"/>
+                      <path d="M 5,10 L 15,8 L 18,15 L 12,20 L 5,18 Z" fill="#1b4332" opacity="0.4"/>
+                      <path d="M 10,25 L 15,22 L 14,35 L 10,38 Z" fill="#1b4332" opacity="0.4"/>
+                      <path d="M 45,12 L 55,10 L 52,18 L 45,16 Z" fill="#1b4332" opacity="0.4"/>
+                      <path d="M 42,20 L 55,18 L 52,35 L 45,32 Z" fill="#1b4332" opacity="0.4"/>
+                      <path d="M 55,8 L 85,6 L 88,22 L 60,20 Z" fill="#1b4332" opacity="0.4"/>
+                      <ellipse cx="30" cy="25" rx="22" ry="12" fill="url(#hotspot1)" opacity="0.75"/>
+                      <circle cx="30" cy="25" r="2" fill="#fde725"/>
+                    </svg>
+                    <p style="position: absolute; bottom: 2px; left: 4px; font-size: 7px; color: rgba(255,255,255,0.5);">300 hPa</p>
+                  </div>
+                  
+                  <!-- Bottom row -->
+                  <div style="background: #0d1b2a; border-radius: 4px; position: relative; overflow: hidden;">
+                    <svg viewBox="0 0 100 50" style="width: 100%; height: 100%;">
+                      <rect width="100" height="50" fill="#0d1b2a"/>
+                      <path d="M 5,10 L 15,8 L 18,15 L 12,20 L 5,18 Z" fill="#1b4332" opacity="0.4"/>
+                      <path d="M 45,12 L 55,10 L 52,18 L 45,16 Z" fill="#1b4332" opacity="0.4"/>
+                      <path d="M 55,8 L 85,6 L 88,22 L 60,20 Z" fill="#1b4332" opacity="0.4"/>
+                      <ellipse cx="30" cy="25" rx="24" ry="12" fill="url(#hotspot1)" opacity="0.7"/>
+                      <circle cx="30" cy="25" r="2" fill="#fde725"/>
+                    </svg>
+                    <p style="position: absolute; bottom: 2px; left: 4px; font-size: 7px; color: rgba(255,255,255,0.5);">200 hPa</p>
+                  </div>
+                  
+                  <div style="background: #0d1b2a; border-radius: 4px; position: relative; overflow: hidden;">
+                    <svg viewBox="0 0 100 50" style="width: 100%; height: 100%;">
+                      <rect width="100" height="50" fill="#0d1b2a"/>
+                      <path d="M 5,10 L 15,8 L 18,15 L 12,20 L 5,18 Z" fill="#1b4332" opacity="0.4"/>
+                      <path d="M 45,12 L 55,10 L 52,18 L 45,16 Z" fill="#1b4332" opacity="0.4"/>
+                      <path d="M 55,8 L 85,6 L 88,22 L 60,20 Z" fill="#1b4332" opacity="0.4"/>
+                      <ellipse cx="30" cy="25" rx="25" ry="13" fill="url(#hotspot1)" opacity="0.65"/>
+                      <circle cx="30" cy="25" r="2" fill="#fde725"/>
+                    </svg>
+                    <p style="position: absolute; bottom: 2px; left: 4px; font-size: 7px; color: rgba(255,255,255,0.5);">100 hPa</p>
+                  </div>
+                  
+                  <div style="background: #0d1b2a; border-radius: 4px; position: relative; overflow: hidden;">
+                    <svg viewBox="0 0 100 50" style="width: 100%; height: 100%;">
+                      <rect width="100" height="50" fill="#0d1b2a"/>
+                      <path d="M 5,10 L 15,8 L 18,15 L 12,20 L 5,18 Z" fill="#1b4332" opacity="0.4"/>
+                      <path d="M 45,12 L 55,10 L 52,18 L 45,16 Z" fill="#1b4332" opacity="0.4"/>
+                      <path d="M 55,8 L 85,6 L 88,22 L 60,20 Z" fill="#1b4332" opacity="0.4"/>
+                      <ellipse cx="30" cy="25" rx="26" ry="14" fill="url(#hotspot1)" opacity="0.6"/>
+                      <circle cx="30" cy="25" r="2" fill="#fde725"/>
+                    </svg>
+                    <p style="position: absolute; bottom: 2px; left: 4px; font-size: 7px; color: rgba(255,255,255,0.5);">70 hPa</p>
+                  </div>
+                  
+                  <div style="background: #0d1b2a; border-radius: 4px; position: relative; overflow: hidden;">
+                    <svg viewBox="0 0 100 50" style="width: 100%; height: 100%;">
+                      <rect width="100" height="50" fill="#0d1b2a"/>
+                      <path d="M 5,10 L 15,8 L 18,15 L 12,20 L 5,18 Z" fill="#1b4332" opacity="0.4"/>
+                      <path d="M 45,12 L 55,10 L 52,18 L 45,16 Z" fill="#1b4332" opacity="0.4"/>
+                      <path d="M 55,8 L 85,6 L 88,22 L 60,20 Z" fill="#1b4332" opacity="0.4"/>
+                      <ellipse cx="30" cy="25" rx="28" ry="15" fill="url(#hotspot1)" opacity="0.55"/>
+                      <circle cx="30" cy="25" r="2" fill="#fde725"/>
+                    </svg>
+                    <p style="position: absolute; bottom: 2px; left: 4px; font-size: 7px; color: rgba(255,255,255,0.5);">50 hPa</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Right: Explanation -->
+            <div class="col gap" style="flex: 0.7;">
+              <div style="background: #e8f4f8; padding: 12px; border-radius: 6px;">
+                <p style="font-size: 11px; font-weight: 600; color: var(--primary); margin-bottom: 6px;">What You're Seeing</p>
+                <p style="font-size: 10px; color: var(--muted-fg); line-height: 1.4;">
+                  Each panel shows which input regions contributed to the forecast at one pressure level. 
+                  <strong style="color: var(--accent);">Yellow = high influence</strong>, purple = low.
+                </p>
+              </div>
+              
+              <div class="card" style="padding: 12px;">
+                <p style="font-size: 11px; font-weight: 600; color: var(--primary); margin-bottom: 6px;">Key Observations</p>
+                <p style="font-size: 10px; color: var(--muted-fg); margin-bottom: 4px;">• Attention concentrated near focal point</p>
+                <p style="font-size: 10px; color: var(--muted-fg); margin-bottom: 4px;">• <strong>E-W elongation</strong> visible at all levels</p>
+                <p style="font-size: 10px; color: var(--muted-fg);">• Upper levels show broader spread</p>
+              </div>
+              
+              <!-- Colorbar -->
+              <div style="background: var(--muted); padding: 10px; border-radius: 6px;">
+                <p style="font-size: 9px; color: var(--muted-fg); margin-bottom: 6px; text-align: center;">Contribution (normalized)</p>
+                <div style="height: 12px; background: linear-gradient(90deg, #440154 0%, #21918c 50%, #fde725 100%); border-radius: 3px;"></div>
+                <div class="row" style="justify-content: space-between; margin-top: 2px;">
+                  <span style="font-size: 8px; color: var(--muted-fg);">Low</span>
+                  <span style="font-size: 8px; color: var(--muted-fg);">High</span>
+                </div>
+              </div>
+              
+              <div class="card-warning" style="padding: 10px; border-radius: 6px;">
+                <p style="font-size: 10px; font-weight: 600; color: #744210; margin-bottom: 4px;">Expert Rating: 2/5</p>
+                <p style="font-size: 9px; color: var(--muted-fg);">"Limited operational value" — useful for research, not daily forecasting</p>
+              </div>
+              
+              <div style="background: var(--purple-light); padding: 10px; border-radius: 6px; margin-top: auto;">
+                <p style="font-size: 9px; color: #553c9a; text-align: center;">
+                  <strong>Next:</strong> Can we compress this into a more intuitive format?
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- SLIDE 9: Visualization - Wind-Rose -->
+      <div class="slide bg-surface" id="slide-13">
+        <div class="title-zone">
+          <h1>Visualization: Wind-Rose Diagrams</h1>
+        </div>
+        
+        <div class="content-zone" style="gap: 16px;">
+          <div class="row gap-lg fill">
+            <!-- Ring-normalized -->
+            <div class="col fill" style="background: var(--muted); border-radius: 8px; padding: 14px;">
+              <p style="font-size: 13px; font-weight: 600; color: var(--primary); text-align: center; margin-bottom: 10px;">Ring-Normalized</p>
+              
+              <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
+                <div style="width: 120px; height: 120px; border-radius: 50%; background: conic-gradient(from 0deg, #fde725 0deg, #21918c 90deg, #440154 180deg, #21918c 270deg, #fde725 360deg); opacity: 0.7; position: relative;">
+                  <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; border-radius: 50%; background: conic-gradient(from 0deg, #b5de2b 0deg, #35b779 90deg, #31688e 180deg, #35b779 270deg, #b5de2b 360deg);"></div>
+                  <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; border-radius: 50%; background: conic-gradient(from 0deg, #90d743 0deg, #3cbb75 90deg, #3b528b 180deg, #3cbb75 270deg, #90d743 360deg);"></div>
+                  <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 16px; height: 16px; border-radius: 50%; background: var(--muted);"></div>
+                </div>
+              </div>
+              
+              <p style="font-size: 10px; color: var(--muted-fg); text-align: center; margin-top: 8px;">
+                Each ring independently normalized<br>Shows <strong>direction preference</strong> at each distance
+              </p>
+              
+              <div style="background: #feebc8; padding: 8px; border-radius: 4px; margin-top: 8px;">
+                <p style="font-size: 10px; color: #744210; text-align: center;"><strong>Rating: 3/5</strong> — Moderate utility</p>
+              </div>
+            </div>
+            
+            <!-- Global-normalized -->
+            <div class="col fill" style="background: #e8f4f8; border-radius: 8px; padding: 14px; border: 2px solid var(--accent);">
+              <p style="font-size: 13px; font-weight: 600; color: var(--primary); text-align: center; margin-bottom: 10px;">Global-Normalized ⭐</p>
+              
+              <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
+                <div style="width: 120px; height: 120px; border-radius: 50%; background: radial-gradient(circle, #fde725 0%, #21918c 30%, #440154 70%, #440154 100%); position: relative;">
+                  <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 16px; height: 16px; border-radius: 50%; background: white; border: 2px solid var(--primary);"></div>
+                </div>
+              </div>
+              
+              <p style="font-size: 10px; color: var(--muted-fg); text-align: center; margin-top: 8px;">
+                Single color scale across all rings<br>Shows <strong>distance decay</strong> + absolute magnitude
+              </p>
+              
+              <div style="background: #c6f6d5; padding: 8px; border-radius: 4px; margin-top: 8px;">
+                <p style="font-size: 10px; color: #276749; text-align: center;"><strong>Rating: 4/5</strong> — High practical value</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Key insight -->
+          <div class="card-dark" style="padding: 14px 20px; border-radius: 8px;">
+            <p style="font-size: 12px; color: #e2e8f0;">
+              <strong style="color: var(--accent);">Why wind-roses work better:</strong> 
+              They compress 3D attention into a familiar polar format, revealing both <em>directional preferences</em> and <em>distance decay</em> at a glance. 
+              Meteorologists immediately recognize the format from traditional wind analysis.
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- SLIDE 10: Result - Synoptic Scale -->
+      <div class="slide bg-surface" id="slide-14">
+        <div class="title-zone">
+          <h1>Result: Synoptic-Scale Focus</h1>
+        </div>
+        
+        <div class="content-zone">
+          <div class="row gap-lg fill">
+            <!-- Left: Metrics -->
+            <div class="col fill gap">
+              <p style="font-size: 14px; font-weight: 600; color: var(--primary);">Spatial Extent of Attention</p>
+              
+              <!-- Metric cards -->
+              <div style="background: #e8f4f8; padding: 16px; border-radius: 8px; border-left: 5px solid var(--accent);">
+                <div class="row gap-lg">
+                  <div class="metric">
+                    <p class="metric-label">R50</p>
+                    <p class="metric-value" style="color: var(--primary);">1,624 km</p>
+                  </div>
+                  <div class="metric">
+                    <p class="metric-label">R80</p>
+                    <p class="metric-value">2,598 km</p>
+                  </div>
+                  <div class="metric">
+                    <p class="metric-label">R95</p>
+                    <p class="metric-value" style="color: var(--primary);">3,747 km</p>
+                  </div>
+                </div>
+                <p style="font-size: 10px; color: var(--muted-fg); text-align: center; margin-top: 12px;">
+                  Radius containing 50% / 80% / 95% of total contribution
+                </p>
+              </div>
+              
+              <!-- Distribution -->
+              <div class="row gap-sm">
+                <div style="flex: 1; background: var(--success-light); padding: 12px; border-radius: 6px; text-align: center;">
+                  <p style="font-size: 20px; font-weight: bold; color: #276749;">24.3%</p>
+                  <p style="font-size: 10px; color: var(--muted-fg); margin-top: 4px;">Near-field (&lt;1000 km)</p>
+                </div>
+                <div style="flex: 1; background: var(--danger-light); padding: 12px; border-radius: 6px; text-align: center;">
+                  <p style="font-size: 20px; font-weight: bold; color: var(--danger);">0.83%</p>
+                  <p style="font-size: 10px; color: var(--muted-fg); margin-top: 4px;">Far-field (&gt;5000 km)</p>
+                </div>
+              </div>
+              
+              <div style="background: var(--purple-light); padding: 12px; border-radius: 6px;">
+                <p style="font-size: 11px; color: #553c9a;">
+                  <strong>Remarkably uniform:</strong> R80 coefficient of variation = 4.0% across all 12 focal points
+                </p>
+              </div>
+            </div>
+            
+            <!-- Right: Interpretation -->
+            <div class="col fill gap">
+              <p style="font-size: 14px; font-weight: 600; color: var(--primary);">Physical Interpretation</p>
+              
+              <div class="card">
+                <p style="font-size: 12px; color: var(--primary); margin-bottom: 10px; line-height: 1.5;">
+                  <strong>Context:</strong> Weather systems traveling at jet-stream speeds (~50 m/s) cover approximately <strong>4,300 km in 24 hours</strong>.
+                </p>
+                <p style="font-size: 12px; color: var(--muted-fg); line-height: 1.5;">
+                  The model's R80 ≈ 2,600 km aligns with this physical advection scale — it's "looking" at distances appropriate for a 24-hour forecast.
+                </p>
+              </div>
+              
+              <div class="card-dark" style="padding: 16px; border-radius: 8px;">
+                <p style="font-size: 13px; color: var(--accent); font-weight: 600; margin-bottom: 8px;">✓ LEARNED PATTERN</p>
+                <p style="font-size: 12px; color: #e2e8f0;">
+                  The model has tuned its receptive field to the physically relevant scale for the forecast horizon. 
+                  This suggests <strong>meaningful learning</strong>, not arbitrary pattern matching.
+                </p>
+              </div>
+              
+              <div class="card-warning" style="padding: 12px; border-radius: 6px;">
+                <p style="font-size: 11px; color: #744210;">
+                  <strong>Note:</strong> The uniformity across regimes (CV=4%) may also indicate architectural constraints — more on this later.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- SLIDE 11: Zonal Anisotropy -->
+      <div class="slide bg-surface" id="slide-15">
+        <div class="title-zone">
+          <h1>Result: Universal Zonal Anisotropy</h1>
+        </div>
+        
+        <div class="content-zone">
+          <div class="row gap-lg fill">
+            <!-- Left: Finding -->
+            <div class="col fill gap">
+              <div class="card-dark" style="padding: 18px; border-radius: 8px;">
+                <p style="font-size: 14px; color: var(--accent); font-weight: 600; margin-bottom: 10px;">✓ STRONGEST EVIDENCE OF LEARNED PHYSICS</p>
+                <p style="font-size: 13px; color: #e2e8f0; line-height: 1.5;">
+                  The model shows consistent <strong>East-West elongation</strong> in attention patterns — 
+                  despite being trained on geometric grids with no inherent directional bias.
+                </p>
+              </div>
+              
+              <!-- Key metrics -->
+              <div class="row gap-sm">
+                <div style="flex: 1; background: #e8f4f8; padding: 14px; border-radius: 6px; text-align: center;">
+                  <p style="font-size: 10px; color: #718096;">Aspect Ratio</p>
+                  <p style="font-size: 28px; font-weight: bold; color: var(--accent); margin: 4px 0;">1.25</p>
+                  <p style="font-size: 9px; color: var(--muted-fg);">Major/minor axis</p>
+                </div>
+                <div style="flex: 1; background: #e8f4f8; padding: 14px; border-radius: 6px; text-align: center;">
+                  <p style="font-size: 10px; color: #718096;">E-W / N-S Ratio</p>
+                  <p style="font-size: 28px; font-weight: bold; color: var(--accent); margin: 4px 0;">1.88</p>
+                  <p style="font-size: 9px; color: var(--muted-fg);">Transect contributions</p>
+                </div>
+              </div>
+              
+              <div class="card-success" style="padding: 14px; border-radius: 6px;">
+                <p style="font-size: 12px; color: #276749; font-weight: 600; margin-bottom: 6px;">Universal Pattern</p>
+                <p style="font-size: 11px; color: var(--muted-fg);">
+                  <strong>All 12 focal points</strong> show E-W orientation, with major axes within ±30° of zonal. 
+                  Zero points exhibit N-S elongation.
+                </p>
+              </div>
+            </div>
+            
+            <!-- Right: Interpretation -->
+            <div class="col fill gap">
+              <p style="font-size: 14px; font-weight: 600; color: var(--primary);">Physical Interpretation</p>
+              
+              <div class="card">
+                <p style="font-size: 12px; color: var(--primary); margin-bottom: 10px;"><strong>Why this matters:</strong></p>
+                <p style="font-size: 11px; color: var(--muted-fg); margin-bottom: 8px; line-height: 1.5;">
+                  Earth's rotation creates dominant <strong>zonal (E-W) flow</strong> in the atmosphere. 
+                  Mid-latitude weather systems propagate predominantly eastward.
+                </p>
+                <p style="font-size: 11px; color: var(--muted-fg); line-height: 1.5;">
+                  The model was never told about atmospheric dynamics — it discovered this pattern from data.
+                </p>
+              </div>
+              
+              <!-- Visual -->
+              <div style="background: white; border: 2px solid #e2e8f0; padding: 16px; border-radius: 8px; text-align: center;">
+                <p style="font-size: 11px; color: #718096; margin-bottom: 10px;">Attention Ellipse Shape</p>
+                <div style="display: flex; justify-content: center; align-items: center; gap: 20px;">
+                  <div>
+                    <div style="width: 70px; height: 70px; border: 3px solid #cbd5e0; border-radius: 50%;"></div>
+                    <p style="font-size: 9px; color: #a0aec0; margin-top: 6px;">Expected<br>(isotropic)</p>
+                  </div>
+                  <span style="font-size: 20px; color: var(--accent);">→</span>
+                  <div>
+                    <div style="width: 90px; height: 70px; border: 3px solid var(--accent); border-radius: 50%; background: rgba(45, 156, 219, 0.1);"></div>
+                    <p style="font-size: 9px; color: var(--accent); font-weight: 600; margin-top: 6px;">Observed<br>(zonal elongation)</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div style="background: var(--purple-light); padding: 12px; border-radius: 6px;">
+                <p style="font-size: 11px; color: #553c9a;">
+                  <strong>Expert validation:</strong> Dr. Houston agreed this reflects learned atmospheric rotation effects.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- SLIDE 12: Symmetric Attention -->
+      <div class="slide bg-surface" id="slide-16">
+        <div class="title-zone">
+          <h1>Observation: Symmetric Bidirectional Attention</h1>
+        </div>
+        
+        <div class="content-zone">
+          <div class="row gap-lg fill">
+            <!-- Left: Finding -->
+            <div class="col fill gap">
+              <div class="card-warning" style="padding: 16px; border-radius: 8px;">
+                <p style="font-size: 14px; color: #744210; font-weight: 600; margin-bottom: 10px;">⚠ ARCHITECTURAL SIGNATURE</p>
+                <p style="font-size: 12px; color: #744210; line-height: 1.5;">
+                  Despite strong E-W preference, the model shows <strong>no directional asymmetry</strong> — 
+                  it attends equally to upstream (west) and downstream (east).
+                </p>
+              </div>
+              
+              <!-- Westward bias -->
+              <div class="card" style="text-align: center;">
+                <p style="font-size: 11px; color: #718096;">Westward Bias Index</p>
+                <p style="font-size: 36px; font-weight: bold; color: var(--primary); margin: 8px 0;">0.510</p>
+                <p style="font-size: 11px; color: var(--muted-fg);">(0.5 = perfectly symmetric • p = 0.55, not significant)</p>
+              </div>
+              
+              <div class="card-danger" style="padding: 14px; border-radius: 6px;">
+                <p style="font-size: 12px; color: var(--danger); font-weight: 600; margin-bottom: 8px;">The Anomaly</p>
+                <p style="font-size: 11px; color: var(--muted-fg); line-height: 1.5;">
+                  Physical advection is <strong>directional</strong>: weather moves from upstream → downstream. 
+                  We might expect preferential attention to upstream (westward) features as precursors.
+                </p>
+              </div>
+            </div>
+            
+            <!-- Right: Interpretation -->
+            <div class="col fill gap">
+              <p style="font-size: 14px; font-weight: 600; color: var(--primary);">Interpretation</p>
+              
+              <div class="card-dark" style="padding: 16px; border-radius: 8px;">
+                <p style="font-size: 12px; color: var(--accent); font-weight: 600; margin-bottom: 10px;">Bidirectional Transformer Architecture</p>
+                <p style="font-size: 11px; color: #e2e8f0; line-height: 1.5;">
+                  Unlike RNNs or causal masking, Transformer self-attention is <strong>inherently symmetric</strong>. 
+                  Each position attends to all others without directional constraints.
+                </p>
+              </div>
+              
+              <div class="card">
+                <p style="font-size: 12px; color: var(--primary); margin-bottom: 8px; line-height: 1.5;"><strong>Why symmetric?</strong></p>
+                <p style="font-size: 11px; color: var(--muted-fg); margin-bottom: 6px;">• Training sees complete spatial sequences</p>
+                <p style="font-size: 11px; color: var(--muted-fg); margin-bottom: 6px;">• Model learns <em>spatial correlations</em>, not causal propagation</p>
+                <p style="font-size: 11px; color: var(--muted-fg);">• Integrates both upstream drivers AND downstream signatures equally</p>
+              </div>
+              
+              <div style="background: #e8f4f8; padding: 14px; border-radius: 6px;">
+                <p style="font-size: 11px; color: var(--primary);">
+                  <strong>Implication:</strong> The model learned <em>zonal organization</em> but not <em>directional causality</em>. 
+                  This is a signature of the architecture, not a failure of learning.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- SLIDE 13: Latitudinal Uniformity -->
+      <div class="slide bg-surface" id="slide-17">
+        <div class="title-zone">
+          <h1>Observation: Latitudinal Uniformity</h1>
+        </div>
+        
+        <div class="content-zone">
+          <div class="row gap-lg fill">
+            <!-- Left: Finding -->
+            <div class="col fill gap">
+              <div class="card-warning" style="padding: 16px; border-radius: 8px;">
+                <p style="font-size: 14px; color: #744210; font-weight: 600; margin-bottom: 10px;">⚠ ARCHITECTURAL CONSTRAINT</p>
+                <p style="font-size: 12px; color: #744210; line-height: 1.5;">
+                  Pangu's attention scale is <strong>remarkably uniform</strong> across all climate regimes — 
+                  despite known physical differences in synoptic scales.
+                </p>
+              </div>
+              
+              <!-- Key metric -->
+              <div class="card" style="text-align: center;">
+                <p style="font-size: 11px; color: #718096;">R80 Coefficient of Variation</p>
+                <p style="font-size: 42px; font-weight: bold; color: var(--primary); margin: 8px 0;">4%</p>
+                <p style="font-size: 11px; color: var(--muted-fg);">Across tropical, subtropical, and mid-latitude regimes</p>
+              </div>
+              
+              <!-- Comparison -->
+              <div class="row gap-sm">
+                <div style="flex: 1; background: #e8f4f8; padding: 12px; border-radius: 6px; text-align: center;">
+                  <p style="font-size: 10px; color: #718096;">Equatorial</p>
+                  <p style="font-size: 18px; font-weight: bold; color: var(--accent);">2,777 km</p>
+                </div>
+                <div style="flex: 1; background: #e8f4f8; padding: 12px; border-radius: 6px; text-align: center;">
+                  <p style="font-size: 10px; color: #718096;">Subtropical mean</p>
+                  <p style="font-size: 18px; font-weight: bold; color: var(--accent);">2,495 km</p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Right: Interpretation -->
+            <div class="col fill gap">
+              <p style="font-size: 14px; font-weight: 600; color: var(--primary);">Why This Is Surprising</p>
+              
+              <div class="card">
+                <p style="font-size: 12px; color: var(--primary); font-weight: 600; margin-bottom: 8px;">In Physics-Based NWP:</p>
+                <p style="font-size: 11px; color: var(--muted-fg); line-height: 1.5;">
+                  Background error covariances vary <strong>significantly by latitude</strong>. 
+                  Correlation length scales can differ by factors of 2-3 between tropical and extratropical regions.
+                </p>
+                <p style="font-size: 10px; color: #718096; margin-top: 8px; font-style: italic;">Gaspari & Cohn (1999), Hamill et al. (2001)</p>
+              </div>
+              
+              <div class="card-dark" style="padding: 16px; border-radius: 8px;">
+                <p style="font-size: 12px; color: var(--accent); font-weight: 600; margin-bottom: 10px;">Likely Explanation</p>
+                <p style="font-size: 11px; color: #e2e8f0; line-height: 1.5;">
+                  The <strong>fixed window size</strong> of the Swin Transformer imposes a rigid "field of view," 
+                  limiting the model's ability to adapt attention scales to regime-specific physics.
+                </p>
+              </div>
+              
+              <div style="background: var(--purple-light); padding: 12px; border-radius: 6px;">
+                <p style="font-size: 11px; color: #553c9a;">
+                  <strong>Implication:</strong> Architectural constraints limit the model's expressiveness. 
+                  Future architectures might benefit from adaptive attention scales.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- SLIDE 14: Expert Evaluation -->
+      <div class="slide bg-surface" id="slide-18">
+        <div class="title-zone">
+          <h1>Expert Evaluation: Dr. Adam Houston</h1>
+        </div>
+        
+        <div class="content-zone" style="gap: 12px;">
+          <!-- Expert intro -->
+          <div class="row gap-lg">
+            <div style="background: var(--muted); padding: 12px 16px; border-radius: 6px; flex: 1;">
+              <p style="font-size: 11px; color: var(--muted-fg);">
+                <strong style="color: var(--primary);">Dr. Adam Houston</strong> — Associate Professor of Meteorology, UNL. 
+                Research focus: severe convective storms, mesoscale meteorology. 20+ years operational and research experience.
+              </p>
+            </div>
+            <div style="background: #e8f4f8; padding: 12px 16px; border-radius: 6px;">
+              <p style="font-size: 10px; color: var(--primary);">
+                <strong>Evaluation:</strong> Reviewed wind-rose visualizations for 4 focal points, assessed physical plausibility and operational utility.
+              </p>
+            </div>
+          </div>
+          
+          <div class="row gap-lg" style="flex: 1;">
+            <!-- Left: Specific responses -->
+            <div class="col gap" style="flex: 1;">
+              <p style="font-size: 11px; font-weight: 600; color: var(--primary);">Key Responses</p>
+              
+              <div style="background: var(--success-light); padding: 12px; border-radius: 6px;">
+                <p style="font-size: 10px; font-weight: 600; color: #276749; margin-bottom: 6px;">On Visualization Design (4/5)</p>
+                <p style="font-size: 10px; color: var(--muted-fg); font-style: italic; line-height: 1.4;">
+                  "The global-normalized version is more intuitive — shows both direction preference and distance decay at once."
+                </p>
+              </div>
+              
+              <div style="background: var(--success-light); padding: 12px; border-radius: 6px;">
+                <p style="font-size: 10px; font-weight: 600; color: #276749; margin-bottom: 6px;">On Physical Patterns</p>
+                <p style="font-size: 10px; color: var(--muted-fg); font-style: italic; line-height: 1.4;">
+                  "The E-W elongation makes sense — reflects Coriolis-driven zonal flow. The model seems to have learned this from data."
+                </p>
+              </div>
+              
+              <div style="background: #e8f4f8; padding: 12px; border-radius: 6px;">
+                <p style="font-size: 10px; font-weight: 600; color: var(--primary); margin-bottom: 6px;">On Trust Impact (+1)</p>
+                <p style="font-size: 10px; color: var(--muted-fg); font-style: italic; line-height: 1.4;">
+                  "Would I consult this for an unexpected forecast? <strong>Definitely.</strong> More of a tool for building trust in models than real-time operations."
+                </p>
+              </div>
+            </div>
+            
+            <!-- Right: Critical feedback and implications -->
+            <div class="col gap" style="flex: 1;">
+              <p style="font-size: 11px; font-weight: 600; color: var(--primary);">Critical Feedback</p>
+              
+              <div style="background: var(--warning-light); padding: 12px; border-radius: 6px;">
+                <p style="font-size: 10px; font-weight: 600; color: #744210; margin-bottom: 6px;">Wants More Context</p>
+                <p style="font-size: 10px; color: var(--muted-fg); line-height: 1.4;">
+                  "Would want to see accuracy metrics alongside explanations — how does attention correlate with forecast skill?"
+                </p>
+              </div>
+              
+              <div style="background: var(--warning-light); padding: 12px; border-radius: 6px;">
+                <p style="font-size: 10px; font-weight: 600; color: #744210; margin-bottom: 6px;">Deeper Understanding Needed</p>
+                <p style="font-size: 10px; color: var(--muted-fg); line-height: 1.4;">
+                  "Would like to better understand the inner workings... does it actually understand fluid dynamics, or just correlations?"
+                </p>
+              </div>
+              
+              <div class="card-dark" style="padding: 12px; border-radius: 6px;">
+                <p style="font-size: 10px; font-weight: 600; color: var(--accent); margin-bottom: 6px;">Key Takeaway</p>
+                <p style="font-size: 10px; color: #e2e8f0; line-height: 1.4;">
+                  Explainability's primary value is <strong>model validation and trust-building</strong> — helping forecasters understand if a model is "thinking correctly" even when forecasts appear accurate.
+                </p>
+              </div>
+              
+              <div style="background: var(--muted); padding: 10px; border-radius: 6px; margin-top: auto;">
+                <p style="font-size: 9px; color: var(--muted-fg); text-align: center;">
+                  <strong>Limitation:</strong> N=1 expert evaluation. Future work should include broader meteorologist panel.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- SLIDE 15: Synthesis -->
+      <div class="slide bg-surface" id="slide-19">
+        <div class="title-zone">
+          <h1>Synthesis: Learned Physics vs. Architectural Artifacts</h1>
+        </div>
+        
+        <div class="content-zone" style="gap: 20px;">
+          <!-- Table -->
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="width: 30%;">Pattern</th>
+                <th style="width: 20%; text-align: center;">Source</th>
+                <th style="width: 50%;">Implication</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Synoptic-scale focus<br><span style="color: #718096; font-size: 10px;">(R80 ≈ 2600 km)</span></td>
+                <td style="text-align: center; background: var(--success-light);"><span style="font-weight: 600; color: #276749;">✓ Learned</span></td>
+                <td style="font-size: 10px;">Appropriate scale for 24h forecasts</td>
+              </tr>
+              <tr>
+                <td>Zonal anisotropy<br><span style="color: #718096; font-size: 10px;">(E-W elongation)</span></td>
+                <td style="text-align: center; background: var(--success-light);"><span style="font-weight: 600; color: #276749;">✓ Learned</span></td>
+                <td style="font-size: 10px;">Consistent with atmospheric dynamics</td>
+              </tr>
+              <tr>
+                <td>Symmetric attention<br><span style="color: #718096; font-size: 10px;">(no upstream bias)</span></td>
+                <td style="text-align: center; background: var(--warning-light);"><span style="font-weight: 600; color: #c05621;">⚠ Artifact</span></td>
+                <td style="font-size: 10px;">May miss directional propagation</td>
+              </tr>
+              <tr>
+                <td>Scale uniformity<br><span style="color: #718096; font-size: 10px;">(CV = 4%)</span></td>
+                <td style="text-align: center; background: var(--warning-light);"><span style="font-weight: 600; color: #c05621;">⚠ Artifact</span></td>
+                <td style="font-size: 10px;">Limited regime-specific adaptation</td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <!-- Key takeaway -->
+          <div class="card-dark" style="padding: 18px 24px; border-radius: 8px;">
+            <p style="font-size: 13px; color: #e2e8f0; line-height: 1.6;">
+              <strong style="color: var(--accent);">Key Takeaway:</strong> 
+              Attention analysis serves <strong>dual purposes</strong> — validating that models learn physically meaningful patterns 
+              <em>while also</em> revealing architectural limitations that constrain their expressiveness. 
+              Both insights are essential for building trust.
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- SLIDE 16: Limitations -->
+      <div class="slide bg-surface" id="slide-20">
+        <div class="title-zone">
+          <h1>Limitations</h1>
+        </div>
+        
+        <div class="content-zone" style="justify-content: center; gap: 14px;">
+          <!-- Limitation 1 -->
+          <div class="row gap" style="align-items: flex-start;">
+            <div class="num-badge" style="background: #fed7d7; color: var(--danger);">1</div>
+            <div style="flex: 1;">
+              <p style="font-size: 13px; font-weight: 600; color: var(--primary); margin-bottom: 4px;">Single 24-hour forecast case study</p>
+              <p style="font-size: 11px; color: var(--muted-fg);">Results may not generalize across seasons, synoptic regimes, or extreme events. Designed as proof-of-concept, not climatological characterization.</p>
+            </div>
+          </div>
+          
+          <!-- Limitation 2 -->
+          <div class="row gap" style="align-items: flex-start;">
+            <div class="num-badge" style="background: #fed7d7; color: var(--danger);">2</div>
+            <div style="flex: 1;">
+              <p style="font-size: 13px; font-weight: 600; color: var(--primary); margin-bottom: 4px;">Single attention head per layer</p>
+              <p style="font-size: 11px; color: var(--muted-fg);">Pangu has 6-12 heads per block. Different heads may specialize; first-head analysis may miss important patterns.</p>
+            </div>
+          </div>
+          
+          <!-- Limitation 3 -->
+          <div class="row gap" style="align-items: flex-start;">
+            <div class="num-badge" style="background: #fed7d7; color: var(--danger);">3</div>
+            <div style="flex: 1;">
+              <p style="font-size: 13px; font-weight: 600; color: var(--primary); margin-bottom: 4px;">Algorithm parameters not optimized</p>
+              <p style="font-size: 11px; color: var(--muted-fg);">Hyperparameters chosen as reasonable defaults. Sensitivity analysis would be valuable future work.</p>
+            </div>
+          </div>
+          
+          <!-- Limitation 4 -->
+          <div class="row gap" style="align-items: flex-start;">
+            <div class="num-badge" style="background: #fed7d7; color: var(--danger);">4</div>
+            <div style="flex: 1;">
+              <p style="font-size: 13px; font-weight: 600; color: var(--primary); margin-bottom: 4px;">N=1 expert evaluation</p>
+              <p style="font-size: 11px; color: var(--muted-fg);">Pilot study establishes protocol feasibility; larger evaluation needed for inter-rater reliability.</p>
+            </div>
+          </div>
+          
+          <!-- Limitation 5 -->
+          <div class="row gap" style="align-items: flex-start;">
+            <div class="num-badge" style="background: #fed7d7; color: var(--danger);">5</div>
+            <div style="flex: 1;">
+              <p style="font-size: 13px; font-weight: 600; color: var(--primary); margin-bottom: 4px;">No comparison to gradient-based attribution</p>
+              <p style="font-size: 11px; color: var(--muted-fg);">SHAP, integrated gradients, or saliency maps might provide complementary or contradictory explanations.</p>
+            </div>
+          </div>
+          
+          <!-- Framing -->
+          <div style="background: #e8f4f8; padding: 14px 20px; border-radius: 8px; margin-top: 8px;">
+            <p style="font-size: 12px; color: var(--primary); text-align: center;">
+              <strong>These are honest limitations of a thesis-scope project.</strong> 
+              The contribution is demonstrating <em>feasibility</em> — the algorithm now exists and can be applied at scale.
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- SLIDE 17: Future Work -->
+      <div class="slide bg-surface" id="slide-21">
+        <div class="title-zone">
+          <h1>Future Work</h1>
+        </div>
+        
+        <div class="content-zone">
+          <div class="row gap-lg fill">
+            <!-- Left column -->
+            <div class="col fill gap">
+              <div style="background: #e8f4f8; padding: 16px; border-radius: 8px; border-left: 4px solid var(--accent);">
+                <div class="row gap-sm" style="align-items: center; margin-bottom: 8px;">
+                  <div style="width: 24px; height: 24px; background: var(--accent); border-radius: 4px; display: flex; align-items: center; justify-content: center;">
+                    <span style="color: white; font-weight: bold; font-size: 12px;">1</span>
+                  </div>
+                  <p style="font-size: 13px; font-weight: 600; color: var(--primary);">Climatological Scaling</p>
+                </div>
+                <p style="font-size: 11px; color: var(--muted-fg); line-height: 1.5;">
+                  Analyze hundreds of forecasts across seasons, regimes, and extreme events. 
+                  Establish robust statistics and confidence intervals.
+                </p>
+              </div>
+              
+              <div style="background: var(--success-light); padding: 16px; border-radius: 8px; border-left: 4px solid var(--success);">
+                <div class="row gap-sm" style="align-items: center; margin-bottom: 8px;">
+                  <div style="width: 24px; height: 24px; background: var(--success); border-radius: 4px; display: flex; align-items: center; justify-content: center;">
+                    <span style="color: white; font-weight: bold; font-size: 12px;">2</span>
+                  </div>
+                  <p style="font-size: 13px; font-weight: 600; color: var(--primary);">Multi-Head Analysis</p>
+                </div>
+                <p style="font-size: 11px; color: var(--muted-fg); line-height: 1.5;">
+                  Investigate whether different attention heads specialize 
+                  (e.g., zonal vs. meridional patterns, different scales).
+                </p>
+              </div>
+            </div>
+            
+            <!-- Right column -->
+            <div class="col fill gap">
+              <div style="background: var(--purple-light); padding: 16px; border-radius: 8px; border-left: 4px solid var(--purple);">
+                <div class="row gap-sm" style="align-items: center; margin-bottom: 8px;">
+                  <div style="width: 24px; height: 24px; background: var(--purple); border-radius: 4px; display: flex; align-items: center; justify-content: center;">
+                    <span style="color: white; font-weight: bold; font-size: 12px;">3</span>
+                  </div>
+                  <p style="font-size: 13px; font-weight: 600; color: var(--primary);">Comparative XAI</p>
+                </div>
+                <p style="font-size: 11px; color: var(--muted-fg); line-height: 1.5;">
+                  Compare Pangu (Swin) against GraphCast (GNN) and FourCastNet (FNO) 
+                  to isolate architecture-specific biases.
+                </p>
+              </div>
+              
+              <div style="background: var(--warning-light); padding: 16px; border-radius: 8px; border-left: 4px solid var(--warning);">
+                <div class="row gap-sm" style="align-items: center; margin-bottom: 8px;">
+                  <div style="width: 24px; height: 24px; background: var(--warning); border-radius: 4px; display: flex; align-items: center; justify-content: center;">
+                    <span style="color: white; font-weight: bold; font-size: 12px;">4</span>
+                  </div>
+                  <p style="font-size: 13px; font-weight: 600; color: var(--primary);">Operational Integration</p>
+                </div>
+                <p style="font-size: 11px; color: var(--muted-fg); line-height: 1.5;">
+                  Develop real-time explanation generation for forecasters. 
+                  Test in actual forecast workflows.
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- High-impact -->
+          <div class="card-dark" style="padding: 14px 20px; border-radius: 8px;">
+            <p style="font-size: 12px; color: #e2e8f0; text-align: center;">
+              <strong style="color: var(--accent);">Highest-impact next step:</strong> 
+              Analyze attention during forecast "busts" (e.g., hurricane rapid intensification) 
+              to understand <em>why</em> MLWP sometimes fails at extremes.
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- SLIDE 18: Summary -->
+      <div class="slide bg-surface" id="slide-22">
+        <div class="title-zone">
+          <h1>Summary of Contributions</h1>
+        </div>
+        
+        <div class="content-zone" style="justify-content: center; gap: 16px;">
+          <p style="font-size: 14px; font-weight: 600; color: var(--accent); text-align: center;">
+            A Framework for Trustworthy ML Weather Prediction
+          </p>
+          
+          <div class="row gap">
+            <!-- Algorithm -->
+            <div class="col fill center" style="background: #e8f4f8; padding: 16px; border-radius: 8px; border-top: 4px solid var(--accent);">
+              <div style="width: 36px; height: 36px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 10px;">
+                <span style="color: white; font-size: 18px;">⚙</span>
+              </div>
+              <p style="font-size: 12px; font-weight: 600; color: var(--primary); margin-bottom: 8px;">Algorithm</p>
+              <p style="font-size: 10px; color: var(--muted-fg); text-align: center; line-height: 1.4;">Mass-preserving reverse rollout for 3D hierarchical Transformers</p>
+            </div>
+            
+            <!-- Visualization -->
+            <div class="col fill center" style="background: var(--success-light); padding: 16px; border-radius: 8px; border-top: 4px solid var(--success);">
+              <div style="width: 36px; height: 36px; background: var(--success); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 10px;">
+                <span style="color: white; font-size: 18px;">📊</span>
+              </div>
+              <p style="font-size: 12px; font-weight: 600; color: var(--primary); margin-bottom: 8px;">Visualization</p>
+              <p style="font-size: 10px; color: var(--muted-fg); text-align: center; line-height: 1.4;">Meteorologist-interpretable attention maps and wind-roses</p>
+            </div>
+            
+            <!-- Validation -->
+            <div class="col fill center" style="background: var(--purple-light); padding: 16px; border-radius: 8px; border-top: 4px solid var(--purple);">
+              <div style="width: 36px; height: 36px; background: var(--purple); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 10px;">
+                <span style="color: white; font-size: 18px;">✓</span>
+              </div>
+              <p style="font-size: 12px; font-weight: 600; color: var(--primary); margin-bottom: 8px;">Validation</p>
+              <p style="font-size: 10px; color: var(--muted-fg); text-align: center; line-height: 1.4;">Expert evaluation demonstrating physical plausibility</p>
+            </div>
+            
+            <!-- Insight -->
+            <div class="col fill center" style="background: var(--warning-light); padding: 16px; border-radius: 8px; border-top: 4px solid var(--warning);">
+              <div style="width: 36px; height: 36px; background: var(--warning); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 10px;">
+                <span style="color: white; font-size: 18px;">💡</span>
+              </div>
+              <p style="font-size: 12px; font-weight: 600; color: var(--primary); margin-bottom: 8px;">Insight</p>
+              <p style="font-size: 10px; color: var(--muted-fg); text-align: center; line-height: 1.4;">Evidence of learned physics AND architectural constraints</p>
+            </div>
+          </div>
+          
+          <!-- Central message -->
+          <div class="card-dark" style="padding: 20px 28px; border-radius: 8px; margin-top: 8px;">
+            <p style="font-size: 14px; color: white; text-align: center; line-height: 1.6;">
+              <strong style="color: var(--accent);">Central Claim:</strong> 
+              Accuracy is important, but so is explainability. We should consider interpretability 
+              when designing and deploying ML weather models — and this thesis shows it's achievable.
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- SLIDE 19: Closing -->
+      <div class="slide bg-primary" id="slide-23">
+        <div class="col center fill" style="padding: 40px 60px;">
+          <h1 style="font-size: 28px; color: white; text-align: center; line-height: 1.4; margin-bottom: 20px;">
+            Summary
+          </h1>
+          
+          <div class="divider" style="margin-bottom: 24px;"></div>
+          
+          <div style="max-width: 700px; margin-bottom: 32px;">
+            <p style="font-size: 14px; color: rgba(255,255,255,0.95); text-align: center; line-height: 1.7; margin-bottom: 16px;">
+              This thesis presents a framework for explaining attention-based weather predictions, 
+              validated through expert meteorological evaluation.
+            </p>
+            
+            <div class="row gap" style="justify-content: center; margin-bottom: 20px;">
+              <div style="background: rgba(255,255,255,0.1); padding: 12px 16px; border-radius: 6px; text-align: center;">
+                <p style="font-size: 20px; margin-bottom: 4px;">🔧</p>
+                <p style="font-size: 10px; color: rgba(255,255,255,0.8);">Adapted Algorithm</p>
+              </div>
+              <div style="background: rgba(255,255,255,0.1); padding: 12px 16px; border-radius: 6px; text-align: center;">
+                <p style="font-size: 20px; margin-bottom: 4px;">📊</p>
+                <p style="font-size: 10px; color: rgba(255,255,255,0.8);">New Visualizations</p>
+              </div>
+              <div style="background: rgba(255,255,255,0.1); padding: 12px 16px; border-radius: 6px; text-align: center;">
+                <p style="font-size: 20px; margin-bottom: 4px;">✓</p>
+                <p style="font-size: 10px; color: rgba(255,255,255,0.8);">Expert Validation</p>
+              </div>
+              <div style="background: rgba(255,255,255,0.1); padding: 12px 16px; border-radius: 6px; text-align: center;">
+                <p style="font-size: 20px; margin-bottom: 4px;">💡</p>
+                <p style="font-size: 10px; color: rgba(255,255,255,0.8);">Physical Insights</p>
+              </div>
+            </div>
+            
+            <p style="font-size: 13px; color: rgba(255,255,255,0.85); text-align: center; line-height: 1.6;">
+              Key finding: The model learned physically meaningful patterns (zonal flow, synoptic scales) 
+              while also revealing architectural constraints worth considering in future designs.
+            </p>
+          </div>
+          
+          <div style="margin-top: auto;">
+            <p style="font-size: 22px; color: white; margin-bottom: 8px;">
+              Questions?
+            </p>
+          </div>
+        </div>
+        
+        <div style="padding: 14px 40px; background: rgba(0,0,0,0.2);">
+          <p style="font-size: 11px; color: rgba(255,255,255,0.6); text-align: center;">
+            Jorden Gershenson • jordengg@gmail.com • Code: bit.ly/pangu-xai
+          </p>
+        </div>
+      </div>
+      
+      <!-- BACKUP SLIDE B1: Algorithm Detail -->
+      <div class="slide bg-surface" id="slide-24">
+        <div class="title-zone">
+          <p style="font-size: 11px; color: #718096; margin-bottom: 4px;">BACKUP</p>
+          <h1 style="font-size: 24px;">Algorithm: Detailed Pseudocode</h1>
+        </div>
+        
+        <div class="content-zone">
+          <div class="row gap-lg fill">
+            <!-- Pseudocode -->
+            <div class="col" style="flex: 1.2;">
+              <div style="background: #1a1a2e; padding: 14px; border-radius: 8px; height: 100%; overflow: hidden;">
+                <pre style="font-family: 'Courier New', monospace; font-size: 9px; color: #e2e8f0; margin: 0; line-height: 1.5; white-space: pre-wrap;"><span style="color: var(--accent);">ALGORITHM:</span> Mass-Preserving Reverse Rollout
+
+<span style="color: var(--success);">Input:</span> focal_pixel (z₀, h₀, w₀), attention_weights A
+<span style="color: var(--success);">Output:</span> contribution_map M
+
+<span style="color: #718096;">// Initialize</span>
+M ← zeros(8, 181, 360)
+M[z₀, h₀, w₀] ← 1.0
+
+<span style="color: #718096;">// Process layers in reverse</span>
+<span style="color: var(--warning);">for</span> layer L in [3, 2, 1, 0]:
+    
+    <span style="color: #718096;">// Resample if resolution changes</span>
+    <span style="color: var(--warning);">if</span> L crosses resolution boundary:
+        M ← resample(M)
+    
+    <span style="color: #718096;">// Process blocks in reverse</span>
+    <span style="color: var(--warning);">for</span> block b in layer L (reverse):
+        shifted ← (b mod 2 == 1)
+        M' ← zeros_like(M)
+        
+        <span style="color: #718096;">// Redistribute mass</span>
+        <span style="color: var(--warning);">for</span> each pixel (z,h,w) where M[z,h,w] > 0:
+            m ← M[z,h,w]
+            win_info ← get_window(z, h, w, shifted)
+            attn_row ← A[layer, block, win_info]
+            
+            <span style="color: #718096;">// Handle skip connections</span>
+            attn_row ← (1-β)·attn_row + β·I
+            
+            <span style="color: #718096;">// Scatter to contributors</span>
+            <span style="color: var(--warning);">for</span> k in 0..143:
+                (zk, hk, wk) ← key_to_global(k, win_info)
+                M'[zk, hk, wk] += m · attn_row[k]
+        
+        M ← normalize(M')
+
+<span style="color: var(--success);">return</span> M</pre>
+              </div>
+            </div>
+            
+            <!-- Key operations -->
+            <div class="col gap" style="flex: 0.8;">
+              <div style="background: #e8f4f8; padding: 12px; border-radius: 6px;">
+                <p style="font-size: 11px; font-weight: 600; color: var(--primary); margin-bottom: 6px;">Skip Connection Handling</p>
+                <p style="font-size: 10px; color: var(--muted-fg); font-family: 'Courier New', monospace;">P = (1-β)A + βI</p>
+                <p style="font-size: 9px; color: #718096; margin-top: 4px;">Accounts for residual connections in architecture</p>
+              </div>
+              
+              <div class="card">
+                <p style="font-size: 11px; font-weight: 600; color: var(--primary); margin-bottom: 6px;">Window Size</p>
+                <p style="font-size: 10px; color: var(--muted-fg);">12 × 6 × 2 (lon × lat × pressure)<br>= 144 tokens per window</p>
+              </div>
+              
+              <div class="card">
+                <p style="font-size: 11px; font-weight: 600; color: var(--primary); margin-bottom: 6px;">Resolution</p>
+                <p style="font-size: 10px; color: var(--muted-fg);">Full: 181 × 360<br>Half: 91 × 180 (middle layers)</p>
+              </div>
+              
+              <div class="card">
+                <p style="font-size: 11px; font-weight: 600; color: var(--primary); margin-bottom: 6px;">Compute Time</p>
+                <p style="font-size: 10px; color: var(--muted-fg);">~45 sec per focal point (A100 GPU)<br>~8 min (CPU fallback)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- BACKUP SLIDE B2: All Focal Points -->
+      <div class="slide bg-surface" id="slide-25">
+        <div class="title-zone">
+          <p style="font-size: 11px; color: #718096; margin-bottom: 4px;">BACKUP</p>
+          <h1 style="font-size: 24px;">All 12 Focal Points: Wind-Rose Consistency</h1>
+        </div>
+        
+        <div class="content-zone" style="gap: 12px;">
+          <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; flex: 1;">
+            <!-- Row 1 -->
+            <div style="background: var(--muted); border-radius: 6px; padding: 8px; text-align: center;">
+              <div style="width: 60px; height: 60px; border-radius: 50%; background: radial-gradient(ellipse 130% 100% at center, #fde725 0%, #21918c 40%, #440154 100%); margin: 0 auto 6px;"></div>
+              <p style="font-size: 8px; color: var(--muted-fg);">Central Eq. Pacific</p>
+            </div>
+            <div style="background: var(--muted); border-radius: 6px; padding: 8px; text-align: center;">
+              <div style="width: 60px; height: 60px; border-radius: 50%; background: radial-gradient(ellipse 130% 100% at center, #fde725 0%, #21918c 40%, #440154 100%); margin: 0 auto 6px;"></div>
+              <p style="font-size: 8px; color: var(--muted-fg);">South China Sea</p>
+            </div>
+            <div style="background: var(--muted); border-radius: 6px; padding: 8px; text-align: center;">
+              <div style="width: 60px; height: 60px; border-radius: 50%; background: radial-gradient(ellipse 130% 100% at center, #fde725 0%, #21918c 40%, #440154 100%); margin: 0 auto 6px;"></div>
+              <p style="font-size: 8px; color: var(--muted-fg);">SW Indian Ocean</p>
+            </div>
+            <div style="background: var(--muted); border-radius: 6px; padding: 8px; text-align: center;">
+              <div style="width: 60px; height: 60px; border-radius: 50%; background: radial-gradient(ellipse 130% 100% at center, #fde725 0%, #21918c 40%, #440154 100%); margin: 0 auto 6px;"></div>
+              <p style="font-size: 8px; color: var(--muted-fg);">SE Atlantic</p>
+            </div>
+            <div style="background: var(--muted); border-radius: 6px; padding: 8px; text-align: center;">
+              <div style="width: 60px; height: 60px; border-radius: 50%; background: radial-gradient(ellipse 130% 100% at center, #fde725 0%, #21918c 40%, #440154 100%); margin: 0 auto 6px;"></div>
+              <p style="font-size: 8px; color: var(--muted-fg);">Cape Verde</p>
+            </div>
+            <div style="background: var(--muted); border-radius: 6px; padding: 8px; text-align: center;">
+              <div style="width: 60px; height: 60px; border-radius: 50%; background: radial-gradient(ellipse 130% 100% at center, #fde725 0%, #21918c 40%, #440154 100%); margin: 0 auto 6px;"></div>
+              <p style="font-size: 8px; color: var(--muted-fg);">Hawaiian</p>
+            </div>
+            
+            <!-- Row 2 -->
+            <div style="background: var(--muted); border-radius: 6px; padding: 8px; text-align: center;">
+              <div style="width: 60px; height: 60px; border-radius: 50%; background: radial-gradient(ellipse 130% 100% at center, #fde725 0%, #21918c 40%, #440154 100%); margin: 0 auto 6px;"></div>
+              <p style="font-size: 8px; color: var(--muted-fg);">E. Caribbean</p>
+            </div>
+            <div style="background: var(--muted); border-radius: 6px; padding: 8px; text-align: center;">
+              <div style="width: 60px; height: 60px; border-radius: 50%; background: radial-gradient(ellipse 130% 100% at center, #fde725 0%, #21918c 40%, #440154 100%); margin: 0 auto 6px;"></div>
+              <p style="font-size: 8px; color: var(--muted-fg);">Arabian Sea</p>
+            </div>
+            <div style="background: var(--muted); border-radius: 6px; padding: 8px; text-align: center;">
+              <div style="width: 60px; height: 60px; border-radius: 50%; background: radial-gradient(ellipse 130% 100% at center, #fde725 0%, #21918c 40%, #440154 100%); margin: 0 auto 6px;"></div>
+              <p style="font-size: 8px; color: var(--muted-fg);">E. Pacific / Baja</p>
+            </div>
+            <div style="background: var(--muted); border-radius: 6px; padding: 8px; text-align: center;">
+              <div style="width: 60px; height: 60px; border-radius: 50%; background: radial-gradient(ellipse 130% 100% at center, #fde725 0%, #21918c 40%, #440154 100%); margin: 0 auto 6px;"></div>
+              <p style="font-size: 8px; color: var(--muted-fg);">SE Pacific</p>
+            </div>
+            <div style="background: var(--muted); border-radius: 6px; padding: 8px; text-align: center;">
+              <div style="width: 60px; height: 60px; border-radius: 50%; background: radial-gradient(ellipse 130% 100% at center, #fde725 0%, #21918c 40%, #440154 100%); margin: 0 auto 6px;"></div>
+              <p style="font-size: 8px; color: var(--muted-fg);">Mascarene High</p>
+            </div>
+            <div style="background: var(--muted); border-radius: 6px; padding: 8px; text-align: center;">
+              <div style="width: 60px; height: 60px; border-radius: 50%; background: radial-gradient(ellipse 130% 100% at center, #fde725 0%, #21918c 40%, #440154 100%); margin: 0 auto 6px;"></div>
+              <p style="font-size: 8px; color: var(--muted-fg);">W. Africa-Sahel</p>
+            </div>
+          </div>
+          
+          <div class="card-dark" style="padding: 12px 20px; border-radius: 8px;">
+            <p style="font-size: 12px; color: #e2e8f0; text-align: center;">
+              <strong style="color: var(--accent);">Visual Evidence:</strong> 
+              All 12 wind-roses show similar E-W elongated patterns despite spanning tropical, subtropical, and mid-latitude regimes.
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- BACKUP SLIDE B3: Statistics -->
+      <div class="slide bg-surface" id="slide-26">
+        <div class="title-zone">
+          <p style="font-size: 11px; color: #718096; margin-bottom: 4px;">BACKUP</p>
+          <h1 style="font-size: 24px;">Statistical Summary: All Metrics</h1>
+        </div>
+        
+        <div class="content-zone" style="gap: 16px;">
+          <table class="data-table" style="font-size: 10px;">
+            <thead>
+              <tr>
+                <th style="width: 35%;">Metric</th>
+                <th style="width: 25%; text-align: center;">Mean ± SD</th>
+                <th style="width: 25%; text-align: center;">Range</th>
+                <th style="width: 15%; text-align: center;">CV</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="background: var(--muted);">
+                <td colspan="4" style="font-weight: 600; color: var(--accent); font-size: 9px;">SPATIAL EXTENT</td>
+              </tr>
+              <tr>
+                <td>R50 (km)</td>
+                <td style="text-align: center;">1,624 ± 68</td>
+                <td style="text-align: center; color: #718096;">1,521–1,742</td>
+                <td style="text-align: center; color: #718096;">4.2%</td>
+              </tr>
+              <tr>
+                <td>R80 (km)</td>
+                <td style="text-align: center; font-weight: 600; color: var(--accent);">2,598 ± 105</td>
+                <td style="text-align: center; color: #718096;">2,472–2,777</td>
+                <td style="text-align: center; font-weight: 600; color: var(--accent);">4.0%</td>
+              </tr>
+              <tr>
+                <td>R95 (km)</td>
+                <td style="text-align: center;">3,747 ± 91</td>
+                <td style="text-align: center; color: #718096;">3,612–3,891</td>
+                <td style="text-align: center; color: #718096;">2.4%</td>
+              </tr>
+              <tr style="background: var(--muted);">
+                <td colspan="4" style="font-weight: 600; color: var(--accent); font-size: 9px;">ANISOTROPY</td>
+              </tr>
+              <tr>
+                <td>Aspect Ratio</td>
+                <td style="text-align: center; font-weight: 600; color: #276749;">1.25 ± 0.04</td>
+                <td style="text-align: center; color: #718096;">1.16–1.31</td>
+                <td style="text-align: center; color: #718096;">3.2%</td>
+              </tr>
+              <tr>
+                <td>E-W/N-S Ratio</td>
+                <td style="text-align: center; font-weight: 600; color: #276749;">1.88 ± 0.15</td>
+                <td style="text-align: center; color: #718096;">1.65–2.12</td>
+                <td style="text-align: center; color: #718096;">8.0%</td>
+              </tr>
+              <tr>
+                <td>Westward Bias</td>
+                <td style="text-align: center;">0.510 ± 0.057</td>
+                <td style="text-align: center; color: #718096;">0.43–0.61</td>
+                <td style="text-align: center; color: #718096;">p = 0.55</td>
+              </tr>
+              <tr style="background: var(--muted);">
+                <td colspan="4" style="font-weight: 600; color: var(--accent); font-size: 9px;">CONCENTRATION</td>
+              </tr>
+              <tr>
+                <td>Gini Coefficient</td>
+                <td style="text-align: center;">0.969 ± 0.002</td>
+                <td style="text-align: center; color: #718096;">0.965–0.973</td>
+                <td style="text-align: center; color: #718096;">0.2%</td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <div style="background: #e8f4f8; padding: 10px 16px; border-radius: 6px;">
+            <p style="font-size: 10px; color: var(--primary); text-align: center;">
+              <strong>Key observation:</strong> Low CVs across all metrics indicate high consistency across 12 focal points spanning diverse climate regimes.
+            </p>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <!-- Slide counter -->
+  <div class="slide-counter">
+    <span id="current-slide">1</span> / <span id="total-slides">26</span>
+  </div>
+  
+  <!-- Help overlay -->
+  <div class="help-overlay" id="help">
+    <p style="margin-bottom: 8px; font-weight: 600;">Keyboard Shortcuts</p>
+    <p><kbd>←</kbd> <kbd>→</kbd> Navigate slides</p>
+    <p><kbd>Space</kbd> Next slide</p>
+    <p><kbd>F</kbd> Toggle fullscreen</p>
+    <p><kbd>H</kbd> Toggle this help</p>
+    <p><kbd>Home</kbd> First slide</p>
+    <p><kbd>End</kbd> Last slide</p>
+  </div>
+  
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    let currentSlide = 0;
+    
+    document.getElementById('total-slides').textContent = totalSlides;
+    
+    function showSlide(index) {
+      if (index < 0) index = 0;
+      if (index >= totalSlides) index = totalSlides - 1;
+      
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === index);
+      });
+      
+      currentSlide = index;
+      document.getElementById('current-slide').textContent = currentSlide + 1;
+      
+      // Update URL hash
+      history.replaceState(null, null, `#slide-${currentSlide + 1}`);
+    }
+    
+    function nextSlide() {
+      showSlide(currentSlide + 1);
+    }
+    
+    function prevSlide() {
+      showSlide(currentSlide - 1);
+    }
+    
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+        document.body.classList.add('fullscreen');
+      } else {
+        document.exitFullscreen();
+        document.body.classList.remove('fullscreen');
+      }
+    }
+    
+    function toggleHelp() {
+      document.getElementById('help').classList.toggle('visible');
+    }
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      switch(e.key) {
+        case 'ArrowRight':
+        case ' ':
+          e.preventDefault();
+          nextSlide();
+          break;
+        case 'ArrowLeft':
+          prevSlide();
+          break;
+        case 'f':
+        case 'F':
+          toggleFullscreen();
+          break;
+        case 'h':
+        case 'H':
+          toggleHelp();
+          break;
+        case 'Home':
+          showSlide(0);
+          break;
+        case 'End':
+          showSlide(totalSlides - 1);
+          break;
+        case 'Escape':
+          document.getElementById('help').classList.remove('visible');
+          break;
+      }
+    });
+    
+    // Click navigation
+    document.querySelector('.slide-wrapper').addEventListener('click', (e) => {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      if (x > rect.width / 2) {
+        nextSlide();
+      } else {
+        prevSlide();
+      }
+    });
+    
+    // Handle fullscreen changes
+    document.addEventListener('fullscreenchange', () => {
+      if (!document.fullscreenElement) {
+        document.body.classList.remove('fullscreen');
+      }
+    });
+    
+    // Load slide from URL hash
+    const hash = window.location.hash;
+    if (hash && hash.startsWith('#slide-')) {
+      const slideNum = parseInt(hash.replace('#slide-', '')) - 1;
+      if (slideNum >= 0 && slideNum < totalSlides) {
+        currentSlide = slideNum;
+      }
+    }
+    
+    // Initialize
+    showSlide(currentSlide);
+    
+    // Show help briefly on load
+    setTimeout(() => {
+      document.getElementById('help').classList.add('visible');
+      setTimeout(() => {
+        document.getElementById('help').classList.remove('visible');
+      }, 3000);
+    }, 500);
+  </script>
+</body>
+</html>
