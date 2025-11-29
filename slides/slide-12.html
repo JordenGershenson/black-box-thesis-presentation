@@ -5,105 +5,12 @@
         
         <div class="content-zone" style="gap: 12px;">
           <div class="row gap-lg" style="flex: 1;">
-            <!-- Left: Visualization mockup -->
+            <!-- Left: Visualization -->
             <div class="col" style="flex: 1.4;">
-              <div style="background: #1a1a2e; border-radius: 8px; padding: 12px; height: 100%;">
-                <img src="./view.png" 
+              <div style="background: #1a1a2e; border-radius: 8px; padding: 12px; height: 100%; display: flex; align-items: center; justify-content: center;">
+                <img src="../global_contribution_Map.png"
+                    alt="Global Contribution Maps across pressure levels"
                     style="width: 100%; height: 100%; object-fit: contain;">
-              </div>
-                  
-                  <!-- Repeat similar panels with slight variations -->
-                  <div style="background: #0d1b2a; border-radius: 4px; position: relative; overflow: hidden;">
-                    <svg viewBox="0 0 100 50" style="width: 100%; height: 100%;">
-                      <rect width="100" height="50" fill="#0d1b2a"/>
-                      <path d="M 5,10 L 15,8 L 18,15 L 12,20 L 5,18 Z" fill="#1b4332" opacity="0.4"/>
-                      <path d="M 10,25 L 15,22 L 14,35 L 10,38 Z" fill="#1b4332" opacity="0.4"/>
-                      <path d="M 45,12 L 55,10 L 52,18 L 45,16 Z" fill="#1b4332" opacity="0.4"/>
-                      <path d="M 42,20 L 55,18 L 52,35 L 45,32 Z" fill="#1b4332" opacity="0.4"/>
-                      <path d="M 55,8 L 85,6 L 88,22 L 60,20 Z" fill="#1b4332" opacity="0.4"/>
-                      <ellipse cx="30" cy="25" rx="16" ry="9" fill="url(#hotspot1)" opacity="0.85"/>
-                      <circle cx="30" cy="25" r="2" fill="#fde725"/>
-                    </svg>
-                    <p style="position: absolute; bottom: 2px; left: 4px; font-size: 7px; color: rgba(255,255,255,0.5);">850 hPa</p>
-                  </div>
-                  
-                  <div style="background: #0d1b2a; border-radius: 4px; position: relative; overflow: hidden;">
-                    <svg viewBox="0 0 100 50" style="width: 100%; height: 100%;">
-                      <rect width="100" height="50" fill="#0d1b2a"/>
-                      <path d="M 5,10 L 15,8 L 18,15 L 12,20 L 5,18 Z" fill="#1b4332" opacity="0.4"/>
-                      <path d="M 10,25 L 15,22 L 14,35 L 10,38 Z" fill="#1b4332" opacity="0.4"/>
-                      <path d="M 45,12 L 55,10 L 52,18 L 45,16 Z" fill="#1b4332" opacity="0.4"/>
-                      <path d="M 42,20 L 55,18 L 52,35 L 45,32 Z" fill="#1b4332" opacity="0.4"/>
-                      <path d="M 55,8 L 85,6 L 88,22 L 60,20 Z" fill="#1b4332" opacity="0.4"/>
-                      <ellipse cx="30" cy="25" rx="20" ry="11" fill="url(#hotspot1)" opacity="0.8"/>
-                      <circle cx="30" cy="25" r="2" fill="#fde725"/>
-                    </svg>
-                    <p style="position: absolute; bottom: 2px; left: 4px; font-size: 7px; color: rgba(255,255,255,0.5);">500 hPa</p>
-                  </div>
-                  
-                  <div style="background: #0d1b2a; border-radius: 4px; position: relative; overflow: hidden;">
-                    <svg viewBox="0 0 100 50" style="width: 100%; height: 100%;">
-                      <rect width="100" height="50" fill="#0d1b2a"/>
-                      <path d="M 5,10 L 15,8 L 18,15 L 12,20 L 5,18 Z" fill="#1b4332" opacity="0.4"/>
-                      <path d="M 10,25 L 15,22 L 14,35 L 10,38 Z" fill="#1b4332" opacity="0.4"/>
-                      <path d="M 45,12 L 55,10 L 52,18 L 45,16 Z" fill="#1b4332" opacity="0.4"/>
-                      <path d="M 42,20 L 55,18 L 52,35 L 45,32 Z" fill="#1b4332" opacity="0.4"/>
-                      <path d="M 55,8 L 85,6 L 88,22 L 60,20 Z" fill="#1b4332" opacity="0.4"/>
-                      <ellipse cx="30" cy="25" rx="22" ry="12" fill="url(#hotspot1)" opacity="0.75"/>
-                      <circle cx="30" cy="25" r="2" fill="#fde725"/>
-                    </svg>
-                    <p style="position: absolute; bottom: 2px; left: 4px; font-size: 7px; color: rgba(255,255,255,0.5);">300 hPa</p>
-                  </div>
-                  
-                  <!-- Bottom row -->
-                  <div style="background: #0d1b2a; border-radius: 4px; position: relative; overflow: hidden;">
-                    <svg viewBox="0 0 100 50" style="width: 100%; height: 100%;">
-                      <rect width="100" height="50" fill="#0d1b2a"/>
-                      <path d="M 5,10 L 15,8 L 18,15 L 12,20 L 5,18 Z" fill="#1b4332" opacity="0.4"/>
-                      <path d="M 45,12 L 55,10 L 52,18 L 45,16 Z" fill="#1b4332" opacity="0.4"/>
-                      <path d="M 55,8 L 85,6 L 88,22 L 60,20 Z" fill="#1b4332" opacity="0.4"/>
-                      <ellipse cx="30" cy="25" rx="24" ry="12" fill="url(#hotspot1)" opacity="0.7"/>
-                      <circle cx="30" cy="25" r="2" fill="#fde725"/>
-                    </svg>
-                    <p style="position: absolute; bottom: 2px; left: 4px; font-size: 7px; color: rgba(255,255,255,0.5);">200 hPa</p>
-                  </div>
-                  
-                  <div style="background: #0d1b2a; border-radius: 4px; position: relative; overflow: hidden;">
-                    <svg viewBox="0 0 100 50" style="width: 100%; height: 100%;">
-                      <rect width="100" height="50" fill="#0d1b2a"/>
-                      <path d="M 5,10 L 15,8 L 18,15 L 12,20 L 5,18 Z" fill="#1b4332" opacity="0.4"/>
-                      <path d="M 45,12 L 55,10 L 52,18 L 45,16 Z" fill="#1b4332" opacity="0.4"/>
-                      <path d="M 55,8 L 85,6 L 88,22 L 60,20 Z" fill="#1b4332" opacity="0.4"/>
-                      <ellipse cx="30" cy="25" rx="25" ry="13" fill="url(#hotspot1)" opacity="0.65"/>
-                      <circle cx="30" cy="25" r="2" fill="#fde725"/>
-                    </svg>
-                    <p style="position: absolute; bottom: 2px; left: 4px; font-size: 7px; color: rgba(255,255,255,0.5);">100 hPa</p>
-                  </div>
-                  
-                  <div style="background: #0d1b2a; border-radius: 4px; position: relative; overflow: hidden;">
-                    <svg viewBox="0 0 100 50" style="width: 100%; height: 100%;">
-                      <rect width="100" height="50" fill="#0d1b2a"/>
-                      <path d="M 5,10 L 15,8 L 18,15 L 12,20 L 5,18 Z" fill="#1b4332" opacity="0.4"/>
-                      <path d="M 45,12 L 55,10 L 52,18 L 45,16 Z" fill="#1b4332" opacity="0.4"/>
-                      <path d="M 55,8 L 85,6 L 88,22 L 60,20 Z" fill="#1b4332" opacity="0.4"/>
-                      <ellipse cx="30" cy="25" rx="26" ry="14" fill="url(#hotspot1)" opacity="0.6"/>
-                      <circle cx="30" cy="25" r="2" fill="#fde725"/>
-                    </svg>
-                    <p style="position: absolute; bottom: 2px; left: 4px; font-size: 7px; color: rgba(255,255,255,0.5);">70 hPa</p>
-                  </div>
-                  
-                  <div style="background: #0d1b2a; border-radius: 4px; position: relative; overflow: hidden;">
-                    <svg viewBox="0 0 100 50" style="width: 100%; height: 100%;">
-                      <rect width="100" height="50" fill="#0d1b2a"/>
-                      <path d="M 5,10 L 15,8 L 18,15 L 12,20 L 5,18 Z" fill="#1b4332" opacity="0.4"/>
-                      <path d="M 45,12 L 55,10 L 52,18 L 45,16 Z" fill="#1b4332" opacity="0.4"/>
-                      <path d="M 55,8 L 85,6 L 88,22 L 60,20 Z" fill="#1b4332" opacity="0.4"/>
-                      <ellipse cx="30" cy="25" rx="28" ry="15" fill="url(#hotspot1)" opacity="0.55"/>
-                      <circle cx="30" cy="25" r="2" fill="#fde725"/>
-                    </svg>
-                    <p style="position: absolute; bottom: 2px; left: 4px; font-size: 7px; color: rgba(255,255,255,0.5);">50 hPa</p>
-                  </div>
-                </div>
               </div>
             </div>
             
