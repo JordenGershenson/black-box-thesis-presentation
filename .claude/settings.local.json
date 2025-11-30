@@ -5,7 +5,8 @@
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(mkdir:*)",
-      "Bash(python extract_slides.py:*)"
+      "Bash(python extract_slides.py:*)",
+      "Bash(done)"
     ],
     "deny": [],
     "ask": []

@@ -1,6 +1,35 @@
 // Configuration
-const TOTAL_SLIDES = 26;
 const SLIDES_DIR = 'slides';
+
+// Slide files in presentation order
+const SLIDE_FILES = [
+  '01-title.html',
+  '02-overview.html',
+  '03-background-nwp.html',
+  '04-paradigm-shift.html',
+  '05-background-xai.html',
+  '06-background-transformer.html',
+  '07-challenge-swin.html',
+  '08-research-objectives.html',
+  '09-approach-attention.html',
+  '10-experimental-design.html',
+  '11-algorithm-reverse-rollout.html',
+  '12-viz-contribution-maps.html',
+  '13-viz-wind-rose.html',
+  '14-result-synoptic-scale.html',
+  '15-result-zonal-anisotropy.html',
+  '16-observation-symmetric.html',
+  '17-observation-latitudinal.html',
+  '18-expert-evaluation.html',
+  '19-synthesis.html',
+  '20-limitations.html',
+  '21-future-work.html',
+  '22-contributions.html',
+  '23-conclusions.html',
+  '24-appendix-statistics.html'
+];
+
+const TOTAL_SLIDES = SLIDE_FILES.length;
 
 // State
 let currentSlide = 0;
@@ -14,15 +43,11 @@ async function loadSlides() {
   const container = document.getElementById('slide-container');
 
   try {
-    // Load all slides
-    const loadPromises = [];
-    for (let i = 1; i <= TOTAL_SLIDES; i++) {
-      const slideNum = String(i).padStart(2, '0');
-      loadPromises.push(
-        fetch(`${SLIDES_DIR}/slide-${slideNum}.html`)
-          .then(response => response.text())
-      );
-    }
+    // Load all slides by filename
+    const loadPromises = SLIDE_FILES.map(filename =>
+      fetch(`${SLIDES_DIR}/${filename}`)
+        .then(response => response.text())
+    );
 
     const slideContents = await Promise.all(loadPromises);
 
